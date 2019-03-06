@@ -21,7 +21,19 @@ router.post("/ocean/:name", (req, res) => {
         //go through each tag in the req body
         // make post request to make all the tags
         // if the post is public, increase the tag count
-        
+        req.body.tags.forEach(function(t) {
+            let tagCheck = ocean.tags.filter(tag => tag.tagName == t.tagName);
+            
+            if (tagCheck.length != 0) {
+                let newNag = {
+                    tagName: tagCheck[0].tagName,
+                    tagCount: 0,
+                    tagLastUpdate: Date.now(),
+                };
+
+                ocean.tags.push(newTag);
+            }
+        });
         
         // create a new bottle
         // make it so people can only edit on their personal page ????
@@ -40,13 +52,10 @@ router.post("/ocean/:name", (req, res) => {
             res.setHeader("Content-Type", "application/json");
             res.status(200).send(bottle);
         });
-
     });
 }).catch(err => {
     res.status(400).send({ error: "bottle couldn't be posted: " + err });
 });
-
-
 
 // update the bottle contents
 router.patch("/ocean/:name/bottles/:id", (req, res) => {
@@ -83,13 +92,14 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
 
             if (bottle.isPublic) {
                 
+                // assumption: all tags are already existing
                 // old tags == existing tags
                 // remove all the old tags
                 oldTags = bottle[0].tags;
                 oldTags.forEach(function (t) {
                     // go through each of the tag in the original
                     // decrease the count for all the tags
-                    currTag = bottle[0].tags.filter(tag => tag.tagName == t)
+                    currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName);
                     if (currTag.tagCount != 0) {
                         currTag.tagCount -= 1
                     }
@@ -104,7 +114,7 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
 
                     // if new tag: non-existent tag:
                     // > create a new tag and update the count
-                    currTag = bottle[0].tags.filter(tag => tag.tagName == t)
+                    currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName);
                     if (currTag.tagCount != 0) {
                         currTag.tagCount += 1
                         currTag.tagLastUpdate = Date.now()
@@ -112,12 +122,6 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
                 });
 
             }
-
-
-
-
-            
-
 
             // updating the tags
             bottle[0].tags = req.body.tags;
@@ -149,7 +153,14 @@ router.delete("ocean/:name/bottles/:id", (req, res) => {
         }
         // check if you are a moderator account or that user
 
-
+        //delete post count for that specific tag
+        bottle.tags.forEach(function(t) {
+            currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName)
+            if (currTag.tagCount != 0) {
+                currTag.tagCount -= 1
+            }
+        });
+        
         let originalLenth = ocean.bottles.length;
         ocean.bottles = ocean.bottles.filter(bottle => bottle.__id != req.params.id); //filter out bottles that match the id
 

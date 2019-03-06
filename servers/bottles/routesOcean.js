@@ -35,6 +35,34 @@ router.post("/ocean", (req, res) => {
     res.status(400).send({error : "couldn't create a ocean " + err});
 });
 
+// get all oceans
+router.get("/ocean", (req, res) => {
+    Oceans.find({}).exec().then(ocean => {
+        res.setHeader("Content-Type", "application/json");
+        res.status(200).send(ocean);
+    }).catch(err => {
+        res.send(500).send({error: "couldn't get all the existing oceans: " + err});
+    });
+});
+
+// get everything inside a specific ocean
+router.get("/ocean/:name", (req, res) => {
+    Oceans.find({"name" : req.params.name}).exec().then(ocean => {
+        
+        // no tags included
+        //if (!req.body.tags && req.body.tags.length == 0) {
+            res.setHeader("Content-Type", "application/json");
+            res.status(200).send(ocean.bottles);
+        //} else { //tags included
+            // have it so the tags check by AND
+            
+        
+       // }
+
+    }).catch(err => {
+        res.send(404).send({error: "no ocean was found with the name " + req.params.name + ": " + err});
+    })
+});
 
 //delete an ocean
 router.delete("/ocean/:name", (req, res) => {

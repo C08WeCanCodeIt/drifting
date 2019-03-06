@@ -36,3 +36,5 @@ router.post("/ocean/:name/tags", (req, res) => {
 }).catch(err => {
     res.status(400).send({error: "could not create new tag: " + err});
 });
+
+//delete a tag

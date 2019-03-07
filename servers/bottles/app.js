@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 const instanceName = process.env.NAME;
 const dbURL = 'mongodb://mongo:27017/mydb';
 
-const connectWithRetry = () => {
+/* const connectWithRetry = () => {
     console.log('MongoDB connection with retry');
     mongoose.connect(dbURL).then(() => {
       console.log('MongoDB is connected');
@@ -18,11 +18,11 @@ const connectWithRetry = () => {
     });
 }
 
-connectWithRetry();
+connectWithRetry(); */
 
 //rabbitmq connection
 
-amqp.connect('amqp://rabbitmq', (err, conn) => {
+/* amqp.connect('amqp://rabbitmq', (err, conn) => {
     if (err) {
         console.log('Failed to connect to rabbit ' + err);
         process.exit(1);
@@ -58,24 +58,24 @@ amqp.connect('amqp://rabbitmq', (err, conn) => {
         //     console.log(err);
         // });
     });
-});
+}); */
 
 mongoose.Promise = global.Promise;
 
 app.use((req, res, next) => {
-    if(!req.get('X-User')) {
-        res.status(401).send({message: 'No user header found'});
-    } else {
-        next();
+    if (!req.get('X-User')) { //not logged in cannot post stuff
+        res.status(401).send({ message: 'No user header found' });
     }
+    next();
 });
 
 //Middleware to parse the request body as JSON
 app.use(express.json());
 app.use('/v1', require('./routesOcean.js'));
 app.use('/v1', require('./routesBottles.js'));
+app.use('/v1', require('./routesTags.js'));
 
-app.listen(PORT, instanceName,() => {
+app.listen(PORT, instanceName, () => {
     console.log('listening on ' + PORT);
     console.log('host: ' + instanceName);
 });

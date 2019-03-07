@@ -8,8 +8,12 @@ const fetch = require("node-fetch");
 
 // create a bottle in the ocean
 router.post("/ocean/:name", (req, res) => {
-    if (req.body.body || req.body.body.length === 0) {
+    if (!req.body.body || req.body.body.length === 0) {
         res.status(403).send({ error: "Cannot posts an empty bottle" });
+    }
+
+    if (!isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
+        res.status(403).send({ error: "Public Posts cannot have no tags" });
     }
 
     // searching mongo to find ocean with given name
@@ -21,9 +25,16 @@ router.post("/ocean/:name", (req, res) => {
         //go through each tag in the req body
         // make post request to make all the tags
         // if the post is public, increase the tag count
-        req.body.tags.forEach(function(t) {
+        let inputTags = req.body.tags.split(",");
+        for (i = 0; i < inputTags.length; i++) {
+            inputTags[i] = inputTags[i].trim().toLowerCase();
+        }
+        let tagsFiltered = new Set(inputTags);
+
+
+        tagsFiltered.forEach(function (t) {
             let tagCheck = ocean.tags.filter(tag => tag.tagName == t.tagName);
-            
+
             if (tagCheck.length != 0) {
                 let newNag = {
                     tagName: tagCheck[0].tagName,
@@ -34,7 +45,7 @@ router.post("/ocean/:name", (req, res) => {
                 ocean.tags.push(newTag);
             }
         });
-        
+
         // create a new bottle
         // make it so people can only edit on their personal page ????
         let bottle = {
@@ -61,15 +72,11 @@ router.post("/ocean/:name", (req, res) => {
 router.patch("/ocean/:name/bottles/:id", (req, res) => {
     //get the xuser stuff
 
-    // cannot have both the body and the tags in update be empty
-    /*     if ((!req.body.body || req.body.body.length === 0) && (!req.body.tags || req.body.tags.length === 0)) {
-            return res.status(403).send({error : "Cannot have no update body and no tags"});
-        } */
 
 
     Oceans.findOne({ "name": req.params.name }).then(ocean => {
         if (!ocean) {
-            //return not found mesage
+            return res.status(404).send({ error: "Ocean named " + req.params.name + " was not found" });
         }
 
         let bottle = ocean.bottles.filter(bottle => bottle.__id == req.params.id);
@@ -77,21 +84,25 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
         // check if you wrote the bottle
 
         if (!bottle) {
-            //error message about non-existing bottle
+            return res.status(404).send({ error: "Bottle with given id was not found" });
         }
 
 
-        // cannot have empty update
-        if (req.body.body && req.body.body.length > 0) {
+        // cannot have empty
+        if (req.body.body && req.body.body.length != 0) {
             bottle[0].body = req.body.body;
         }
-    
-        // cannot have no tags 
-        if (req.body.tags && req.body.tags.length > 0) {
 
+
+        if (req.body.tags && req.body.tags.length != 0) {
+            let newTags = req.body.tags.split(",");
+            for (i = 0; i < newTags.length; i++) {
+                newTags[i] = newTags[i].trim().toLowerCase();
+            }
+            let tagsFiltered = new Set(newTags);
 
             if (bottle.isPublic) {
-                
+
                 // assumption: all tags are already existing
                 // old tags == existing tags
                 // remove all the old tags
@@ -104,13 +115,11 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
                         currTag.tagCount -= 1
                     }
                 });
-    
-                newTags = req.body.tags;
-                newTags.forEach(function(t) {
+
+                tagsFiltered.forEach(function (t) {
                     //go through all the new tags
                     // update the counts of all the tags
-                    // udate the last update time
-
+                    // update the last update time
 
                     // if new tag: non-existent tag:
                     // > create a new tag and update the count
@@ -120,22 +129,18 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
                         currTag.tagLastUpdate = Date.now()
                     }
                 });
-
             }
-
             // updating the tags
-            bottle[0].tags = req.body.tags;
-
-            ocean.save().then(() => {
-
-            });
-
+            bottle[0].tags = tagsFiltered;
         }
 
-        //if bottle.creator.id == currUser
+        ocean.save().then(() => {
+            return res.status(200).send(bottle[0]);
+        });
 
+    }).catch(err => {
+        return res.status(400).send({ error: "Unable to update the bottle" });
     });
-
 });
 
 // deleting a bottle
@@ -153,19 +158,24 @@ router.delete("ocean/:name/bottles/:id", (req, res) => {
         }
         // check if you are a moderator account or that user
 
-        //delete post count for that specific tag
-        bottle.tags.forEach(function(t) {
-            currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName)
-            if (currTag.tagCount != 0) {
-                currTag.tagCount -= 1
-            }
-        });
-        
+
+
+        if (bottle.isPublic) {
+            //delete post count for that specific tag
+            bottle.tags.forEach(function (t) {
+                currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName)
+                if (currTag.tagCount != 0) {
+                    currTag.tagCount -= 1
+                }
+            });
+        }
+
+        // delete the bottle
         let originalLenth = ocean.bottles.length;
         ocean.bottles = ocean.bottles.filter(bottle => bottle.__id != req.params.id); //filter out bottles that match the id
 
+        // bottle was deleted
         if (originalLength != ocean.bottles.length) {
-
             ocean.save().then(() => {
                 return res.status(200).send({ message: "bottle was sucessfully deleted" });
             });
@@ -176,8 +186,6 @@ router.delete("ocean/:name/bottles/:id", (req, res) => {
     });
 });
 
-
-
-
+//TODO: Get all the routers that the current user posted
 
 module.exports = router;

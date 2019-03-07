@@ -4,14 +4,14 @@ const Schema = mongoose.Schema;
 const OceanSchema = new Schema({
     name: String, 
     bottles: [{
-        creator: {
+         creator: {
             type: {
                 id: {
                     type: Number
                 },
                 username: String,
             }
-        },
+        }, 
         body: {
             type: String,
             required: true
@@ -45,6 +45,7 @@ const OceanSchema = new Schema({
         }
     }]
 });
+
 
 const Ocean = mongoose.model('ocean', OceanSchema);
 

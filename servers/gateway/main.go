@@ -109,6 +109,7 @@ func main() {
 	}
 
 	oceanServiceAddrs := os.Getenv("OCEANADDR")
+	log.Printf("ocean is ", oceanServiceAddrs)
 	if len(oceanServiceAddrs) == 0 {
 		oceanServiceAddrs = ":80"
 	}

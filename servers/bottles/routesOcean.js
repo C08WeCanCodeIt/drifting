@@ -12,21 +12,27 @@ const fetch = require("node-fetch");
 
 //create an ocean
 router.post("/ocean", (req, res) => {
+/*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
+        if (ocean) {
+            return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
+            //return res.status(400).send(ocean);
+        } */
 
-    Oceans.create({
-        name: req.body.name
-    }).then(ocean => {
-        //insert rabbitMQ stuff
-        ocean.save().then(() => {
-            res.setHeader("Content-Type", "application/json");
-            res.status(201).send(ocean);
+        Oceans.create({
+            name: req.body.name.toLowerCase()
+        }).then(ocean => {
+            //insert rabbitMQ stuff
+            ocean.save().then(() => {
+                res.setHeader("Content-Type", "application/json");
+                res.status(201).send(ocean);
+            }).catch(err => {
+                console.log(err);
+            });
+
         }).catch(err => {
-            console.log(err);
+            res.status(400).send({ error: "couldn't create a ocean " + err });
         });
-
-    }).catch(err => {
-        res.status(400).send({ error: "couldn't create a ocean " + err });
-    });
+/*     }); */
 });
 
 

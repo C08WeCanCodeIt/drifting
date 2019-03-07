@@ -12,7 +12,7 @@ router.post("/ocean/:name", (req, res) => {
         res.status(403).send({ error: "Cannot posts an empty bottle" });
     }
 
-    if (!isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
+    if (!req.body.isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
         res.status(403).send({ error: "Public Posts cannot have no tags" });
     }
 
@@ -29,15 +29,16 @@ router.post("/ocean/:name", (req, res) => {
         for (i = 0; i < inputTags.length; i++) {
             inputTags[i] = inputTags[i].trim().toLowerCase();
         }
-        let tagsFiltered = new Set(inputTags);
-
+        let tempSet = new Set(inputTags);
+        let tagsFiltered = Array.from(tempSet);
+        console.log("TAGS", tagsFiltered, tagsFiltered.length);
 
         tagsFiltered.forEach(function (t) {
             let tagCheck = ocean.tags.filter(tag => tag.tagName == t.tagName);
 
             if (tagCheck.length != 0) {
-                let newNag = {
-                    tagName: tagCheck[0].tagName,
+                let newTag = {
+                    tagName: t.tagName,
                     tagCount: 0,
                     tagLastUpdate: Date.now(),
                 };
@@ -51,17 +52,19 @@ router.post("/ocean/:name", (req, res) => {
         let bottle = {
             //creator: user,
             body: req.body.body,
-            tags: req.body.tags,
+            tags: tagsFiltered,
             createdAt: Date.now(),
             isPublic: req.body.isPublic
         };
 
-
         // save the bottle in the specific ocean
         ocean.bottles.push(bottle);
+        
         ocean.save().then(() => {
             res.setHeader("Content-Type", "application/json");
             res.status(200).send(bottle);
+        }).catch(err => {
+            res.status(400).send({ error: "Unable to save post" + err });;
         });
     }).catch(err => {
         res.status(400).send({ error: "bottle couldn't be posted: " + err });;

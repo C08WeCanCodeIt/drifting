@@ -66,9 +66,9 @@ amqp.connect('amqp://rabbitmq', (err, conn) => {
 mongoose.Promise = global.Promise;
 
 app.use((req, res, next) => {
-    if (!req.get('X-User')) { //not logged in cannot post stuff
-        res.status(401).send({ message: 'No user header found' });
-    }
+    //if (!req.get('X-User')) { //not logged in cannot post stuff
+    //    res.status(401).send({ message: 'No user header found' });
+    //}
     next();
 });
 

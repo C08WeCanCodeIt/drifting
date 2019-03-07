@@ -1,12 +1,9 @@
 package users
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
-	"strings"
-
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 )
 
 //bcryptCost is the default bcrypt cost to use when hashing passwords
@@ -35,12 +32,12 @@ type NewUser struct {
 }
 
 //Updates for changing password
-//type Updates struct {
-//	UserName        string `json:"firstName"`
-//	CurrPassword    string `json:"currPassword"`
-//	NewPassword     string `json:"newPassword"`
-//	NewPasswordConf string `json:"newPasswordConf"`
-//}
+/* type Updates struct {
+	UserName        string `json:"firstName"`
+	CurrPassword    string `json:"currPassword"`
+	NewPassword     string `json:"newPassword"`
+	NewPasswordConf string `json:"newPasswordConf"`
+} */
 
 //Validate validates the new user and returns an error if
 //any of the validation rules fail, or nil if its valid

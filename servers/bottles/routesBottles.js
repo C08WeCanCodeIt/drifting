@@ -63,9 +63,9 @@ router.post("/ocean/:name", (req, res) => {
             res.setHeader("Content-Type", "application/json");
             res.status(200).send(bottle);
         });
-    });
-}).catch(err => {
-    res.status(400).send({ error: "bottle couldn't be posted: " + err });
+    }).catch(err => {
+        res.status(400).send({ error: "bottle couldn't be posted: " + err });;
+    })
 });
 
 // update the bottle contents

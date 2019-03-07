@@ -112,7 +112,7 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 			return
 		}
 
-	} else if r.Method == http.MethodPatch {
+		/* } else if r.Method == http.MethodPatch {
 		if numID != sessionState.User.ID {
 			http.Error(w, "IDs do not match", http.StatusUnauthorized)
 			return
@@ -161,7 +161,7 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 			http.Error(w, "Updated user could not be encoded", http.StatusInternalServerError)
 			return
 		}
-
+		*/
 	} else {
 		http.Error(w, "Method type not supported", http.StatusMethodNotAllowed)
 		return
@@ -189,7 +189,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	user, err := ctx.UserStore.GetByEmail(userCred.Email)
+	user, err := ctx.UserStore.GetByUserName(userCred.UserName)
 	if err != nil {
 		bcrypt.GenerateFromPassword(user.PassHash, 13) // Ensure that process takes time
 		http.Error(w, "Unauthorized user", http.StatusUnauthorized)

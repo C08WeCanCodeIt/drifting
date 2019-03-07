@@ -17,7 +17,7 @@ export MQADDR=rabbitmq:5672
 ssh -i ~/.ssh/MyPrivKey.pem ec2-user@18.217.182.145 << EOF
 
     docker rm -f redisServer
-    docker rm -f driftingServer
+    docker rm -f gateway
     
     docker pull wecancodeit/gateway
 
@@ -25,7 +25,7 @@ ssh -i ~/.ssh/MyPrivKey.pem ec2-user@18.217.182.145 << EOF
     --network driftingNetwork \
     redis
 
-    docker run -d --name driftingServer --network driftingNetwork -p 443:443 -e REDISADDR=$REDISADDR -v /etc/letsencrypt:/etc/letsencrypt:ro -e TLSCERT=$TLSCERT -e TLSKEY=$TLSKEY -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD -e DSN=$DSN -e OCEANADDR=$OCEANADDR -e MONGOADDR=$MONGOADDR -e MQADDR=$MQADDR -e MQNAME=$MQNAME wecancodeit/gateway
+    docker run -d --name gateway --network driftingNetwork -p 443:443 -e REDISADDR=$REDISADDR -v /etc/letsencrypt:/etc/letsencrypt:ro -e TLSCERT=$TLSCERT -e TLSKEY=$TLSKEY -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD -e DSN=$DSN -e OCEANADDR=$OCEANADDR -e MONGOADDR=$MONGOADDR -e MQADDR=$MQADDR -e MQNAME=$MQNAME wecancodeit/gateway
     
     exit
 EOF

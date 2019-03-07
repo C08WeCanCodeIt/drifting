@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/final-project-kool-kids/servers/finalgateway/sessions"
+	"github.com/drifting/servers/gateway/sessions"
 	"github.com/gorilla/websocket"
 )
 
@@ -22,7 +22,8 @@ func NewWebSocketsHandler(ctx HandlerContext) *WebSocketsHandler {
 			ReadBufferSize:  1024,
 			WriteBufferSize: 1024,
 			CheckOrigin: func(r *http.Request) bool {
-				return r.Header.Get("Origin") == "https://iqueue.zubinchopra.me"
+				//return r.Header.Get("Origin") == "https://iqueue.zubinchopra.me"
+				return true
 			},
 		},
 		ctx: ctx,

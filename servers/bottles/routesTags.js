@@ -31,10 +31,9 @@ router.post("/ocean/:name/tags", (req, res) => {
             res.setHeader("Content-Type", "application/json");
             res.status(200).send({ messsage: "Created new tag: " + req.body.tagName });
         });
+    }).catch(err => {
+        res.status(400).send({ error: "could not create new tag: " + err });
     });
-
-}).catch(err => {
-    res.status(400).send({ error: "could not create new tag: " + err });
 });
 
 //get all the tags

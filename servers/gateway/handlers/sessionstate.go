@@ -3,7 +3,7 @@ package handlers
 import (
 	"time"
 
-	"github.com/final-project-kool-kids/servers/finalgateway/models/users"
+	"github.com/drifting/servers/gateway/models/users"
 )
 
 //SessionState represents the session state for web server

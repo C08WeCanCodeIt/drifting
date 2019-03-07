@@ -25,11 +25,10 @@ router.post("/ocean", (req, res) => {
         });
 
     }).catch(err => {
-        console.log(err);
+        res.status(400).send({ error: "couldn't create a ocean " + err });
     });
-}).catch(err => {
-    res.status(400).send({ error: "couldn't create a ocean " + err });
 });
+
 
 // get all oceans
 router.get("/ocean", (req, res) => {
@@ -86,10 +85,9 @@ router.delete("/ocean/:name", (req, res) => {
         ); */
 
         res.status(200).send({ message: "ocean " + req.params.name + " was sucessfully deleted" });
+    }).catch(err => {
+        res.status(400).send({ error: "couldn't delete ocean named " + req.params.name })
     });
-
-}).catch(err => {
-    res.status(400).send({ error: "couldn't delete ocean named " + req.params.name })
 });
 
 //TODO: Get all the oceans that the current is in

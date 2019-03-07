@@ -108,7 +108,7 @@ func main() {
 		Notifier:     notifier,
 	}
 
-	oceanServiceAddrs := os.Getenv("OCEANSADDR")
+	oceanServiceAddrs := os.Getenv("OCEANADDR")
 	if len(oceanServiceAddrs) == 0 {
 		oceanServiceAddrs = ":80"
 	}

@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 const instanceName = process.env.NAME;
 const dbURL = 'mongodb://mongo:27017/mydb';
 
-/* const connectWithRetry = () => {
+ const connectWithRetry = () => {
     console.log('MongoDB connection with retry');
     mongoose.connect(dbURL).then(() => {
       console.log('MongoDB is connected');
@@ -18,11 +18,11 @@ const dbURL = 'mongodb://mongo:27017/mydb';
     });
 }
 
-connectWithRetry(); */
+connectWithRetry(); 
 
 //rabbitmq connection
 
-/* amqp.connect('amqp://rabbitmq', (err, conn) => {
+ amqp.connect('amqp://rabbitmq', (err, conn) => {
     if (err) {
         console.log('Failed to connect to rabbit ' + err);
         process.exit(1);
@@ -58,7 +58,7 @@ connectWithRetry(); */
         //     console.log(err);
         // });
     });
-}); */
+});
 
 mongoose.Promise = global.Promise;
 

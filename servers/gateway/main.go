@@ -83,15 +83,15 @@ func main() {
 	mySQLDB := users.NewMySQLStore(db)
 	defer db.Close()
 
-	/* 	mqAddr := os.Getenv("MQADDR")
-	   	if len(mqAddr) == 0 {
-	   		mqAddr = "rabbitmq:5672"
-	   	}
+	mqAddr := os.Getenv("MQADDR")
+	if len(mqAddr) == 0 {
+		mqAddr = "rabbitmq:5672"
+	}
 
-	   	mqName := os.Getenv("MQNAME")
-	   	if len(mqName) == 0 {
-	   		mqName = "rabbitmq"
-	   	} */
+	mqName := os.Getenv("MQNAME")
+	if len(mqName) == 0 {
+		mqName = "rabbitmq"
+	}
 
 	// get the value of TLSCERT and TLSKEY from environment
 	tlsCertPath := os.Getenv("TLSCERT")
@@ -105,7 +105,7 @@ func main() {
 		Key:          sessionKey,
 		SessionStore: myRedisDB,
 		UserStore:    mySQLDB,
-		//Notifier:     notifier,
+		Notifier:     notifier,
 	}
 
 	oceanServiceAddrs := os.Getenv("OCEANSADDR")
@@ -114,7 +114,7 @@ func main() {
 	}
 
 	oceanProxy := NewServiceProxy(oceanServiceAddrs, handlersContext)
-	//handlersContext.StartMQ(mqAddr, mqName)
+	handlersContext.StartMQ(mqAddr, mqName)
 
 	mux.HandleFunc("/v1/users", handlersContext.UsersHandler)
 	mux.HandleFunc("/v1/users/", handlersContext.SpecificUserHandler)
@@ -124,9 +124,7 @@ func main() {
 
 	mux.Handle("/v1/ocean", oceanProxy)
 	mux.Handle("/v1/ocean/", oceanProxy)
-	//mux.Handle("/v1/faq", faqProxy)
-	//mux.Handle("/v1/faq/", faqProxy)
-	//mux.Handle("/final/ws", handlers.NewWebSocketsHandler(handlersContext))
+	mux.Handle("/v1/ws", handlers.NewWebSocketsHandler(handlersContext))
 
 	wrappedMux := handlers.NewCors(mux)
 

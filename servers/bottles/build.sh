@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #builds docker container
-docker build -t wecancodeit/bottles .
+docker build -t wecancodeit/ocean .
 
-docker push wecancodeit/bottles
+docker push wecancodeit/ocean
 

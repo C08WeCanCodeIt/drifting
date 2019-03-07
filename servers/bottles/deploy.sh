@@ -3,14 +3,14 @@
 
 ssh -i ~/.ssh/MyPrivKey.pem ec2-user@18.217.182.145 << EOF
     
-    docker rm -f bottles
+    docker rm -f ocean
 
-    docker pull wecancodeit/bottles
+    docker pull wecancodeit/ocean
 
     docker run -d \
-    --name bottles \
+    --name ocean \
     --network driftingNetwork \
     -e PORT=80 \
-    wecancodeit/bottles
+    wecancodeit/ocean
     
 EOF

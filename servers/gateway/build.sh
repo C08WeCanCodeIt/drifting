@@ -1,5 +1,5 @@
 GOOS=linux go build
 
-docker build -t koolkids441/finalgateway .
+docker build -t wecancodeit/gateway .
 
 go clean

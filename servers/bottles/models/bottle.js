@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const BottleSchema = new Schema({
-    emotion: string,
-    exercise: string,
+    ocean: string,
+    emotion: Number, //convert string to number javascript
+    exercise: Number,
     body: [],
     tags: [],
     isPublic: boolean,

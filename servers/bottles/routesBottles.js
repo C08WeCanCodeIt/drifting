@@ -1,5 +1,6 @@
 const express = require('express');
 const Oceans = require('./models/ocean');
+const ObjectID = require('mongodb').ObjectID;
 
 const router = express.Router();
 const fetch = require("node-fetch");
@@ -25,32 +26,43 @@ router.post("/ocean/:name", (req, res) => {
         //go through each tag in the req body
         // make post request to make all the tags
         // if the post is public, increase the tag count
-        let inputTags = req.body.tags.split(",");
+
+        let inputTags = req.body.tags
+        inputTags = inputTags.toLowerCase().split(",");
         for (i = 0; i < inputTags.length; i++) {
-            inputTags[i] = inputTags[i].trim().toLowerCase();
+            inputTags[i] = inputTags[i].trim();
         }
         let tempSet = new Set(inputTags);
         let tagsFiltered = Array.from(tempSet);
         console.log("TAGS", tagsFiltered, tagsFiltered.length);
 
         tagsFiltered.forEach(function (t) {
-            let tagCheck = ocean.tags.filter(tag => tag.tagName == t.tagName);
+            let tagCheck = ocean.tags.filter(tag => tag.name == t);
 
-            if (tagCheck.length != 0) {
+            if (!tagCheck || tagCheck.length == 0) {
                 let newTag = {
-                    tagName: t.tagName,
-                    tagCount: 0,
-                    tagLastUpdate: Date.now(),
+                    name: t,
+                    count: 1,
+                    lastUpdate: Date.now(),
                 };
 
                 ocean.tags.push(newTag);
+            } else {
+                tagCheck.count += 1;
+                tagCheck.lastUpdate = Date.now();
             }
         });
+
+
+
 
         // create a new bottle
         // make it so people can only edit on their personal page ????
         let bottle = {
             //creator: user,
+            _id: new ObjectID(),
+            emotion: req.body.emotion,
+            exercise: req.body.exercise,
             body: req.body.body,
             tags: tagsFiltered,
             createdAt: Date.now(),
@@ -59,7 +71,7 @@ router.post("/ocean/:name", (req, res) => {
 
         // save the bottle in the specific ocean
         ocean.bottles.push(bottle);
-        
+
         ocean.save().then(() => {
             res.setHeader("Content-Type", "application/json");
             res.status(200).send(bottle);
@@ -72,10 +84,8 @@ router.post("/ocean/:name", (req, res) => {
 });
 
 // update the bottle contents
-router.patch("/ocean/:name/bottles/:id", (req, res) => {
+router.patch("/ocean/:name/:id", (req, res) => {
     //get the xuser stuff
-
-
 
     Oceans.findOne({ "name": req.params.name }).then(ocean => {
         if (!ocean) {
@@ -96,46 +106,43 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
             bottle[0].body = req.body.body;
         }
 
-
-        if (req.body.tags && req.body.tags.length != 0) {
-            let newTags = req.body.tags.split(",");
-            for (i = 0; i < newTags.length; i++) {
-                newTags[i] = newTags[i].trim().toLowerCase();
-            }
-            let tagsFiltered = new Set(newTags);
-
-            if (bottle.isPublic) {
-
-                // assumption: all tags are already existing
-                // old tags == existing tags
-                // remove all the old tags
-                oldTags = bottle[0].tags;
-                oldTags.forEach(function (t) {
-                    // go through each of the tag in the original
-                    // decrease the count for all the tags
-                    currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName);
-                    if (currTag.tagCount != 0) {
-                        currTag.tagCount -= 1
-                    }
-                });
-
-                tagsFiltered.forEach(function (t) {
-                    //go through all the new tags
-                    // update the counts of all the tags
-                    // update the last update time
-
-                    // if new tag: non-existent tag:
-                    // > create a new tag and update the count
-                    currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName);
-                    if (currTag.tagCount != 0) {
-                        currTag.tagCount += 1
-                        currTag.tagLastUpdate = Date.now()
-                    }
-                });
-            }
-            // updating the tags
-            bottle[0].tags = tagsFiltered;
+        let newTags = req.body.tags;
+        newTags = newTags.toLowerCase().split(",")
+        for (i = 0; i < newTags.length; i++) {
+            newTags[i] = newTags[i].trim();
         }
+        let tagsFiltered = new Set(newTags);
+
+        if (bottle.isPublic) {
+
+            // assumption: all tags are already existing
+            // old tags == existing tags
+            // remove all the old tags
+            oldTags = bottle[0].tags;
+            oldTags.forEach(function (t) {
+                // go through each of the tag in the original
+                // decrease the count for all the tags
+                currTag = ocean.tags.filter(tag => tag.name == t);
+                if (currTag.count != 0) {
+                    currTag.count -= 1
+                }
+            });
+
+            tagsFiltered.forEach(function (t) {
+                //go through all the new tags
+                // update the counts of all the tags
+                // update the last update time
+
+                // if new tag: non-existent tag:
+                // > create a new tag and update the count
+                currTag = ocean.tags.filter(tag => tag.name == t);
+                currTag.count += 1
+                currTag.lastUpdate = Date.now()
+            });
+        }
+        // updating the tags
+        bottle[0].tags = tagsFiltered;
+
 
         ocean.save().then(() => {
             return res.status(200).send(bottle[0]);
@@ -147,7 +154,8 @@ router.patch("/ocean/:name/bottles/:id", (req, res) => {
 });
 
 // deleting a bottle
-router.delete("ocean/:name/bottles/:id", (req, res) => {
+router.delete("/ocean/:name/:id", (req, res) => {
+    //return res.status(200).send({ message: "HERE I AM"});
     Oceans.findOne({ "name": req.params.name }).exec().then(ocean => {
 
         if (!ocean) { // did not find a ocean with given name
@@ -155,27 +163,25 @@ router.delete("ocean/:name/bottles/:id", (req, res) => {
         }
 
         // check if there is a bottle with that id
-        let bottle = ocean.bottles.filter(b => b.__id == req.params.id);
+        let bottle = ocean.bottles.filter(b => b._id == req.params.id);
         if (bottle.length == 0) {
             return res.status(400).send({ error: "No bottle found with that id" });
         }
         // check if you are a moderator account or that user
 
-
-
         if (bottle.isPublic) {
             //delete post count for that specific tag
             bottle.tags.forEach(function (t) {
-                currTag = bottle[0].tags.filter(tag => tag.tagName == t.tagName)
-                if (currTag.tagCount != 0) {
-                    currTag.tagCount -= 1
+                currTag = ocean.tags.filter(tag => tag.name == t.name)
+                if (currTag.count != 0) {
+                    currTag.count -= 1
                 }
             });
         }
 
         // delete the bottle
-        let originalLenth = ocean.bottles.length;
-        ocean.bottles = ocean.bottles.filter(bottle => bottle.__id != req.params.id); //filter out bottles that match the id
+        let originalLength = ocean.bottles.length;
+        ocean.bottles = ocean.bottles.filter(bottle => bottle._id != req.params.id); //filter out bottles that match the id
 
         // bottle was deleted
         if (originalLength != ocean.bottles.length) {
@@ -192,3 +198,4 @@ router.delete("ocean/:name/bottles/:id", (req, res) => {
 //TODO: Get all the routers that the current user posted
 
 module.exports = router;
+

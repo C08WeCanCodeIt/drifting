@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const OceanSchema = new Schema({
-    name: String,
-    bottles: [],
-    tags: []
+const BottleSchema = new Schema({
+    emotion: string,
+    exercise: string,
+    body: [],
+    tags: [],
+    isPublic: boolean,
+    createdAt: {type: Date},
+    editedAt: {type: Date}
 });
 
-const Ocean = mongoose.model('ocean', OceanSchema);
+const Bottle = mongoose.model('bottle', BottleSchema);
 
-module.exports = Ocean;
+module.exports = Bottle;
 
 /* OVERALL TAGS IN THE OCEAN 
 tags: [{

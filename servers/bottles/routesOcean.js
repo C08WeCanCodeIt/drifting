@@ -15,7 +15,6 @@ router.post("/ocean", (req, res) => {
 /*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
         if (ocean) {
             return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
-            //return res.status(400).send(ocean);
         } */
 
         Oceans.create({
@@ -30,7 +29,7 @@ router.post("/ocean", (req, res) => {
             });
 
         }).catch(err => {
-            res.status(400).send({ error: "couldn't create a ocean " + err });
+            res.status(400).send({ error: "couldn't create a ocean: " + err });
         });
 /*     }); */
 });
@@ -49,28 +48,28 @@ router.get("/ocean", (req, res) => {
 // get everything inside a specific ocean
 router.get("/ocean/:name", (req, res) => {
     Oceans.find({ "name": req.params.name }).exec().then(ocean => {
-        currBottles = ocean.bottles; //TODO: figure out how to limit the number of messages
+        //currBottles = ocean.bottles; //TODO: figure out how to limit the number of messages
 
         // if tags included in the search
         // otherwise will return EVERYTHING
-        if (req.body.tags || req.body.tags.length != 0) {
-
-            // filter the tags
-            let searchTags = req.body.tags.split(",");
-            for (i = 0; i < searchTags.length; i++) {
-                searchTags[i] = searchTags[i].trim().toLowerCase();
-            }
-            let tagsFiltered = new Set(searchTags);
-
-            //need to test!!!!
-            // find all the bottles that contain ALL the specified tags
-            currBottles.find({ tags: { $all: tagsFiltered } }).exec().then(filteredBottles => {
-                currBottles = filteredBottles;
-            })
-        }
+        /*         if (req.body.tags || req.body.tags.length != 0) {
+        
+                    // filter the tags
+                    let searchTags = req.body.tags.split(",");
+                    for (i = 0; i < searchTags.length; i++) {
+                        searchTags[i] = searchTags[i].trim().toLowerCase();
+                    }
+                    let tagsFiltered = new Set(searchTags);
+        
+                    //need to test!!!!
+                    // find all the bottles that contain ALL the specified tags
+                    currBottles.find({ tags: { $all: tagsFiltered } }).exec().then(filteredBottles => {
+                        currBottles = filteredBottles;
+                    })
+                } */
 
         res.setHeader("Content-Type", "application/json");
-        res.status(200).send(currBottles);
+        res.status(200).send(ocean);
 
     }).catch(err => {
         res.send(404).send({ error: "no ocean was found with the name " + req.params.name + ": " + err });

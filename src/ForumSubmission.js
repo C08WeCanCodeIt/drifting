@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-//import { Button, Form, FormControl, FormCheck } from 'react-bootstrap';
+import { Button, Form, FormControl, FormCheck } from 'react-bootstrap';
 //import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
 export default class ForumSubmission extends Component {

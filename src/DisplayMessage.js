@@ -1,38 +1,70 @@
 import React, { Component } from 'react';
 import './App.css';
-//import ForumSubmission from "./ForumSubmission";
-import { Card, CardImg, CardText, CardBody, CardLink,
-    CardTitle, CardSubtitle } from 'reactstrap';
-  
- //const DispalyMessage = (props) => {
+// import { Button, Form, FormControl } from 'react-bootstrap';
+import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import ForumSubmission from './ForumSubmission';
 
+class DisplayMessage extends ForumSubmission {
 
-      export default class DisplayMessage extends Component {
-        render(){
+    render() {
         return (
-          <div>
-            <Card>
-              <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
-              <CardBody>
-                <CardTitle>Card Title</CardTitle>
-                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                <CardText>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </CardText>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardBody>
-                <CardTitle>Card Title</CardTitle>
-                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                <CardText>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </CardText>
-              </CardBody>
-              <CardImg bottom width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
-            </Card>
-          </div>
-        );
-      };
+            <div>
+                <Card>
+                    <CardBody>
+                        <CardTitle>
+                            What happened?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[0]}
+                        </CardText>
+
+                        <CardTitle>
+                            How are you feeling?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[1]}
+                        </CardText>
+
+                        <CardTitle>
+                            Can the situation be worse? How?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[2]}
+                        </CardText>
+
+                        <CardTitle>
+                            What are some factors that contributed to the situation?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[3]}
+                        </CardText>
+
+                        <CardTitle>
+                            What factors in the situation is in your control?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[4]}
+                        </CardText>
+
+                        <CardTitle>
+                            Can you brainstorm solutions you can do to address your situation?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[5]}
+                        </CardText>
+
+                        <CardTitle>
+                            How do you feel now?
+                        </CardTitle>
+                        <CardText>
+                            {this.state.body[6]}
+                        </CardText>
+
+                    </CardBody>
+                </Card>
+            </div>
+        )
     }
-  
+}
+
+

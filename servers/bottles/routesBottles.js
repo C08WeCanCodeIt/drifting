@@ -29,6 +29,10 @@ router.post("/ocean/:name", (req, res) => {
         // make post request to make all the tags
         // if the post is public, increase the tag count
 
+        // cleaning the tags
+        // all lowercase
+        // no repeated tags, 
+        // no leading/trailing whitespace
         let inputTags = req.body.tags
         inputTags = inputTags.toLowerCase().split(",");
         for (i = 0; i < inputTags.length; i++) {
@@ -38,8 +42,6 @@ router.post("/ocean/:name", (req, res) => {
         let tagsFiltered = Array.from(tempSet);
 
         tagsFiltered.forEach(function (t) {
-            //let tagCheck = ocean.tags.filter(tag => tag.name == t);
-
             Tags.findOne({ "ocean": req.params.name.toLowerCase(), "name": t }).exec().then(tag => {
                 postCount = 0;
                 if (req.body.isPublic) {
@@ -89,104 +91,125 @@ router.post("/ocean/:name", (req, res) => {
     })
 });
 
-/* // update the bottle contents
+// update the bottle contents
 router.patch("/ocean/:name/bottle/:id", (req, res) => {
+    if ((!req.body.body || req.body.length == 0) && (!req.body.tags || req.body.tags.length == 0)) {
+        return res.status(400).send({ error: "Cannot have empty tags or empty body" + err });
+    }
+
     //get the xuser stuff
-
-    Oceans.findOne({ "name": req.params.name }).then(ocean => {
-        if (!ocean) {
-            return res.status(404).send({ error: "Ocean named " + req.params.name + " was not found" });
-        }
-
-        let bottle = ocean.bottles.filter(bottle => bottle.__id == req.params.id);
-
-        // check if you wrote the bottle
-
+    Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
         if (!bottle) {
             return res.status(404).send({ error: "Bottle with given id was not found" });
         }
 
-
-        // cannot have empty
-        if (req.body.body && req.body.body.length != 0) {
-            bottle[0].body = req.body.body;
-        }
+        //TODO: CHECK WHO WROTE THE BOTTLE
 
         let newTags = req.body.tags;
         newTags = newTags.toLowerCase().split(",")
         for (i = 0; i < newTags.length; i++) {
             newTags[i] = newTags[i].trim();
         }
-        let tagsFiltered = new Set(newTags);
+        let tempSet = new Set(newTags);
+        let tagsFiltered = Array.from(tempSet);
 
+        // assumption: all tags are already existing
+        // old tags == existing tags
+        // remove all the old tags
+
+        // delete the counts for PUBLIC posts
+        oldTags = bottle.tags;
         if (bottle.isPublic) {
-
-            // assumption: all tags are already existing
-            // old tags == existing tags
-            // remove all the old tags
-            oldTags = bottle[0].tags;
             oldTags.forEach(function (t) {
-                // go through each of the tag in the original
-                // decrease the count for all the tags
-                currTag = ocean.tags.filter(tag => tag.name == t);
-                if (currTag[0].count != 0) {
-                    currTag[0].count -= 1
-                }
-            });
-
-            tagsFiltered.forEach(function (t) {
-                //go through all the new tags
-                // update the counts of all the tags
-                // update the last update time
-
-                // if new tag: non-existent tag:
-                // > create a new tag and update the count
-                currTag = ocean.tags.filter(tag => tag.name == t);
-                currTag[0].count += 1
-                currTag[0].lastUpdate = Date.now()
-            });
-        }
-        // updating the tags
-        bottle[0].tags = tagsFiltered;
-
-
-        ocean.save().then(() => {
-            return res.status(200).send(bottle[0]);
-        });
-
-    }).catch(err => {
-        return res.status(400).send({ error: "Unable to update the bottle" });
-    });
-});*/
-
-// deleting a bottle
-router.delete("/ocean/:name/bottle/:id", (req, res) => {
-    
-    Bottles.findOneAndDelete({ "_id": req.params.id }, (err, response) => {
-        // TODO:
-        // CHECK IF YOU ARE A MODERATOR/ADMIN/OR CREATOR OF THE BOTTLE
-
-        if (response && response !== null) {
-            let currTags = response.tags;
-
-            // update the counts for all the tags
-            currTags.forEach(function (t) {
                 Tags.findOne({ "name": t }).exec().then(tag => {
                     if (tag) {
                         if (tag.count != 0) {
-                            tag.count -= 1;
+                            tag.count = tag.count - 1;
                         }
-                        tag.lastUpdated = Date.now();
                         tag.save();
                     }
                 });
             });
         }
+
+        // adds all the new tags from the post
+        tagsFiltered.forEach(function (t) {
+            Tags.findOne({ "name": t }).exec().then(tag => {
+                if (tag) { // tag exists and it's public post
+                    if (tag.isPublic) {
+                        tag.count = tag.count + 1;
+                        tag.lastUpdated = Date.now()
+                        tag.save();
+                    }
+
+                } else {
+                    // tag doesn't exist so creates a new tag
+                    // if it's private, don't increase count 
+                    let postCount = 0;
+                    if (bottle.isPublic) {
+                        postCount = 1;
+                    }
+
+                    Tags.create({
+                        ocean: req.params.name,
+                        name: t,
+                        count: postCount,
+                        lastUpdated: Date.now()
+                    }).then(newTag => {
+                        newTag.save();
+                    }).catch(err => {
+                        return res.status(400).send({ error: "couldn't create a new tag: " + err });
+                    });
+                }
+            });
+        });
+
+        // updating the tags, body, and update date
+        bottle.tags = tagsFiltered;
+        bottle.body = req.body.body;
+        bottle.lastUpdated = Date.now();
+
+        // sending the updated bottle
+        bottle.save().then(() => {
+            return res.status(201).send(bottle);
+        });
+    }).catch(err => {
+        return res.status(400).send({ error: "Error updating bottle with ID " + req.params.id + ": " + err });
+    });
+
+});
+
+// deleting a bottle
+router.delete("/ocean/:name/bottle/:id", (req, res) => {
+
+    // finds the bottle and deletes it
+    Bottles.findOneAndDelete({ "_id": req.params.id }, (err, response) => {
+        // TODO:
+        // CHECK IF YOU ARE A MODERATOR/ADMIN/OR CREATOR OF THE BOTTLE
+
+        // response = orignal bottle with all it's info
+        if (response && response !== null) {
+            let currTags = response.tags;
+
+            // decrease the counts for all the tags if bottle was public
+            if (response.isPublic) {
+                currTags.forEach(function (t) {
+                    Tags.findOne({ "name": t }).exec().then(tag => {
+                        if (tag) {
+                            if (tag.count != 0) {
+                                tag.count -= 1;
+                            }
+                            tag.lastUpdated = Date.now();
+                            tag.save();
+                        }
+                    });
+                });
+            }
+        }
         return res.status(200).send({ message: "Bottle with ID " + req.params.id + " was sucessfully deleted " });
     }).catch(err => {
         return res.status(400).send({ error: "Error deleting bottle with ID " + req.params.id + ": " + err });
     });
-
 });
 
 //TODO: Get all the routers that the current user posted

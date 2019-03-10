@@ -1,6 +1,8 @@
 const express = require('express');
 const Oceans = require('./models/ocean');
-const ObjectID = require('mongodb').ObjectID;
+const Bottles = require('./models/bottle');
+const Tags = require('./models/tag');
+//const ObjectID = require('mongodb').ObjectID;
 
 const router = express.Router();
 const fetch = require("node-fetch");
@@ -18,7 +20,7 @@ router.post("/ocean/:name", (req, res) => {
     }
 
     // searching mongo to find ocean with given name
-    Oceans.findOne({ "name": req.params.name }).exec().then(ocean => {
+    Oceans.findOne({ "name": req.params.name.toLowerCase() }).exec().then(ocean => {
         if (!ocean) {
             return res.status(404).send({ error: "Ocean named " + req.params.name + " was not found" });
         }
@@ -34,12 +36,45 @@ router.post("/ocean/:name", (req, res) => {
         }
         let tempSet = new Set(inputTags);
         let tagsFiltered = Array.from(tempSet);
-        console.log("TAGS", tagsFiltered, tagsFiltered.length);
 
         tagsFiltered.forEach(function (t) {
-            let tagCheck = ocean.tags.filter(tag => tag.name == t);
+            //let tagCheck = ocean.tags.filter(tag => tag.name == t);
 
-            if (!tagCheck || tagCheck.length == 0) {
+            Tags.findOne({"ocean" : req.params.name.toLowerCase(), "tag": t}).exec().then(tag => {
+                postCount = 0;
+                if (req.body.isPublic) {
+                    postCount = 1;
+                }
+
+                if (!tag) { //tag never existed
+                    Tags.create({
+                        ocean: req.params.name,
+                        name: t,
+                        count: postCount,
+                        lastUpdated: Date.now()
+                    }).then(newTag => {
+                        newTag.save();
+                    }).catch(err => {
+                        res.status(400).send({ error: "couldn't create a new tag: " + err });
+                    });
+                } else {
+                    if (req.body.isPublic) { //only update counds if it's public
+                        tag.count = tag.count + 1;
+                        tag.lastUpdated = Date.now()
+                        tag.save();
+                    }
+
+                }
+            });
+            
+            /* if (tagCheck && tagCheck.length != 0) {
+
+                tagCheck[0].count = tagCheck[0].count + 1;
+                tagCheck[0].lastUpdate = Date.now();
+
+                console.log(tagCheck[0].count);
+
+            } else {
                 let newTag = {
                     name: t,
                     count: 1,
@@ -47,39 +82,51 @@ router.post("/ocean/:name", (req, res) => {
                 };
 
                 ocean.tags.push(newTag);
-            } else {
-                tagCheck.count += 1;
-                tagCheck.lastUpdate = Date.now();
-            }
+            } */
         });
-
-
-
 
         // create a new bottle
         // make it so people can only edit on their personal page ????
-        let bottle = {
-            //creator: user,
-            _id: new ObjectID(),
+        /*         let bottle = {
+                    //creator: user,
+                    _id: new ObjectID(),
+                    emotion: req.body.emotion,
+                    exercise: req.body.exercise,
+                    body: req.body.body,
+                    tags: tagsFiltered,
+                    createdAt: Date.now(),
+                    isPublic: req.body.isPublic
+                }; */
+
+        Bottles.create({
+            ocean: req.params.name.toLowerCase(),
             emotion: req.body.emotion,
             exercise: req.body.exercise,
             body: req.body.body,
             tags: tagsFiltered,
             createdAt: Date.now(),
             isPublic: req.body.isPublic
-        };
+        }).then(bottle => {
+            bottle.save().then(() => {
+                res.setHeader("Content-Type", "application/json");
+                res.status(200).send(bottle);
+            });
+        }).catch(err => {
+            res.status(400).send({ error: "Unable to create bottle: " + err });;
+        });;
+
 
         // save the bottle in the specific ocean
-        ocean.bottles.push(bottle);
+        //ocean.bottles.push(bottle);
 
-        ocean.save().then(() => {
+/*         ocean.save().then(() => {
             res.setHeader("Content-Type", "application/json");
             res.status(200).send(bottle);
         }).catch(err => {
             res.status(400).send({ error: "Unable to save post" + err });;
-        });
+        }); */
     }).catch(err => {
-        res.status(400).send({ error: "bottle couldn't be posted: " + err });;
+        res.status(400).send({ error: "Unable to post bottle in the ocean: " + err });;
     })
 });
 
@@ -123,8 +170,8 @@ router.patch("/ocean/:name/:id", (req, res) => {
                 // go through each of the tag in the original
                 // decrease the count for all the tags
                 currTag = ocean.tags.filter(tag => tag.name == t);
-                if (currTag.count != 0) {
-                    currTag.count -= 1
+                if (currTag[0].count != 0) {
+                    currTag[0].count -= 1
                 }
             });
 
@@ -136,8 +183,8 @@ router.patch("/ocean/:name/:id", (req, res) => {
                 // if new tag: non-existent tag:
                 // > create a new tag and update the count
                 currTag = ocean.tags.filter(tag => tag.name == t);
-                currTag.count += 1
-                currTag.lastUpdate = Date.now()
+                currTag[0].count += 1
+                currTag[0].lastUpdate = Date.now()
             });
         }
         // updating the tags
@@ -173,8 +220,8 @@ router.delete("/ocean/:name/:id", (req, res) => {
             //delete post count for that specific tag
             bottle.tags.forEach(function (t) {
                 currTag = ocean.tags.filter(tag => tag.name == t.name)
-                if (currTag.count != 0) {
-                    currTag.count -= 1
+                if (currTag && currTag[0].count != 0) {
+                    currTag[0].count -= 1
                 }
             });
         }

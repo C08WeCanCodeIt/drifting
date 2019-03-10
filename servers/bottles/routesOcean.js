@@ -1,5 +1,8 @@
 const express = require('express');
+
 const Oceans = require('./models/ocean');
+const Bottles = require('./models/bottle');
+const Tags = require('./models/tag');
 
 const router = express.Router();
 const fetch = require("node-fetch");
@@ -12,26 +15,26 @@ const fetch = require("node-fetch");
 
 //create an ocean
 router.post("/ocean", (req, res) => {
-/*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
-        if (ocean) {
-            return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
-        } */
+    /*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
+            if (ocean) {
+                return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
+            } */
 
-        Oceans.create({
-            name: req.body.name.toLowerCase()
-        }).then(ocean => {
-            //insert rabbitMQ stuff
-            ocean.save().then(() => {
-                res.setHeader("Content-Type", "application/json");
-                res.status(201).send(ocean);
-            }).catch(err => {
-                console.log(err);
-            });
-
+    Oceans.create({
+        name: req.body.name.toLowerCase()
+    }).then(ocean => {
+        //insert rabbitMQ stuff
+        ocean.save().then(() => {
+            res.setHeader("Content-Type", "application/json");
+            res.status(201).send(ocean);
         }).catch(err => {
-            res.status(400).send({ error: "couldn't create a ocean: " + err });
+            console.log(err);
         });
-/*     }); */
+
+    }).catch(err => {
+        res.status(400).send({ error: "couldn't create a ocean: " + err });
+    });
+    /*     }); */
 });
 
 
@@ -47,7 +50,40 @@ router.get("/ocean", (req, res) => {
 
 // get everything inside a specific ocean
 router.get("/ocean/:name", (req, res) => {
-    Oceans.find({ "name": req.params.name }).exec().then(ocean => {
+    Oceans.find({ "name": req.params.name }).exec().then(currOcean => {
+
+        //let currTags = [];
+        //let currBottles = [];
+
+
+
+        //get all the current tags
+        Tags.find({ "ocean": currOcean[0].name }).exec().then(tag => {
+            //currTags = tag;
+
+            //gets all the current bottles
+            Bottles.find({ "ocean": currOcean[0].name }).exec().then(bottle => {
+
+                let result = {
+                    ocean: currOcean[0].name,
+                    tags: tag,
+                    bottles: bottle
+                }
+        
+                res.setHeader("Content-Type", "application/json");
+                res.status(200).send(result);
+            }).catch(err => {
+                res.send(500).send({ error: "couldn't get bottles from current ocean: " + err });
+            })
+
+
+
+
+        }).catch(err => {
+            res.send(500).send({ error: "couldn't get bottles from current ocean: " + err });
+        })
+
+
         //currBottles = ocean.bottles; //TODO: figure out how to limit the number of messages
 
         // if tags included in the search
@@ -68,8 +104,6 @@ router.get("/ocean/:name", (req, res) => {
                     })
                 } */
 
-        res.setHeader("Content-Type", "application/json");
-        res.status(200).send(ocean);
 
     }).catch(err => {
         res.send(404).send({ error: "no ocean was found with the name " + req.params.name + ": " + err });

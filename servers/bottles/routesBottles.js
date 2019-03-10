@@ -40,13 +40,12 @@ router.post("/ocean/:name", (req, res) => {
         tagsFiltered.forEach(function (t) {
             //let tagCheck = ocean.tags.filter(tag => tag.name == t);
 
-            Tags.findOne({"ocean" : req.params.name.toLowerCase(), "name": t}).exec().then(tag => {
+            Tags.findOne({ "ocean": req.params.name.toLowerCase(), "name": t }).exec().then(tag => {
                 postCount = 0;
                 if (req.body.isPublic) {
                     postCount = 1;
                 }
 
-                console.log(tag);
                 if (!tag) { //tag never existed
                     Tags.create({
                         ocean: req.params.name,
@@ -66,37 +65,7 @@ router.post("/ocean/:name", (req, res) => {
                     }
                 }
             });
-            
-            /* if (tagCheck && tagCheck.length != 0) {
-
-                tagCheck[0].count = tagCheck[0].count + 1;
-                tagCheck[0].lastUpdate = Date.now();
-
-                console.log(tagCheck[0].count);
-
-            } else {
-                let newTag = {
-                    name: t,
-                    count: 1,
-                    lastUpdate: Date.now(),
-                };
-
-                ocean.tags.push(newTag);
-            } */
         });
-
-        // create a new bottle
-        // make it so people can only edit on their personal page ????
-        /*         let bottle = {
-                    //creator: user,
-                    _id: new ObjectID(),
-                    emotion: req.body.emotion,
-                    exercise: req.body.exercise,
-                    body: req.body.body,
-                    tags: tagsFiltered,
-                    createdAt: Date.now(),
-                    isPublic: req.body.isPublic
-                }; */
 
         Bottles.create({
             ocean: req.params.name.toLowerCase(),
@@ -115,23 +84,13 @@ router.post("/ocean/:name", (req, res) => {
             res.status(400).send({ error: "Unable to create bottle: " + err });;
         });;
 
-
-        // save the bottle in the specific ocean
-        //ocean.bottles.push(bottle);
-
-/*         ocean.save().then(() => {
-            res.setHeader("Content-Type", "application/json");
-            res.status(200).send(bottle);
-        }).catch(err => {
-            res.status(400).send({ error: "Unable to save post" + err });;
-        }); */
     }).catch(err => {
         res.status(400).send({ error: "Unable to post bottle in the ocean: " + err });;
     })
 });
 
 /* // update the bottle contents
-router.patch("/ocean/:name/:id", (req, res) => {
+router.patch("/ocean/:name/bottle/:id", (req, res) => {
     //get the xuser stuff
 
     Oceans.findOne({ "name": req.params.name }).then(ocean => {
@@ -198,49 +157,37 @@ router.patch("/ocean/:name/:id", (req, res) => {
     }).catch(err => {
         return res.status(400).send({ error: "Unable to update the bottle" });
     });
-});
+});*/
 
 // deleting a bottle
-router.delete("/ocean/:name/:id", (req, res) => {
-    //return res.status(200).send({ message: "HERE I AM"});
-    Oceans.findOne({ "name": req.params.name }).exec().then(ocean => {
+router.delete("/ocean/:name/bottle/:id", (req, res) => {
+    
+    Bottles.findOneAndDelete({ "_id": req.params.id }, (err, response) => {
+        // TODO:
+        // CHECK IF YOU ARE A MODERATOR/ADMIN/OR CREATOR OF THE BOTTLE
 
-        if (!ocean) { // did not find a ocean with given name
-            return res.status(404).send({ error: "ocean with given name was not found" })
-        }
+        if (response && response !== null) {
+            let currTags = response.tags;
 
-        // check if there is a bottle with that id
-        let bottle = ocean.bottles.filter(b => b._id == req.params.id);
-        if (bottle.length == 0) {
-            return res.status(400).send({ error: "No bottle found with that id" });
-        }
-        // check if you are a moderator account or that user
-
-        if (bottle.isPublic) {
-            //delete post count for that specific tag
-            bottle.tags.forEach(function (t) {
-                currTag = ocean.tags.filter(tag => tag.name == t.name)
-                if (currTag && currTag[0].count != 0) {
-                    currTag[0].count -= 1
-                }
+            // update the counts for all the tags
+            currTags.forEach(function (t) {
+                Tags.findOne({ "name": t }).exec().then(tag => {
+                    if (tag) {
+                        if (tag.count != 0) {
+                            tag.count -= 1;
+                        }
+                        tag.lastUpdated = Date.now();
+                        tag.save();
+                    }
+                });
             });
         }
-
-        // delete the bottle
-        let originalLength = ocean.bottles.length;
-        ocean.bottles = ocean.bottles.filter(bottle => bottle._id != req.params.id); //filter out bottles that match the id
-
-        // bottle was deleted
-        if (originalLength != ocean.bottles.length) {
-            ocean.save().then(() => {
-                return res.status(200).send({ message: "bottle was sucessfully deleted" });
-            });
-        }
-
+        return res.status(200).send({ message: "Bottle with ID " + req.params.id + " was sucessfully deleted " });
     }).catch(err => {
-        return res.status(400).send({ error: "Unable to delete bottle: " + err });
+        return res.status(400).send({ error: "Error deleting bottle with ID " + req.params.id + ": " + err });
     });
-}); */
+
+});
 
 //TODO: Get all the routers that the current user posted
 

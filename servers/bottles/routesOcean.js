@@ -62,7 +62,7 @@ router.get("/ocean/:name", (req, res) => {
             //currTags = tag;
 
             //gets all the current bottles
-            Bottles.find({ "ocean": currOcean[0].name }).exec().then(bottle => {
+            Bottles.find({ "ocean": currOcean[0].name, "isPublic": true }).exec().then(bottle => {
 
                 let result = {
                     ocean: currOcean[0].name,

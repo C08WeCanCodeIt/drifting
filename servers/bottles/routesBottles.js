@@ -46,6 +46,7 @@ router.post("/ocean/:name", (req, res) => {
                     postCount = 1;
                 }
 
+                console.log(tag);
                 if (!tag) { //tag never existed
                     Tags.create({
                         ocean: req.params.name,
@@ -59,8 +60,8 @@ router.post("/ocean/:name", (req, res) => {
                     });
                 } else {
                     if (req.body.isPublic) { //only update counds if it's public
-                        tag[0].count = tag[0].count + 1;
-                        tag[0].lastUpdated = Date.now()
+                        tag.count = tag.count + 1;
+                        tag.lastUpdated = Date.now()
                         tag.save();
                     }
                 }
@@ -129,7 +130,7 @@ router.post("/ocean/:name", (req, res) => {
     })
 });
 
-// update the bottle contents
+/* // update the bottle contents
 router.patch("/ocean/:name/:id", (req, res) => {
     //get the xuser stuff
 
@@ -239,7 +240,7 @@ router.delete("/ocean/:name/:id", (req, res) => {
     }).catch(err => {
         return res.status(400).send({ error: "Unable to delete bottle: " + err });
     });
-});
+}); */
 
 //TODO: Get all the routers that the current user posted
 

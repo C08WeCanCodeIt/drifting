@@ -122,6 +122,12 @@ router.delete("/ocean/:name", (req, res) => {
             new Buffer.from(JSON.stringify(qPayLoad)),
             { persistent: true }
         ); */
+        Bottles.deleteMany({"ocean" : req.params.name}, (err, res) => {
+        });
+
+        Tags.deleteMany({"ocean" : req.params.name}, (err, res) => {
+        });
+
 
         res.status(200).send({ message: "ocean " + req.params.name + " was sucessfully deleted" });
     }).catch(err => {

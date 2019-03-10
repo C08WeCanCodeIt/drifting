@@ -40,7 +40,7 @@ router.post("/ocean/:name", (req, res) => {
         tagsFiltered.forEach(function (t) {
             //let tagCheck = ocean.tags.filter(tag => tag.name == t);
 
-            Tags.findOne({"ocean" : req.params.name.toLowerCase(), "tag": t}).exec().then(tag => {
+            Tags.findOne({"ocean" : req.params.name.toLowerCase(), "name": t}).exec().then(tag => {
                 postCount = 0;
                 if (req.body.isPublic) {
                     postCount = 1;
@@ -59,11 +59,10 @@ router.post("/ocean/:name", (req, res) => {
                     });
                 } else {
                     if (req.body.isPublic) { //only update counds if it's public
-                        tag.count = tag.count + 1;
-                        tag.lastUpdated = Date.now()
+                        tag[0].count = tag[0].count + 1;
+                        tag[0].lastUpdated = Date.now()
                         tag.save();
                     }
-
                 }
             });
             

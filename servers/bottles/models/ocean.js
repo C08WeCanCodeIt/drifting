@@ -2,9 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OceanSchema = new Schema({
-    name: String,
-    bottles: [],
-    tags: []
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    }
 });
 
 const Ocean = mongoose.model('ocean', OceanSchema);

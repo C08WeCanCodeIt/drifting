@@ -2,11 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TagSchema = new Schema({
-    ocean: string,
-    name: string,
-    count: Number,
-    body: [],
-    lastUpdated: {type: Date}
+    ocean: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    count: { type: Number },
+    lastUpdated: { type: Date }
 });
 
 const Tag = mongoose.model('tag', TagSchema);

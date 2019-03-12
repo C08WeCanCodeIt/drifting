@@ -50,7 +50,6 @@ class App extends Component {
           <p>
 
             {/* Convert the input to string */}
-            {JSON.stringify(this.state.fields, null, 2)}
 
           </p>
         </Container>

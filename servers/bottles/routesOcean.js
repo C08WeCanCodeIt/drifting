@@ -52,7 +52,7 @@ router.get("/ocean", (req, res) => {
 // get everything inside a specific ocean
 router.get("/ocean/:name", (req, res) => {
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => {
-        
+
         //get all the current tags
         Tags.find({ "ocean": currOcean.name }).exec().then(tag => {
 

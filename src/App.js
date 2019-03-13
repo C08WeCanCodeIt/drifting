@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ForumSubmission from "./ForumSubmission";
+import Forum from "./Forum";
 import { Navbar, Nav, NavItem, MenuItem, NavDropdown, Button, Form, FormControl, Container, Image } from 'react-bootstrap';
 
 class App extends Component {
@@ -47,11 +48,7 @@ class App extends Component {
 
         <Container className="forumSubmission">
           <ForumSubmission onSubmit={fields => this.onSubmit(fields)} />
-          <p>
 
-            {/* Convert the input to string */}
-
-          </p>
         </Container>
 
       </div>

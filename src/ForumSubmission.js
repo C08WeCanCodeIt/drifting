@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Form, FormControl, FormCheck } from 'react-bootstrap';
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
+// import Forum from "./Forum";
 //import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
 export default class ForumSubmission extends Component {
@@ -14,7 +15,7 @@ export default class ForumSubmission extends Component {
             exercise: "1",
             body: ["", "", "", "", "", "", ""],
             tags: "",
-            isPublic: ""
+            isPublic: true,
         };
 
         this.displayMessage = this.displayMessage.bind(this);
@@ -50,10 +51,32 @@ export default class ForumSubmission extends Component {
         let message = {}
         this.setState({
             message: this.state.body
-        }, () => {
-            console.log("message", this.state.message);
+        }
+        // }, () => {
+        //     console.log("message", this.state.message);
+        )
+
+        fetch("https://api.kychiu.me/v1/ocean/ocean", {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+        }).then(res => {
+            return res.text();
+        }).then((data) => {
+
+            this.setState({
+                message: data
+
+            })
+
+        }).catch((err, data) => {
+            console.log(err);
+            console.log("message1", data);
         });
+
     }
+
 
     // When the user click submit, the value change on title and description 
     //onSubmit = e => {
@@ -64,18 +87,101 @@ export default class ForumSubmission extends Component {
     //        description: ""
     //    })
     //};
+    /*
+        addBottle() {
+            console.log(this.state.isPublic);
+            let bottle = {
+                emotion: this.state.emotion,
+                exercise: this.state.exercise,
+                body: this.state.body,
+                tags: this.state.tags,
+                isPublic: this.state.isPublic,
+            }
+    
+            console.log(bottle);
+    
+            fetch("https://api.kychiu.me/v1/ocean/ocean", {
+                method: "POST",
+                body: 
+                    {emotion: this.state.emotion,
+                        exercise: this.state.exercise,
+                        body: this.state.body,
+                        tags: this.state.tags,
+                        isPublic: this.state.isPublic
+                    }
+            }).then(res => {
+                return res.json();
+            }).then((data) => {
+                console.log("bottle1", data);
+                this.clearState();
+            }).catch((err, data) => {
+                console.log(err);
+                console.log("bottle2", data);
+            });
+    
+    
+            
+            //this.cardsRef.push(card);    
+        }
+    }*/
 
-    addBottle() {
-        console.log(this.state.isPublic);
+    goodLuck = (e) => {
+
+
+        e.preventDefault();
+        fetch("https://api.kychiu.me/v1/ocean", {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({
+                name: "a"
+            })
+        }).then(res => {
+            console.log("test", res.text());
+            return res.json();
+        }).then((data) => {
+            console.log(data);
+    
+        }).catch((err, data) => {
+            console.log(err);
+        });
+    }   
+
+    addBottle = (e) => {
+        /*console.log(this.state.isPublic);
         let bottle = {
             emotion: this.state.emotion,
             exercise: this.state.exercise,
             body: this.state.body,
             tags: this.state.tags,
             isPublic: this.state.isPublic,
-        }
-        console.log("bottle", bottle);
-        //this.cardsRef.push(card);    
+        }*/
+
+        //console.log(bottle);
+        e.preventDefault();
+        fetch("https://api.kychiu.me/v1/ocean/ocean", {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(
+            {
+                emotion: this.state.emotion,
+                exercise: this.state.exercise,
+                body: this.state.body,
+                tags: this.state.tags,
+                isPublic: this.state.isPublic
+            })
+        }).then(res => {
+            return res.json();
+        }).then((data) => {
+            console.log("bottle1", data);
+            this.clearState();
+        }).catch((err, data) => {
+            console.log(err);
+            console.log("bottle2", data);
+        });
     }
 
     clearState() {
@@ -98,18 +204,36 @@ export default class ForumSubmission extends Component {
             () => {
                 console.log("post", this.state);
                 this.addBottle();
-                this.clearState();
             }
         );
     }
 
     saveBottle = (e) => {
+        e.preventDefault();
         this.setState(
             { isPublic: false },
             () => {
                 console.log("save", this.state);
-                this.addBottle();
-                this.clearState();
+                //this.addBottle();
+                fetch("https://api.kychiu.me/v1/ocean/ocean", {
+                    method: "POST",
+                    body:
+                    {
+                        emotion: this.state.emotion,
+                        exercise: this.state.exercise,
+                        body: this.state.body,
+                        tags: this.state.tags,
+                        isPublic: this.state.isPublic
+                    }
+                }).then(res => {
+                    return res.json();
+                }).then((data) => {
+                    console.log("bottle1", data);
+                    this.clearState();
+                }).catch((err, data) => {
+                    console.log(err);
+                    console.log("bottle2", data);
+                });
             }
         );
     }
@@ -266,9 +390,21 @@ export default class ForumSubmission extends Component {
                         </form>
 
                         {/* Display the message in a card */}
-                        <Card body inverse style={{ backgroundColor: '#333' }}>
+                        <Card body inverse style={{ backgroundColor: '#b3d2e5' }}>
                             <CardBody ref={message => this.state.message = message}>
+                                Here's your process of emotion:
+    
                                 {this.state.message}
+
+                                {/* {this.state.messsage.map(function(item, key) {
+                                    console.log("test");
+                                    <li key={key} value={item}>{item}</li> }) */}
+
+                                {/* {this.state.message
+                                    .map(message => <span>{message}</span>
+                                )} */}
+
+
                             </CardBody>
                         </Card>
 
@@ -288,14 +424,17 @@ export default class ForumSubmission extends Component {
                         />
                     </div>
                 </form>
-                <button className="btn btn-primary mr-2" onClick={() => this.postBottle()}>
+                <button className="btn btn-primary mr-2" onClick={(e) => this.addBottle(e)}>
                     Public
                 </button>
-                <button className="btn btn-primary mr-2" onClick={() => this.saveBottle()}>
+                <button className="btn btn-primary mr-2" onClick={(e) => this.saveBottle(e)}>
                     Only I Can See
                 </button>
                 <button className="btn btn-primary mr-2" onClick={() => this.disposeBottle()}>
                     Dispose
+                </button>
+                <button className="btn btn-primary mr-2" onClick={(e) => this.goodLuck(e)}>
+                    Pray
                 </button>
             </div>
 

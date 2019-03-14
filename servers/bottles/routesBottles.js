@@ -12,17 +12,17 @@ const fetch = require("node-fetch");
 // create a bottle in the ocean
 router.post("/ocean/:name", (req, res) => {
     //if (!req.body.body || req.body.body.length === 0) {
-    //    res.status(403).sendStatus({ error: "Cannot posts an empty bottle" });
+    //    res.status(403).send({ error: "Cannot posts an empty bottle" });
     //}
 
     //if (!req.body.isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
-    //    res.status(403).sendStatus({ error: "Public Posts cannot have no tags" });
+    //    res.status(403).send({ error: "Public Posts cannot have no tags" });
     //}
 
     // searching mongo to find ocean with given name
     Oceans.findOne({ "name": req.params.name.toLowerCase() }).exec().then(ocean => {
         if (!ocean) {
-            return res.status(404).sendStatus({ error: "Ocean named " + req.params.name + " was not found" });
+            return res.status(404).send({ error: "Ocean named " + req.params.name + " was not found" });
         }
 
         //go through each tag in the req body
@@ -57,7 +57,7 @@ router.post("/ocean/:name", (req, res) => {
                     }).then(newTag => {
                         newTag.save();
                     }).catch(err => {
-                        res.status(400).sendStatus({ error: "couldn't create a new tag: " + err });
+                        res.status(400).send({ error: "couldn't create a new tag: " + err });
                     });
                 } else {
                     if (req.body.isPublic) { //only update counds if it's public
@@ -80,27 +80,27 @@ router.post("/ocean/:name", (req, res) => {
         }).then(bottle => {
             bottle.save().then(() => {
                 res.setHeader("Content-Type", "application/json");
-                res.status(200).sendStatus(bottle);
+                res.status(200).send(bottle);
             });
         }).catch(err => {
-            res.status(400).sendStatus({ error: "Unable to create bottle: " + err });;
+            res.status(400).send({ error: "Unable to create bottle: " + err });;
         });;
 
     }).catch(err => {
-        res.status(400).sendStatus({ error: "Unable to post bottle in the ocean: " + err });;
+        res.status(400).send({ error: "Unable to post bottle in the ocean: " + err });;
     })
 });
 
 // update the bottle contents
 router.patch("/ocean/:name/bottle/:id", (req, res) => {
     if ((!req.body.body || req.body.length == 0) && (!req.body.tags || req.body.tags.length == 0)) {
-        return res.status(400).sendStatus({ error: "Cannot have empty tags or empty body" + err });
+        return res.status(400).send({ error: "Cannot have empty tags or empty body" + err });
     }
 
     //get the xuser stuff
     Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
         if (!bottle) {
-            return res.status(404).sendStatus({ error: "Bottle with given id was not found" });
+            return res.status(404).send({ error: "Bottle with given id was not found" });
         }
 
         //TODO: CHECK WHO WROTE THE BOTTLE
@@ -158,7 +158,7 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
                     }).then(newTag => {
                         newTag.save();
                     }).catch(err => {
-                        return res.status(400).sendStatus({ error: "couldn't create a new tag: " + err });
+                        return res.status(400).send({ error: "couldn't create a new tag: " + err });
                     });
                 }
             });
@@ -171,10 +171,10 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 
         // sending the updated bottle
         bottle.save().then(() => {
-            return res.status(201).sendStatus(bottle);
+            return res.status(201).send(bottle);
         });
     }).catch(err => {
-        return res.status(400).sendStatus({ error: "Error updating bottle with ID " + req.params.id + ": " + err });
+        return res.status(400).send({ error: "Error updating bottle with ID " + req.params.id + ": " + err });
     });
 
 });
@@ -206,9 +206,9 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
                 });
             }
         }
-        return res.status(200).sendStatus({ message: "Bottle with ID " + req.params.id + " was sucessfully deleted " });
+        return res.status(200).send({ message: "Bottle with ID " + req.params.id + " was sucessfully deleted " });
     }).catch(err => {
-        return res.status(400).sendStatus({ error: "Error deleting bottle with ID " + req.params.id + ": " + err });
+        return res.status(400).send({ error: "Error deleting bottle with ID " + req.params.id + ": " + err });
     });
 });
 

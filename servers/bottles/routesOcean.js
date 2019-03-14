@@ -77,10 +77,6 @@ router.delete("/ocean/:name", (req, res) => {
     });
 });
 
-//TODO: Get all the oceans that the current is in
-module.exports = router;
-
-
 
 // get everything inside a specific ocean
 router.get("/ocean/:name", (req, res) => {
@@ -88,10 +84,10 @@ router.get("/ocean/:name", (req, res) => {
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => {
 
         //get all the current tags
-        Tags.find({ "ocean": currOcean.name }).exec().then(tag => {
+        Tags.find({ "ocean": currOcean.name }).sort({"lastUpdated": -1}).exec().then(tag => {
 
             //no query tag or has empty query ie "/ocean/:name?tags="
-            if (currURL.indexOf("=") == -1 || currURL.indexOf("=") == req.url.length - 1) {
+            if (currURL.indexOf("?tags=") == -1 || currURL.indexOf("=") == req.url.length - 1) {
                 Bottles.find({ "ocean": currOcean.name, "isPublic": true }).sort({"createdAt": -1}).exec().then(bottle => {
                     let result = {
                         ocean: currOcean.name,
@@ -136,9 +132,18 @@ router.get("/ocean/:name", (req, res) => {
     });
 });
 
+//TODO: Get all the oceans that the current is in
+module.exports = router;
 
+
+//gets all the query parameters from the request
 function convertTagQuery(url, callback) {
     let query = url.substring(url.indexOf("?tags=") + "?tags=".length);
+    
+    //replace %20 with spaces
+    if (query.indexOf("%20") != -1) {
+        query = query.replace("%20", " ");
+    }
 
     let newTags = query.toLowerCase().split(",")
     for (i = 0; i < newTags.length; i++) {

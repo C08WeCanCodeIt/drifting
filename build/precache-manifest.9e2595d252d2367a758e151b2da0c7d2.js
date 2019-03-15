@@ -8,15 +8,15 @@ self.__precacheManifest = [
     "url": "/drifting/static/js/runtime~main.e2fa0296.js"
   },
   {
-    "revision": "a7b7b35b8764c8d59efb",
-    "url": "/drifting/static/js/main.6b2a59bb.chunk.js"
+    "revision": "32f30bd2e6baae1a5c54",
+    "url": "/drifting/static/js/main.886a2503.chunk.js"
   },
   {
     "revision": "e6b6027bb16823dcd2c4",
     "url": "/drifting/static/js/2.70353966.chunk.js"
   },
   {
-    "revision": "a7b7b35b8764c8d59efb",
+    "revision": "32f30bd2e6baae1a5c54",
     "url": "/drifting/static/css/main.679f1f9d.chunk.css"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/drifting/static/css/2.24dbd065.chunk.css"
   },
   {
-    "revision": "250e91f3c90ae2d73021adb7cf89b671",
+    "revision": "8614f2c463bd4a849fd5219eebee7c96",
     "url": "/drifting/index.html"
   }
 ];

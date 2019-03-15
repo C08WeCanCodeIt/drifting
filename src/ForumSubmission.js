@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Form, FormControl, FormCheck } from 'react-bootstrap';
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
-// import Forum from "./Forum";
+import Forum from './Forum';
 //import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
 export default class ForumSubmission extends Component {
@@ -12,7 +12,7 @@ export default class ForumSubmission extends Component {
         super(props);
         this.state = {
             emotion: "",
-            exercise: "1",
+            exercise: "",
             body: ["", "", "", "", "", "", ""],
             tags: "",
             isPublic: true,
@@ -52,14 +52,14 @@ export default class ForumSubmission extends Component {
         this.setState({
             message: this.state.body
         }
-        // }, () => {
-        //     console.log("message", this.state.message);
+            // }, () => {
+            //     console.log("message", this.state.message);
         )
 
         fetch("https://api.kychiu.me/v1/ocean/ocean", {
             method: "GET",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             },
         }).then(res => {
             return res.text();
@@ -125,29 +125,6 @@ export default class ForumSubmission extends Component {
         }
     }*/
 
-    goodLuck = (e) => {
-
-
-        e.preventDefault();
-        fetch("https://api.kychiu.me/v1/ocean", {
-            method: "POST",
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            body: JSON.stringify({
-                name: "a"
-            })
-        }).then(res => {
-            console.log("test", res.text());
-            return res.json();
-        }).then((data) => {
-            console.log(data);
-    
-        }).catch((err, data) => {
-            console.log(err);
-        });
-    }   
-
     addBottle = (e) => {
         /*console.log(this.state.isPublic);
         let bottle = {
@@ -163,16 +140,16 @@ export default class ForumSubmission extends Component {
         fetch("https://api.kychiu.me/v1/ocean/ocean", {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(
-            {
-                emotion: this.state.emotion,
-                exercise: this.state.exercise,
-                body: this.state.body,
-                tags: this.state.tags,
-                isPublic: this.state.isPublic
-            })
+                {
+                    emotion: this.state.emotion,
+                    exercise: this.state.exercise,
+                    body: this.state.body,
+                    tags: this.state.tags,
+                    isPublic: this.state.isPublic
+                })
         }).then(res => {
             return res.json();
         }).then((data) => {
@@ -306,11 +283,11 @@ export default class ForumSubmission extends Component {
                             onChange={(event) => { this.handleQuestion(event) }}
                             id="exampleFormControlTextarea1"
                             rows="3"
-                            placeholder="What happened?"
+                            placeholder=""
                             aria-label="some description texts">
                         </textarea>
                     </div>
-
+{/* 
                     <div className="form-group">
                         <label htmlFor="exampleFormControlTextarea1">How are you feeling?</label>
                         <textarea className="form-control"
@@ -321,10 +298,10 @@ export default class ForumSubmission extends Component {
                             rows="3"
                             aria-label="some description texts">
                         </textarea>
-                    </div>
+                    </div> */}
 
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlTextarea1">Can the situation be worse? How?</label>
+                        <label htmlFor="exampleFormControlTextarea1">Could the situation be worse than it is? And how so?</label>
                         <textarea className="form-control"
                             name="2"
                             value={this.state.body[2]}
@@ -348,7 +325,7 @@ export default class ForumSubmission extends Component {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlTextarea1">What factors in the situation is in your control?</label>
+                        <label htmlFor="exampleFormControlTextarea1">What factors in the situation are in your control?</label>
                         <textarea className="form-control"
                             name="4"
                             value={this.state.body[4]}
@@ -358,6 +335,10 @@ export default class ForumSubmission extends Component {
                             aria-label="some description texts">
                         </textarea>
                     </div>
+                    
+                    <br />
+                    <p> [ ** Will add a Mindfulness exercise ** ]</p>
+                    <br />
 
                     <div className="form-group">
                         <label htmlFor="exampleFormControlTextarea1">Can you brainstorm solutions you can do to address your situation?</label>
@@ -381,36 +362,7 @@ export default class ForumSubmission extends Component {
                             rows="3"
                             aria-label="some description texts">
                         </textarea>
-
-                        {/* Create a submit button for user to click after they finish typing the message */}
-                        <form onSubmit={this.displayMessage}>
-                            <button className="btn btn-primary mr-2">
-                                Submit
-                            </button>
-                        </form>
-
-                        {/* Display the message in a card */}
-                        <Card body inverse style={{ backgroundColor: '#b3d2e5' }}>
-                            <CardBody ref={message => this.state.message = message}>
-                                Here's your process of emotion:
-    
-                                {this.state.message}
-
-                                {/* {this.state.messsage.map(function(item, key) {
-                                    console.log("test");
-                                    <li key={key} value={item}>{item}</li> }) */}
-
-                                {/* {this.state.message
-                                    .map(message => <span>{message}</span>
-                                )} */}
-
-
-                            </CardBody>
-                        </Card>
-
                     </div>
-
-
 
                     <div className="form-group">
                         <label htmlFor="formGroupExampleInput">Tags</label>
@@ -424,6 +376,7 @@ export default class ForumSubmission extends Component {
                         />
                     </div>
                 </form>
+
                 <button className="btn btn-primary mr-2" onClick={(e) => this.addBottle(e)}>
                     Public
                 </button>
@@ -433,12 +386,8 @@ export default class ForumSubmission extends Component {
                 <button className="btn btn-primary mr-2" onClick={() => this.disposeBottle()}>
                     Dispose
                 </button>
-                <button className="btn btn-primary mr-2" onClick={(e) => this.goodLuck(e)}>
-                    Pray
-                </button>
             </div>
 
         );
     }
 }
-

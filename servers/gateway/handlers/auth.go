@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"path"
-	"strconv"
 	"time"
 
 	"github.com/drifting/servers/gateway/models/users"
@@ -88,16 +87,15 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 	//TODO: me path: gets personal stuff
 	//TODO: Get rid of ability to see other users
 	id := path.Base(r.URL.Path)
-	var numID int64
+	var username string
 	if id == "me" {
-		numID = sessionState.User.ID
+		username = sessionState.User.UserName
 	} else {
-		numID, _ = strconv.ParseInt(id, 10, 64)
+		username = id
 	}
 
 	if r.Method == http.MethodGet {
-
-		user, err := ctx.UserStore.GetByID(numID)
+		user, err := ctx.UserStore.GetByUserName(username)
 		if err != nil {
 			http.Error(w, "User not found in DB", http.StatusNotFound)
 			return
@@ -112,20 +110,18 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 			return
 		}
 
-		/* } else if r.Method == http.MethodPatch {
-		if numID != sessionState.User.ID {
-			http.Error(w, "IDs do not match", http.StatusUnauthorized)
-			return
-		}
+	} else if r.Method == http.MethodPatch {
 
-		dbUser, err := ctx.UserStore.GetByID(numID)
+		// get the user information
+		dbUser, err := ctx.UserStore.GetByUserName(username)
 		if err != nil {
 			http.Error(w, "User not found in DB", http.StatusNotFound)
 			return
 		}
 
-		if r.Header.Get("Content-Type") != "application/json" {
-			http.Error(w, "Request body must be in JSON", http.StatusInternalServerError)
+		// find if the current user is a admin or moderators
+		if dbUser.Type != "admin" && dbUser.Type != "mod" {
+			http.Error(w, "Unauthorized to change user type or status", http.StatusUnauthorized)
 			return
 		}
 
@@ -133,11 +129,6 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 		err = json.NewDecoder(r.Body).Decode(userUpdate)
 		if err != nil {
 			http.Error(w, "An error occured while decoding the user updates", http.StatusInternalServerError)
-			return
-		}
-
-		if userUpdate.FirstName == "" || userUpdate.LastName == "" || userUpdate.FirstName == sessionState.User.Email || userUpdate.FirstName == sessionState.User.UserName || userUpdate.LastName == sessionState.User.Email || userUpdate.LastName == sessionState.User.UserName {
-			http.Error(w, "Invalid update values provided", http.StatusBadRequest)
 			return
 		}
 
@@ -161,7 +152,6 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 			http.Error(w, "Updated user could not be encoded", http.StatusInternalServerError)
 			return
 		}
-		*/
 	} else {
 		http.Error(w, "Method type not supported", http.StatusMethodNotAllowed)
 		return
@@ -193,6 +183,11 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 	if err != nil {
 		bcrypt.GenerateFromPassword(user.PassHash, 13) // Ensure that process takes time
 		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		return
+	}
+
+	if user.Status == "suspended" {
+		http.Error(w, "Current user has been suspended from the site. Please contact a moderator or administrator if you think there has been a mistake.", http.StatusUnauthorized)
 		return
 	}
 
@@ -241,30 +236,4 @@ func (ctx *HandlerContext) SpecificSessionHandler(w http.ResponseWriter, r *http
 	w.Header().Add("Content-Type", "text/plain")
 	w.Write([]byte("signed out"))
 	w.WriteHeader(http.StatusOK)
-
-}
-
-//GetAllUsersHandler gets all the users from the db
-func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method type not supported", http.StatusMethodNotAllowed)
-		return
-	}
-
-	users, err := ctx.UserStore.GetAll()
-
-	if err != nil {
-		http.Error(w, "Couldn't retrieve users", http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	err = json.NewEncoder(w).Encode(users)
-	if err != nil {
-		http.Error(w, "Users list could not be encoded", http.StatusInternalServerError)
-		return
-	}
-
 }

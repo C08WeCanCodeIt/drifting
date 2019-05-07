@@ -14,7 +14,8 @@ type User struct {
 	ID       int64  `json:"id"`
 	PassHash []byte `json:"-"` //never JSON encoded/decoded
 	UserName string `json:"userName"`
-	Type     string `json:"-"` //never JSON encoded/decoded
+	Type     string `json:"type"` //never JSON encoded/decoded
+	Status   string `json:"status"`
 }
 
 //Credentials represents user sign-in credentials
@@ -32,12 +33,11 @@ type NewUser struct {
 }
 
 //Updates for changing password
-/* type Updates struct {
-	UserName        string `json:"firstName"`
-	CurrPassword    string `json:"currPassword"`
-	NewPassword     string `json:"newPassword"`
-	NewPasswordConf string `json:"newPasswordConf"`
-} */
+type Updates struct {
+	UserName string `json:"userName"`
+	Type     string `json:"type"`
+	Status   string `json:"status"`
+}
 
 //Validate validates the new user and returns an error if
 //any of the validation rules fail, or nil if its valid
@@ -62,8 +62,15 @@ func (nu *NewUser) ToUser() (*User, error) {
 	if err := nu.Validate(); err != nil {
 		return nil, err
 	}
+
+	userType := strings.ToLower(nu.Type)
+	if len(userType) == 0 {
+		userType = "member"
+	}
+
 	user := &User{
 		UserName: nu.UserName,
+		Type:     userType,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil
@@ -89,7 +96,24 @@ func (u *User) Authenticate(password string) error {
 	return nil
 }
 
-// TODO:
-// NOT MVP
-// Have Admin be able to change user types
-// Have mods be able to change user types
+//ApplyUpdates applies the updates to the user. An error
+//is returned if the updates are invalid
+func (u *User) ApplyUpdates(updates *Updates) error {
+	//TODO: set the fields of `u` to the values of the related
+	//field in the `updates` struct
+
+	// both status and type are empty
+	if len(updates.Type) == 0 && len(updates.Status) == 0 {
+		return fmt.Errorf("no changes, since updates are empty")
+	}
+
+	if len(updates.Type) > 0 {
+		u.Type = updates.Type
+	}
+
+	if len(updates.Status) > 0 {
+		u.Status = updates.Status
+	}
+
+	return nil
+}

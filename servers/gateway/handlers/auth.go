@@ -214,6 +214,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 
 }
 
+//test to see if push works
 //SpecificSessionHandler handles requests related to specific authenticated sessions (sign out)
 func (ctx *HandlerContext) SpecificSessionHandler(w http.ResponseWriter, r *http.Request) {
 

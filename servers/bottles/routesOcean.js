@@ -84,11 +84,11 @@ router.get("/ocean/:name", (req, res) => {
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => {
 
         //get all the current tags
-        Tags.find({ "ocean": currOcean.name }).sort({"lastUpdated": -1}).exec().then(tag => {
+        Tags.find({ "ocean": currOcean.name }).sort({ "lastUpdated": -1 }).exec().then(tag => {
 
             //no query tag or has empty query ie "/ocean/:name?tags="
             if (currURL.indexOf("?tags=") == -1 || currURL.indexOf("=") == req.url.length - 1) {
-                Bottles.find({ "ocean": currOcean.name, "isPublic": true }).sort({"createdAt": -1}).exec().then(bottle => {
+                Bottles.find({ "ocean": currOcean.name, "isPublic": true }).sort({ "createdAt": -1 }).exec().then(bottle => {
                     let result = {
                         ocean: currOcean.name,
                         tags: tag,
@@ -106,7 +106,7 @@ router.get("/ocean/:name", (req, res) => {
                 // gets all the tags to filter by first
                 // filters through the tags
                 convertTagQuery(req.url, function (queryTags) {
-                    Bottles.find({ "ocean": currOcean.name, "isPublic": true, "tags": { $all: queryTags} }).sort({"createdAt": -1}).exec().then(filteredBottle => {
+                    Bottles.find({ "ocean": currOcean.name, "isPublic": true, "tags": { $all: queryTags } }).sort({ "createdAt": -1 }).exec().then(filteredBottle => {
 
                         let result = {
                             ocean: currOcean.name,
@@ -132,14 +132,12 @@ router.get("/ocean/:name", (req, res) => {
     });
 });
 
-//TODO: Get all the oceans that the current is in
-module.exports = router;
 
 
 //gets all the query parameters from the request
 function convertTagQuery(url, callback) {
     let query = url.substring(url.indexOf("?tags=") + "?tags=".length);
-    
+
     //replace %20 with spaces
     if (query.indexOf("%20") != -1) {
         query = query.replace("%20", " ");
@@ -154,3 +152,37 @@ function convertTagQuery(url, callback) {
 
     return callback(tagsFiltered);
 }
+
+// get everything inside a specific ocean that has been reported
+router.get("/ocean/:name/reported", (req, res) => {
+    let currURL = req.url.trim();
+    Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => { //check ocean exists
+
+        Bottles.find({ "ocean": currOcean.name, reportedCount: { $gt: 0} }).sort({ "createdAt": -1 }).exec().then(bottle => {
+            let result = {
+                ocean: currOcean.name,
+                bottles: bottle
+            }
+
+            res.setHeader("Content-Type", "application/json");
+            res.status(200).send(result);
+        }).catch(err => {
+            res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
+        });
+
+
+    }).catch(err => {
+        res.sendStatus(404).send({ error: "no ocean was found with the name " + req.params.name + ": " + err });
+    });
+});
+
+
+
+
+
+
+
+
+
+//TODO: Get all the oceans that the current is in
+module.exports = router;

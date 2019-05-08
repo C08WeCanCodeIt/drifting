@@ -2,7 +2,7 @@ const express = require('express');
 const Oceans = require('./models/ocean');
 const Bottles = require('./models/bottle');
 const Tags = require('./models/tag');
-//const ObjectID = require('mongodb').ObjectID;
+
 
 const router = express.Router();
 const fetch = require("node-fetch");
@@ -18,6 +18,16 @@ router.post("/ocean/:name", (req, res) => {
     //if (!req.body.isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
     //    res.status(403).send({ error: "Public Posts cannot have no tags" });
     //}
+
+
+    let user = JSON.parse(req.get('X-User'));
+    if (!user) {
+        res.status(401).send({ error: "No user signed in, cannot post bottle" });
+    }
+
+    let ch = req.app.get('ch');
+
+
 
     // searching mongo to find ocean with given name
     Oceans.findOne({ "name": req.params.name.toLowerCase() }).exec().then(ocean => {
@@ -75,6 +85,7 @@ router.post("/ocean/:name", (req, res) => {
             exercise: req.body.exercise,
             body: req.body.body,
             tags: tagsFiltered,
+            creatorID: user.id,
             createdAt: Date.now(),
             isPublic: req.body.isPublic
         }).then(bottle => {
@@ -83,22 +94,28 @@ router.post("/ocean/:name", (req, res) => {
                 res.status(200).send(bottle);
             });
         }).catch(err => {
-            res.status(400).send({ error: "Unable to create bottle: " + err });;
-        });;
+            res.status(400).send({ error: "Unable to create bottle: " + err });
+        });
 
     }).catch(err => {
-        res.status(400).send({ error: "Unable to post bottle in the ocean: " + err });;
+        res.status(400).send({ error: "Unable to post bottle in the ocean: " + err });
     })
 });
 
 // update the bottle contents
 router.patch("/ocean/:name/bottle/:id", (req, res) => {
+    let user = JSON.parse(req.get('X-User'));
+    if (!user) {
+        res.status(401).send({ error: "No user signed in, cannot update bottle" });
+    }
+
+
     if ((!req.body.body || req.body.length == 0) && (!req.body.tags || req.body.tags.length == 0)) {
         return res.status(400).send({ error: "Cannot have empty tags or empty body" + err });
     }
 
     //get the xuser stuff
-    Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
+    Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id, "creatorID": user.id }).then(bottle => {
         if (!bottle) {
             return res.status(404).send({ error: "Bottle with given id was not found" });
         }
@@ -119,24 +136,24 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 
         // delete the counts for PUBLIC posts
         oldTags = bottle.tags;
-        if (bottle.isPublic) {
-            oldTags.forEach(function (t) {
-                Tags.findOne({ "name": t }).exec().then(tag => {
-                    if (tag) {
-                        if (tag.count != 0) {
-                            tag.count = tag.count - 1;
-                        }
-                        tag.save();
+        //if (req.isPublic) {
+        oldTags.forEach(function (t) {
+            Tags.findOne({ "name": t }).exec().then(tag => {
+                if (tag) {
+                    if (tag.count != 0) {
+                        tag.count = tag.count - 1;
                     }
-                });
+                    tag.save();
+                }
             });
-        }
+        });
+        //}
 
         // adds all the new tags from the post
         tagsFiltered.forEach(function (t) {
             Tags.findOne({ "name": t }).exec().then(tag => {
                 if (tag) { // tag exists and it's public post
-                    if (tag.isPublic) {
+                    if (req.isPublic) {
                         tag.count = tag.count + 1;
                         tag.lastUpdated = Date.now()
                         tag.save();
@@ -167,6 +184,7 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
         // updating the tags, body, and update date
         bottle.tags = tagsFiltered;
         bottle.body = req.body.body;
+        bottle.isPublic = req.isPublic;
         bottle.lastUpdated = Date.now();
 
         // sending the updated bottle
@@ -179,13 +197,68 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 
 });
 
+router.patch("/ocean/:name/bottle/:id/private", (req, res) => {
+    let user = JSON.parse(req.get('X-User'));
+    if (!user) {
+        res.status(401).send({ error: "No user signed in, cannot update bottle" });
+    } else if (user.type != "admin" && user.type != "mod") {
+        return res.status(403).send({ error: "Non admins or moderators cannot authorize this section" });
+    }
+
+    //finds the bottle
+    Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
+
+        // reduces the tag count for each bottle
+        bottle.tags.forEach(function (t) {
+            Tags.findOne({ "name": t }).exec().then(tag => {
+                if (tag) {
+                    if (tag.count != 0) {
+                        tag.count = tag.count - 1;
+                    }
+                    tag.save();
+                }
+            });
+        });
+
+        //
+        bottle.isPublic = false;
+        bottle.save().then(() => {
+            return res.status(201).send("bottle has been made private");
+        });
+    }).catch(err => {
+        return res.status(400).send({ error: "Error making bottle private" + req.params.id + ": " + err });
+    });
+});
+
+
+router.patch("/ocean/:name/bottle/:id/report", (req, res) => {
+
+    //finds the bottle
+    Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
+
+        bottle.reportedCount = bottle.reportedCount + 1;
+        bottle.save().then(() => {
+            return res.status(201).send("bottle has been sucessfully reported");
+        });
+    }).catch(err => {
+        return res.status(400).send({ error: "Error reporting the bottle" });
+    });
+});
+
+
+
+
+
 // deleting a bottle
 router.delete("/ocean/:name/bottle/:id", (req, res) => {
+    let user = JSON.parse(req.get('X-User'));
+    if (!user) {
+        res.status(401).send({ error: "No user signed in, cannot update bottle" });
+    }
+
 
     // finds the bottle and deletes it
-    Bottles.findOneAndDelete({ "_id": req.params.id }, (err, response) => {
-        // TODO:
-        // CHECK IF YOU ARE A MODERATOR/ADMIN/OR CREATOR OF THE BOTTLE
+    Bottles.findOneAndDelete({ "ocean": req.params.name, "_id": req.params.id, "creatorID": user.id }, (err, response) => {
 
         // response = orignal bottle with all it's info
         if (response && response !== null) {
@@ -212,7 +285,26 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
     });
 });
 
-//TODO: Get all the routers that the current user posted
+
+
+// get everything made by a specific user
+router.get("/ocean/:username", (req, res) => {
+    let user = JSON.parse(req.get('X-User'));
+    if (!user) {
+        res.status(401).send({ error: "No user signed in, cannot post bottle" });
+    }
+
+    Bottles.find({ "creatorID": user.id }).sort({ "createdAt": -1, "isPublic": 1 }).exec().then(bottle => {
+        res.setHeader("Content-Type", "application/json");
+        res.status(200).send(bottle);
+    }).catch(err => {
+        res.sendStatus(500).send({ error: "couldn't find bottles made by this user"});
+    });
+
+});
+
+
+
 
 module.exports = router;
 

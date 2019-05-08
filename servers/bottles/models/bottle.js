@@ -11,10 +11,24 @@ const BottleSchema = new Schema({
         type: Boolean,
         default: false
     },
+    reportedCount: {
+        type: Number,
+        default: 0
+    },
+    creatorID: {type: Number},
     createdAt: { type: Date },
     editedAt: { type: Date }
 });
 
 const Bottle = mongoose.model('bottle', BottleSchema);
 
+BottleSchema.methods.toJSON = function() {
+    var obj = this.toObject();
+    delete obj.creatorID;
+    return obj;
+}
+
 module.exports = Bottle;
+
+
+

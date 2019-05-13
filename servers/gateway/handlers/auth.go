@@ -74,7 +74,7 @@ func (ctx *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) 
 
 }
 
-//SpecificUserHandler handles requests for a specific user (sign in)
+//SpecificUserHandler handles requests for a specific user (getting specific info or updating)
 func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	sessionState := &SessionState{}
@@ -236,4 +236,38 @@ func (ctx *HandlerContext) SpecificSessionHandler(w http.ResponseWriter, r *http
 	w.Header().Add("Content-Type", "text/plain")
 	w.Write([]byte("signed out"))
 	w.WriteHeader(http.StatusOK)
+}
+
+//GetAllUsersHandler gets all the users from the db
+func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method type not supported", http.StatusMethodNotAllowed)
+		return
+	}
+
+	//by default: get all the users in the db
+	users, err := ctx.UserStore.GetAll()
+
+	statusPrefix := r.URL.Query().Get("s")
+	if len(statusPrefix) != 0 {
+		users, err = ctx.UserStore.GetByUserstatus(statusPrefix)
+	}
+	typePrefix := r.URL.Query().Get("t")
+	if len(typePrefix) != 0 {
+		users, err = ctx.UserStore.GetByUserstatus(typePrefix)
+	}
+
+	if err != nil {
+		http.Error(w, "Couldn't retrieve users", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	err = json.NewEncoder(w).Encode(users)
+	if err != nil {
+		http.Error(w, "Users list could not be encoded", http.StatusInternalServerError)
+		return
+	}
 }

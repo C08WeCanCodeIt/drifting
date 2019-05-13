@@ -30,6 +30,7 @@ type NewUser struct {
 	Password     string `json:"password"`
 	PasswordConf string `json:"passwordConf"`
 	Type         string `json:"type"`
+	Status       string `json:"status"`
 }
 
 //Updates for changing password
@@ -63,14 +64,24 @@ func (nu *NewUser) ToUser() (*User, error) {
 		return nil, err
 	}
 
-	userType := strings.ToLower(nu.Type)
-	if len(userType) == 0 {
+	userType := ""
+	if len(nu.Type) == 0 {
 		userType = "member"
+	} else {
+		userType = strings.ToLower(nu.Type)
+	}
+
+	userStatus := ""
+	if len(nu.Status) == 0 {
+		userType = "validated"
+	} else {
+		userType = strings.ToLower(nu.Status)
 	}
 
 	user := &User{
 		UserName: nu.UserName,
 		Type:     userType,
+		Status:   userStatus,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil

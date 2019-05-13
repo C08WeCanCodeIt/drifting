@@ -25,7 +25,7 @@ router.post("/ocean/:name", (req, res) => {
         res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
 
-    let ch = req.app.get('ch');
+    //let ch = req.app.get('ch');
 
 
 
@@ -88,6 +88,7 @@ router.post("/ocean/:name", (req, res) => {
             creatorID: user.id,
             createdAt: Date.now(),
             isPublic: req.body.isPublic
+            
         }).then(bottle => {
             bottle.save().then(() => {
                 res.setHeader("Content-Type", "application/json");
@@ -103,6 +104,7 @@ router.post("/ocean/:name", (req, res) => {
 });
 
 // update the bottle contents
+// only signed in user can update body content
 router.patch("/ocean/:name/bottle/:id", (req, res) => {
     let user = JSON.parse(req.get('X-User'));
     if (!user) {
@@ -114,7 +116,6 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
         return res.status(400).send({ error: "Cannot have empty tags or empty body" + err });
     }
 
-    //get the xuser stuff
     Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id, "creatorID": user.id }).then(bottle => {
         if (!bottle) {
             return res.status(404).send({ error: "Bottle with given id was not found" });
@@ -200,7 +201,7 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 router.patch("/ocean/:name/bottle/:id/private", (req, res) => {
     let user = JSON.parse(req.get('X-User'));
     if (!user) {
-        res.status(401).send({ error: "No user signed in, cannot update bottle" });
+        return res.status(401).send({ error: "No user signed in, cannot update bottle" });
     } else if (user.type != "admin" && user.type != "mod") {
         return res.status(403).send({ error: "Non admins or moderators cannot authorize this section" });
     }
@@ -291,20 +292,16 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
 router.get("/ocean/:username", (req, res) => {
     let user = JSON.parse(req.get('X-User'));
     if (!user) {
-        res.status(401).send({ error: "No user signed in, cannot post bottle" });
+        res.status(401).send({ error: "No user signed in, cannot get bottle" });
     }
 
     Bottles.find({ "creatorID": user.id }).sort({ "createdAt": -1, "isPublic": 1 }).exec().then(bottle => {
         res.setHeader("Content-Type", "application/json");
         res.status(200).send(bottle);
     }).catch(err => {
-        res.sendStatus(500).send({ error: "couldn't find bottles made by this user"});
+        return res.sendStatus(500).send({ error: "couldn't find bottles made by this user"});
     });
-
 });
-
-
-
 
 module.exports = router;
 

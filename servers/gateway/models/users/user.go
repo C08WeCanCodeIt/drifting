@@ -71,17 +71,17 @@ func (nu *NewUser) ToUser() (*User, error) {
 		userType = strings.ToLower(nu.Type)
 	}
 
-	userStatus := ""
-	if len(nu.Status) == 0 {
-		userType = "validated"
-	} else {
-		userType = strings.ToLower(nu.Status)
-	}
+	/* 	userStatus := ""
+	   	if len(nu.Status) == 0 {
+	   		userType = "validated"
+	   	} else {
+	   		userType = strings.ToLower(nu.Status)
+	   	} */
 
 	user := &User{
 		UserName: nu.UserName,
 		Type:     userType,
-		Status:   userStatus,
+		//Status:   userStatus,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil

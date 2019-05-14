@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/drifting/servers/gateway/models/users"
@@ -38,22 +39,56 @@ func (ctx *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	// gets the user info
 	newUser := users.NewUser{}
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
-		http.Error(w, "New user could not be decoded", http.StatusInternalServerError)
+		http.Error(w, "New user could not be decoded: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	// check if username is empty
+	if len(newUser.UserName) == 0 {
+		http.Error(w, "No username inputted", http.StatusBadRequest)
+		return
+	}
+
+	// check if username has strings
+	if strings.Contains(newUser.UserName, " ") {
+		http.Error(w, "Username cannot have spaces", http.StatusBadRequest)
+		return
+	}
+
+	// check if password is less than 6 characters
+	if len(newUser.Password) < 6 || len(newUser.PasswordConf) < 6 {
+		http.Error(w, "Password or Password confirmation less than 6 characters", http.StatusBadRequest)
+		return
+	}
+
+	// check if password confs equals
+	if newUser.Password != newUser.PasswordConf {
+		http.Error(w, "Password and password confirmation do not match", http.StatusBadRequest)
+		return
+	}
+
+	// check if username already exists
+	checkUser, err := ctx.UserStore.GetByUserName(newUser.UserName)
+	if err == nil && checkUser != nil {
+		http.Error(w, "User with username: "+newUser.UserName+" already exists ", http.StatusUnprocessableEntity)
+		return
+	}
+
+	// decodes to new user
 	user, err := newUser.ToUser()
 	if err != nil {
-		http.Error(w, "New user could not be encoded to a user", http.StatusInternalServerError)
+		http.Error(w, "New user could not be encoded to a user: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	// inserts into database
 	dbUser, err := ctx.UserStore.Insert(user)
 	if err != nil {
-		http.Error(w, "User could not be inserted into database", http.StatusInternalServerError)
+		http.Error(w, "User could not be inserted into database: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -68,7 +103,7 @@ func (ctx *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) 
 
 	err = json.NewEncoder(w).Encode(dbUser)
 	if err != nil {
-		http.Error(w, "Could not encode user", http.StatusInternalServerError)
+		http.Error(w, "Could not encode user:"+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -95,9 +130,16 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 	}
 
 	if r.Method == http.MethodGet {
+
+		// make sure non admin/mods cannot see other user's information
+		if username != sessionState.User.UserName && sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+			return
+		}
+
 		user, err := ctx.UserStore.GetByUserName(username)
 		if err != nil {
-			http.Error(w, "User not found in DB", http.StatusNotFound)
+			http.Error(w, "User not found", http.StatusNotFound)
 			return
 		}
 
@@ -112,16 +154,16 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 
 	} else if r.Method == http.MethodPatch {
 
+		// checked is logged in mod or admin
+		if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+			return
+		}
+
 		// get the user information
 		dbUser, err := ctx.UserStore.GetByUserName(username)
 		if err != nil {
 			http.Error(w, "User not found in DB", http.StatusNotFound)
-			return
-		}
-
-		// find if the current user is a admin or moderators
-		if dbUser.Type != "admin" && dbUser.Type != "mod" {
-			http.Error(w, "Unauthorized to change user type or status", http.StatusUnauthorized)
 			return
 		}
 
@@ -180,6 +222,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	user, err := ctx.UserStore.GetByUserName(userCred.UserName)
+
 	if err != nil {
 		bcrypt.GenerateFromPassword(user.PassHash, 13) // Ensure that process takes time
 		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
@@ -242,6 +285,19 @@ func (ctx *HandlerContext) SpecificSessionHandler(w http.ResponseWriter, r *http
 func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method type not supported", http.StatusMethodNotAllowed)
+		return
+	}
+
+	sessionState := &SessionState{}
+	_, err := sessions.GetState(r, ctx.Key, ctx.SessionStore, sessionState)
+	if err != nil {
+		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		return
+	}
+
+	// checked is logged in mod or admin
+	if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 		return
 	}
 

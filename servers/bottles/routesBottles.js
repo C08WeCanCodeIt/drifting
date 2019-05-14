@@ -19,11 +19,11 @@ router.post("/ocean/:name", (req, res) => {
     //    res.status(403).send({ error: "Public Posts cannot have no tags" });
     //}
 
-
-    let user = JSON.parse(req.get('X-User'));
-    if (!user) {
+    let getUser = req.get('X-User');
+    if (!getUser) {
         res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
+    let user = JSON.parse(getUser);
 
     //let ch = req.app.get('ch');
 
@@ -106,10 +106,11 @@ router.post("/ocean/:name", (req, res) => {
 // update the bottle contents
 // only signed in user can update body content
 router.patch("/ocean/:name/bottle/:id", (req, res) => {
-    let user = JSON.parse(req.get('X-User'));
-    if (!user) {
-        res.status(401).send({ error: "No user signed in, cannot update bottle" });
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
+    let user = JSON.parse(getUser);
 
 
     if ((!req.body.body || req.body.length == 0) && (!req.body.tags || req.body.tags.length == 0)) {
@@ -199,10 +200,12 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 });
 
 router.patch("/ocean/:name/bottle/:id/private", (req, res) => {
-    let user = JSON.parse(req.get('X-User'));
-    if (!user) {
-        return res.status(401).send({ error: "No user signed in, cannot update bottle" });
-    } else if (user.type != "admin" && user.type != "mod") {
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in, cannot post bottle" });
+    }
+    let user = JSON.parse(getUser);
+    if (user.type != "admin" && user.type != "mod") {
         return res.status(403).send({ error: "Non admins or moderators cannot authorize this section" });
     }
 
@@ -252,11 +255,11 @@ router.patch("/ocean/:name/bottle/:id/report", (req, res) => {
 
 // deleting a bottle
 router.delete("/ocean/:name/bottle/:id", (req, res) => {
-    let user = JSON.parse(req.get('X-User'));
-    if (!user) {
-        res.status(401).send({ error: "No user signed in, cannot update bottle" });
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
-
+    let user = JSON.parse(getUser);
 
     // finds the bottle and deletes it
     Bottles.findOneAndDelete({ "ocean": req.params.name, "_id": req.params.id, "creatorID": user.id }, (err, response) => {
@@ -289,11 +292,12 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
 
 
 // get everything made by a specific user
-router.get("/ocean/:username", (req, res) => {
-    let user = JSON.parse(req.get('X-User'));
-    if (!user) {
-        res.status(401).send({ error: "No user signed in, cannot get bottle" });
+router.get("/ocean/bottles/me", (req, res) => {
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in, cannot get bottles" });
     }
+    let user = JSON.parse(getUser);
 
     Bottles.find({ "creatorID": user.id }).sort({ "createdAt": -1, "isPublic": 1 }).exec().then(bottle => {
         res.setHeader("Content-Type", "application/json");

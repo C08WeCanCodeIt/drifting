@@ -35,9 +35,8 @@ type NewUser struct {
 
 //Updates for changing password
 type Updates struct {
-	UserName string `json:"userName"`
-	Type     string `json:"type"`
-	Status   string `json:"status"`
+	Type   string `json:"type"`
+	Status string `json:"status"`
 }
 
 //Validate validates the new user and returns an error if

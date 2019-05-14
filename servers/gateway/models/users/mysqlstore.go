@@ -9,7 +9,7 @@ const sqlInsertTask = "insert into users (userName, passHash, userType) values (
 const sqlSelectAll = "select * from users"
 const sqlSelectByID = sqlSelectAll + " where id=?"
 const sqlSelectByUsername = sqlSelectAll + " where userName=?"
-const sqlUpdate = "update user Set userType=?, userStatus=? Where id=?"
+const sqlUpdate = "update users Set userType=?, userStatus=? Where id=?"
 const sqlUpdateStatus = "update users set userStatus=? where id=?"
 const sqlUpdateType = "update users set userType=? where id=?"
 const sqlDel = "delete from users where id=?"

@@ -170,19 +170,27 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 		userUpdate := &users.Updates{}
 		err = json.NewDecoder(r.Body).Decode(userUpdate)
 		if err != nil {
-			http.Error(w, "An error occured while decoding the user updates", http.StatusInternalServerError)
+			http.Error(w, "An error occured while decoding the user updates: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
+		/* 		if len(userUpdate.Status) == 0 {
+		   			userUpdate.Status = dbUser.Status
+		   		}
+
+		   		if len(userUpdate.Type) == 0 {
+		   			userUpdate.Type = dbUser.Status
+		   		 }*/
+
 		err = dbUser.ApplyUpdates(userUpdate)
 		if err != nil {
-			http.Error(w, "Updates could not be applied to the user", http.StatusInternalServerError)
+			http.Error(w, "Updates could not be applied to the user:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		updatedUser, err := ctx.UserStore.Update(dbUser.ID, userUpdate)
 		if err != nil {
-			http.Error(w, "Updates could not be applied to the user", http.StatusInternalServerError)
+			http.Error(w, "Updates could not be applied to the user:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -191,7 +199,7 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 
 		err = json.NewEncoder(w).Encode(updatedUser)
 		if err != nil {
-			http.Error(w, "Updated user could not be encoded", http.StatusInternalServerError)
+			http.Error(w, "Updated user could not be encoded: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 	} else {
@@ -314,7 +322,7 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 	}
 
 	if err != nil {
-		http.Error(w, "Couldn't retrieve users", http.StatusInternalServerError)
+		http.Error(w, "Couldn't retrieve users: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -323,7 +331,7 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 
 	err = json.NewEncoder(w).Encode(users)
 	if err != nil {
-		http.Error(w, "Users list could not be encoded", http.StatusInternalServerError)
+		http.Error(w, "Users list could not be encoded: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 }

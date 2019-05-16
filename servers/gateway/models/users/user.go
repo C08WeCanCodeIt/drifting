@@ -15,7 +15,6 @@ type User struct {
 	PassHash []byte `json:"-"` //never JSON encoded/decoded
 	UserName string `json:"userName"`
 	Type     string `json:"type"` //never JSON encoded/decoded
-	Status   string `json:"status"`
 }
 
 //Credentials represents user sign-in credentials
@@ -70,17 +69,16 @@ func (nu *NewUser) ToUser() (*User, error) {
 		userType = strings.ToLower(nu.Type)
 	}
 
-	/* 	userStatus := ""
-	   	if len(nu.Status) == 0 {
-	   		userType = "validated"
-	   	} else {
-	   		userType = strings.ToLower(nu.Status)
-	   	} */
+	userStatus := ""
+	if len(nu.Status) == 0 {
+		userStatus = "validated"
+	} else {
+		userStatus = strings.ToLower(nu.Status)
+	}
 
 	user := &User{
 		UserName: nu.UserName,
-		Type:     userType,
-		//Status:   userStatus,
+		Type:     userType + "+" + userStatus,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil
@@ -114,16 +112,19 @@ func (u *User) ApplyUpdates(updates *Updates) error {
 
 	// both status and type are empty
 	if len(updates.Type) == 0 && len(updates.Status) == 0 {
-		return fmt.Errorf("no changes, since updates are empty")
+		return fmt.Errorf("no changes made, since updates are empty")
 	}
 
+	currStatusType := strings.Split(u.Type, "+")
+
 	if len(updates.Type) > 0 {
-		u.Type = updates.Type
+		currStatusType[0] = updates.Type
 	}
 
 	if len(updates.Status) > 0 {
-		u.Status = updates.Status
+		currStatusType[1] = updates.Status
 	}
+	u.Type = currStatusType[0] + "+" + currStatusType[1]
 
 	return nil
 }

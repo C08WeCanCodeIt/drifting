@@ -296,18 +296,18 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	sessionState := &SessionState{}
-	_, err := sessions.GetState(r, ctx.Key, ctx.SessionStore, sessionState)
-	if err != nil {
-		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
-		return
-	}
+	/* 	sessionState := &SessionState{}
+	   	_, err := sessions.GetState(r, ctx.Key, ctx.SessionStore, sessionState)
+	   	if err != nil {
+	   		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+	   		return
+	   	}
 
-	// checked is logged in mod or admin
-	if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
-		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
-		return
-	}
+	   	// checked is logged in mod or admin
+	   	if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+	   		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+	   		return
+	   	} */
 
 	//by default: get all the users in the db
 	users, err := ctx.UserStore.GetAll()
@@ -318,7 +318,7 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 	}
 	typePrefix := r.URL.Query().Get("t")
 	if len(typePrefix) != 0 {
-		users, err = ctx.UserStore.GetByUserstatus(typePrefix)
+		users, err = ctx.UserStore.GetByUsertype(typePrefix)
 	}
 
 	if err != nil {

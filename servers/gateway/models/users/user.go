@@ -71,7 +71,7 @@ func (nu *NewUser) ToUser() (*User, error) {
 
 	userStatus := ""
 	if len(nu.Status) == 0 {
-		userStatus = "validated"
+		userStatus = "valid"
 	} else {
 		userStatus = strings.ToLower(nu.Status)
 	}

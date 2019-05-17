@@ -237,7 +237,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if user.Status == "suspended" {
+	if strings.Contains(user.Type, "suspended") {
 		http.Error(w, "Current user has been suspended from the site. Please contact a moderator or administrator if you think there has been a mistake.", http.StatusUnauthorized)
 		return
 	}

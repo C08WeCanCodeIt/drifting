@@ -158,51 +158,53 @@ func (ms *MySQLStore) GetAll() ([]*User, error) {
 const sqlSelectType = "select * from users where userType=?"
 
 //find users of a specific type
-/* func (ms *MySQLStore) GetByUsertype(usertype string) ([]*User, error) {
-	rows, err := ms.db.Query(sqlSelectType, usertype)
+func (ms *MySQLStore) GetByUsertype(usertype string) ([]*User, error) {
+	/* 	rows, err := ms.db.Query(sqlSelectType, usertype)
 
-	users := []*User{}
+	   	users := []*User{}
 
-	if err != nil {
-		return nil, err
-	}
+	   	if err != nil {
+	   		return nil, err
+	   	}
 
-	for rows.Next() {
-		user := &User{}
-		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
-			if err == sql.ErrNoRows {
-				return nil, ErrUserNotFound
-			}
-			return nil, fmt.Errorf("scanning: %v", err)
-		}
+	   	for rows.Next() {
+	   		user := &User{}
+	   		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
+	   			if err == sql.ErrNoRows {
+	   				return nil, ErrUserNotFound
+	   			}
+	   			return nil, fmt.Errorf("scanning: %v", err)
+	   		}
 
-		users = append(users, user)
-	}
-	return users, nil
-} */
+	   		users = append(users, user)
+	   	}
+	   	return users, nil */
+	return nil, nil
+}
 
 const sqlSelectStatus = "select * from users where userType=?"
 
 //find users of a specific status
-/* func (ms *MySQLStore) GetByUserstatus(userstatus string) ([]*User, error) {
-	rows, err := ms.db.Query(sqlSelectStatus, userstatus)
+func (ms *MySQLStore) GetByUserstatus(userstatus string) ([]*User, error) {
+	/*	rows, err := ms.db.Query(sqlSelectStatus, userstatus)
 
-	users := []*User{}
+		users := []*User{}
 
-	if err != nil {
-		return nil, err
-	}
-
-	for rows.Next() {
-		user := &User{}
-		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
-			if err == sql.ErrNoRows {
-				return nil, ErrUserNotFound
-			}
-			return nil, fmt.Errorf("scanning: %v", err)
+		if err != nil {
+			return nil, err
 		}
 
-		users = append(users, user)
-	}
-	return users, nil
-} */
+		for rows.Next() {
+			user := &User{}
+			if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
+				if err == sql.ErrNoRows {
+					return nil, ErrUserNotFound
+				}
+				return nil, fmt.Errorf("scanning: %v", err)
+			}
+
+			users = append(users, user)
+		}
+		return users, nil */
+	return nil, nil
+}

@@ -101,9 +101,13 @@ router.get("/ocean/:name", (req, res) => {
                         bottles: bottle
                     }
 
-                    //res.setHeader("Content-Type", "application/json");
-                    //res.status(200).send(result);
-                    filterByEmotion(url, result);
+                    filterByEmotion(req.url, result, function (finalResults) {
+                        res.setHeader("Content-Type", "application/json");
+                        res.status(200).send(finalResult);
+                    });
+
+
+
                 }).catch(err => {
                     res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
                 });
@@ -122,9 +126,12 @@ router.get("/ocean/:name", (req, res) => {
                             bottles: filteredBottle
                         }
 
-                        //res.setHeader("Content-Type", "application/json");
-                        //res.status(200).send(result);
-                        filterByEmotion(url, result);
+
+                        filterByEmotion(req.url, result, function (finalResults) {
+                            res.setHeader("Content-Type", "application/json");
+                            res.status(200).send(finalResult);
+                        });
+
 
                     }).catch(err => {
                         return res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
@@ -168,11 +175,15 @@ function convertTagQuery(url, callback) {
     return callback(tagsFiltered);
 }
 
-function filterByEmotion(url, result) {
+
+function filterByEmotion(url, result, callback) {
     //filter out by emotion
-    if (url.indexOf("emotion=") != -1) {
+    console.log("getting emotion");
+
+    if (url.indexOf("emotion") != -1) {
         let currURL = new URLSearchParams(url);
         let currEmo = currURL.get("emotion");
+        console.log("curr Emo", currEmo);
 
         if (emotion === "positive") { //get all bottles with positive (encouragement)
             result.bottles.filter(b => bottles.emotion.indexOf("+") != -1);
@@ -180,7 +191,5 @@ function filterByEmotion(url, result) {
             result.bottles.filter(b => bottles.emotion.indexOf("-") != -1);
         }
     }
-
-    res.setHeader("Content-Type", "application/json");
-    res.status(200).send(result);
+    return callback(result);
 }

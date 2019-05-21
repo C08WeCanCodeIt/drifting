@@ -15,6 +15,7 @@ type User struct {
 	PassHash []byte `json:"-"` //never JSON encoded/decoded
 	UserName string `json:"userName"`
 	Type     string `json:"type"` //never JSON encoded/decoded
+	Status   string `json:"status"`
 }
 
 //Credentials represents user sign-in credentials
@@ -79,6 +80,7 @@ func (nu *NewUser) ToUser() (*User, error) {
 	user := &User{
 		UserName: nu.UserName,
 		Type:     userType + "+" + userStatus,
+		Status:   userStatus,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil

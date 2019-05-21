@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-const sqlInsertTask = "insert into users (userName, passHash, userType) values (?,?,?)"
+const sqlInsertTask = "insert into users (userName, passHash, type, status) values (?,?,?)"
 const sqlSelectAll = "select * from users"
 const sqlSelectByID = sqlSelectAll + " where id=?"
 const sqlSelectByUsername = sqlSelectAll + " where userName=?"
@@ -33,7 +33,7 @@ func NewMySQLStore(db *sql.DB) *MySQLStore {
 //Insert inserts the `user` into the store
 func (ms *MySQLStore) Insert(user *User) (*User, error) {
 
-	res, err := ms.db.Exec(sqlInsertTask, user.UserName, user.PassHash, user.Type)
+	res, err := ms.db.Exec(sqlInsertTask, user.UserName, user.PassHash, user.Type, user.Status)
 	if err != nil {
 		fmt.Printf("error inserting new row: %v\n", err)
 		return nil, err
@@ -155,56 +155,56 @@ func (ms *MySQLStore) GetAll() ([]*User, error) {
 	return users, nil
 }
 
-const sqlSelectType = "select * from users where userType=?"
+//const sqlSelectType = "select * from users where userType=?"
 
 //find users of a specific type
-func (ms *MySQLStore) GetByUsertype(usertype string) ([]*User, error) {
-	/* 	rows, err := ms.db.Query(sqlSelectType, usertype)
+//func (ms *MySQLStore) GetByUsertype(usertype string) ([]*User, error) {
+/* 	rows, err := ms.db.Query(sqlSelectType, usertype)
 
-	   	users := []*User{}
+   	users := []*User{}
 
-	   	if err != nil {
-	   		return nil, err
-	   	}
+   	if err != nil {
+   		return nil, err
+   	}
 
-	   	for rows.Next() {
-	   		user := &User{}
-	   		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
-	   			if err == sql.ErrNoRows {
-	   				return nil, ErrUserNotFound
-	   			}
-	   			return nil, fmt.Errorf("scanning: %v", err)
-	   		}
+   	for rows.Next() {
+   		user := &User{}
+   		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
+   			if err == sql.ErrNoRows {
+   				return nil, ErrUserNotFound
+   			}
+   			return nil, fmt.Errorf("scanning: %v", err)
+   		}
 
-	   		users = append(users, user)
-	   	}
-	   	return users, nil */
-	return nil, nil
-}
+   		users = append(users, user)
+   	}
+   	return users, nil */
+//return nil, nil
+//}
 
-const sqlSelectStatus = "select * from users where userType=?"
+//const sqlSelectStatus = "select * from users where userType=?"
 
 //find users of a specific status
-func (ms *MySQLStore) GetByUserstatus(userstatus string) ([]*User, error) {
-	/*	rows, err := ms.db.Query(sqlSelectStatus, userstatus)
+//func (ms *MySQLStore) GetByUserstatus(userstatus string) ([]*User, error) {
+/*	rows, err := ms.db.Query(sqlSelectStatus, userstatus)
 
-		users := []*User{}
+	users := []*User{}
 
-		if err != nil {
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
+	}
 
-		for rows.Next() {
-			user := &User{}
-			if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
-				if err == sql.ErrNoRows {
-					return nil, ErrUserNotFound
-				}
-				return nil, fmt.Errorf("scanning: %v", err)
+	for rows.Next() {
+		user := &User{}
+		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.Status); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, ErrUserNotFound
 			}
-
-			users = append(users, user)
+			return nil, fmt.Errorf("scanning: %v", err)
 		}
-		return users, nil */
-	return nil, nil
-}
+
+		users = append(users, user)
+	}
+	return users, nil */
+//return nil, nil
+//}

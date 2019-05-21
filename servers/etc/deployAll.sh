@@ -1,20 +1,29 @@
 #!/usr/bin/env bash
+cd ../sqldb
 
 # deploy SQL
-sh ../sqldb/deploy.sh
+sh deploy.sh
 
 # deploy mongoDB
-sh ../mongodb/mongoDeploy.sh
+cd ../mongodb
+
+sh mongoDeploy.sh
 
 # deploy rabbitmq
-sh ../rabbitMQ/rabbitDeploy.sh
+cd ../rabbitMQ
 
-sleep 20
+sh rabbitDeploy.sh
+
+sleep 5
 
 # deploy bottles
-sh ../bottles/deploy.sh
+cd ../bottles
 
-sleep 20
+sh deploy.sh
+
+sleep 5
 
 # deploy gateway
-sh ../gateway/deploy.sh
+cd ../gateway
+
+sh deploy.sh

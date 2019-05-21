@@ -55,25 +55,26 @@ func (ms *MySQLStore) Update(id int64, updates *Updates) (*User, error) {
 	toUpdate := ""
 
 	// updating both member status and member type
-	if len(updates.Type) > 0 && len(updates.Status) > 0 {
-		toUpdate = updates.Type + "+" + updates.Status
+	/*
+		if len(updates.Type) > 0 && updates.Status != nil {
+			toUpdate = updates.Type + "+" + updates.Status
 
-	} else {
-		currUser, err := ms.GetByID(id)
-		if err != nil {
-			return nil, fmt.Errorf("User not found in database: %v", err)
-		}
-		currTypeStatus := strings.Split(currUser.Type, "+")
+		} else {
+			currUser, err := ms.GetByID(id)
+			if err != nil {
+				return nil, fmt.Errorf("User not found in database: %v", err)
+			}
+			currTypeStatus := strings.Split(currUser.Type, "+")
 
-		if len(updates.Type) > 0 { //updating only member type
-			currTypeStatus[0] = updates.Type
-		}
+			if len(updates.Type) > 0 { //updating only member type
+				currTypeStatus[0] = updates.Type
+			}
 
-		if len(updates.Status) > 0 { //update on member status
-			currTypeStatus[1] = updates.Status
-		}
-		toUpdate = currTypeStatus[0] + "+" + currTypeStatus[1]
-	}
+			if len(updates.Status) > 0 { //update on member status
+				currTypeStatus[1] = updates.Status
+			} */
+	//toUpdate = currTypeStatus[0] + "+" + currTypeStatus[1]
+	//}
 
 	results, err := ms.db.Exec(sqlUpdate, toUpdate, id)
 	if err != nil {
@@ -172,12 +173,14 @@ func (ms *MySQLStore) GetAll() ([]*User, error) {
 				return nil, ErrUserNotFound
 			}
 
-			finalColumns := ""
-			for i := 0; i < len(columns); i++ {
-				finalColumns = finalColumns + columns[i] + " ! "
-			}
+			/*
+				finalColumns := ""
+				for i := 0; i < len(columns); i++ {
+					finalColumns = finalColumns + columns[i] + " ! "
+				} */
 
-			return nil, fmt.Errorf(" "+finalColumns+" scanning: %v", err)
+			//return nil, fmt.Errorf(" "+finalColumns+" scanning: %v", err)
+			return nil, fmt.Errorf("scanning: %v", err)
 		}
 
 		users = append(users, user)

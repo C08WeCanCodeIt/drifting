@@ -129,19 +129,25 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 	} else {
 		username = id
 	}
-	fmt.Print("username:  curr,", username)
 
 	if r.Method == http.MethodGet {
 
 		// make sure non admin/mods cannot see other user's information
-		/* 		if username != sessionState.User.UserName && sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+		/*
+			if username != sessionState.User.UserName && sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+				http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+				return
+			}
+		*/
+
+		if username != sessionState.User.UserName && !strings.Contains(sessionState.UserType, "admin") && !strings.Contains(sessionState.UserType, "mod") {
 			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 			return
-		} */
+		}
 
 		user, err := ctx.UserStore.GetByUserName(username)
 		if err != nil {
-			http.Error(w, "User not found: "+err.Error()+" "+username, http.StatusNotFound)
+			http.Error(w, "User not found: "+err.Error(), http.StatusNotFound)
 			return
 		}
 
@@ -156,11 +162,18 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 
 	} else if r.Method == http.MethodPatch {
 
-		// checked is logged in mod or admin
-		if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+		if !strings.Contains(sessionState.UserType, "admin") && !strings.Contains(sessionState.UserType, "mod") {
 			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 			return
 		}
+
+		// checked is logged in mod or admin
+		/*
+			if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
+				http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+				return
+			}
+		*/
 
 		// get the user information
 		dbUser, err := ctx.UserStore.GetByUserName(username)
@@ -176,13 +189,13 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 			return
 		}
 
-		/* 		if len(userUpdate.Status) == 0 {
-		   			userUpdate.Status = dbUser.Status
-		   		}
+		if len(userUpdate.Status) == 0 {
+			userUpdate.Status = dbUser.IsSuspended
+		}
 
-		   		if len(userUpdate.Type) == 0 {
-		   			userUpdate.Type = dbUser.Status
-		   		 }*/
+		if len(userUpdate.Type) == 0 {
+			userUpdate.Type = dbUser.Type
+		}
 
 		err = dbUser.ApplyUpdates(userUpdate)
 		if err != nil {
@@ -241,7 +254,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if strings.Contains(user.Type, "suspended") {
+	if strings.Contains(user.Type, "suspended") || user.IsSuspended == true {
 		http.Error(w, "Current user has been suspended from the site. Please contact a moderator or administrator if you think there has been a mistake.", http.StatusUnauthorized)
 		return
 	}

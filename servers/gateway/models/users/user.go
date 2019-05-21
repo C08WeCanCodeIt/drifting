@@ -15,7 +15,7 @@ type User struct {
 	PassHash    []byte `json:"-"` //never JSON encoded/decoded
 	UserName    string `json:"userName"`
 	Type        string `json:"type"` //never JSON encoded/decoded
-	IsSuspended bool   `json:"isSuspended"`
+	IsSuspended bool   `json:"status"`
 }
 
 //Credentials represents user sign-in credentials
@@ -30,13 +30,13 @@ type NewUser struct {
 	Password     string `json:"password"`
 	PasswordConf string `json:"passwordConf"`
 	Type         string `json:"type"`
-	Status       string `json:"status"`
+	Status       bool   `json:"status"`
 }
 
 //Updates for changing password
 type Updates struct {
 	Type   string `json:"type"`
-	Status string `json:"status"`
+	Status bool   `json:"status"`
 }
 
 //Validate validates the new user and returns an error if
@@ -70,17 +70,12 @@ func (nu *NewUser) ToUser() (*User, error) {
 		userType = strings.ToLower(nu.Type)
 	}
 
-	userStatus := ""
-	if len(nu.Status) == 0 {
-		userStatus = "valid"
-	} else {
-		userStatus = strings.ToLower(nu.Status)
-	}
+	userStatus := nu.Status
 
 	user := &User{
 		UserName:    nu.UserName,
-		Type:        userType + "+" + userStatus,
-		IsSuspended: false,
+		Type:        userType,
+		IsSuspended: userStatus,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil

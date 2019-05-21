@@ -84,19 +84,26 @@ router.get("/ocean/:name", (req, res) => {
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => {
 
         //get all the current tags
-        Tags.find({ "ocean": currOcean.name }).sort({"lastUpdated": -1}).exec().then(tag => {
+        Tags.find({ "ocean": currOcean.name }).sort({ "lastUpdated": -1 }).exec().then(tag => {
+
+            let endIndex = req.url.length - 1;
+            andIndex = currURL.indexOf("&");
+            if (andIndex != -1) {
+                endIndex = andIndex;
+            }
 
             //no query tag or has empty query ie "/ocean/:name?tags="
-            if (currURL.indexOf("?tags=") == -1 || currURL.indexOf("=") == req.url.length - 1) {
-                Bottles.find({ "ocean": currOcean.name, "isPublic": true }).sort({"createdAt": -1}).exec().then(bottle => {
+            if (currURL.indexOf("tags=") == -1 || currURL.indexOf("=") == endIndex) {
+                Bottles.find({ "ocean": currOcean.name, "isPublic": true }).sort({ "createdAt": -1 }).exec().then(bottle => {
                     let result = {
                         ocean: currOcean.name,
                         tags: tag,
                         bottles: bottle
                     }
 
-                    res.setHeader("Content-Type", "application/json");
-                    res.status(200).send(result);
+                    //res.setHeader("Content-Type", "application/json");
+                    //res.status(200).send(result);
+                    filterByEmotion(url, result);
                 }).catch(err => {
                     res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
                 });
@@ -106,7 +113,7 @@ router.get("/ocean/:name", (req, res) => {
                 // gets all the tags to filter by first
                 // filters through the tags
                 convertTagQuery(req.url, function (queryTags) {
-                    Bottles.find({ "ocean": currOcean.name, "isPublic": true, "tags": { $all: queryTags} }).sort({"createdAt": -1}).exec().then(filteredBottle => {
+                    Bottles.find({ "ocean": currOcean.name, "isPublic": true, "tags": { $all: queryTags } }).sort({ "createdAt": -1 }).exec().then(filteredBottle => {
 
                         let result = {
                             ocean: currOcean.name,
@@ -115,8 +122,9 @@ router.get("/ocean/:name", (req, res) => {
                             bottles: filteredBottle
                         }
 
-                        res.setHeader("Content-Type", "application/json");
-                        res.status(200).send(result);
+                        //res.setHeader("Content-Type", "application/json");
+                        //res.status(200).send(result);
+                        filterByEmotion(url, result);
 
                     }).catch(err => {
                         return res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
@@ -138,8 +146,13 @@ module.exports = router;
 
 //gets all the query parameters from the request
 function convertTagQuery(url, callback) {
-    let query = url.substring(url.indexOf("?tags=") + "?tags=".length);
-    
+    //let test = new URLSearchParams(url)
+    //test.get
+
+    //let query = url.substring(url.indexOf("tags=") + "tags=".length);
+    let currURL = new URLSearchParams(url);
+    let query = currURL.get("tags");
+
     //replace %20 with spaces
     if (query.indexOf("%20") != -1) {
         query = query.replace("%20", " ");
@@ -153,4 +166,21 @@ function convertTagQuery(url, callback) {
     let tagsFiltered = Array.from(tempSet);
 
     return callback(tagsFiltered);
+}
+
+function filterByEmotion(url, result) {
+    //filter out by emotion
+    if (url.indexOf("emotion=") != -1) {
+        let currURL = new URLSearchParams(url);
+        let currEmo = currURL.get("emotion");
+
+        if (emotion === "positive") { //get all bottles with positive (encouragement)
+            result.bottles.filter(b => bottles.emotion.indexOf("+") != -1);
+        } else { //get all bottles that are EP
+            result.bottles.filter(b => bottles.emotion.indexOf("-") != -1);
+        }
+    }
+
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).send(result);
 }

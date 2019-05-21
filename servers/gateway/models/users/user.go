@@ -11,10 +11,11 @@ var bcryptCost = 13
 
 //User represents a user account in the database
 type User struct {
-	ID       int64  `json:"id"`
-	PassHash []byte `json:"-"` //never JSON encoded/decoded
-	UserName string `json:"userName"`
-	Type     string `json:"-"` //never JSON encoded/decoded
+	ID          int64  `json:"id"`
+	PassHash    []byte `json:"-"` //never JSON encoded/decoded
+	UserName    string `json:"userName"`
+	Type        string `json:"Type"` //never JSON encoded/decoded
+	IsSuspended bool   `json:"isSuspended"`
 }
 
 //Credentials represents user sign-in credentials

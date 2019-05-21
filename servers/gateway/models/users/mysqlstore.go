@@ -5,11 +5,12 @@ import (
 	"fmt"
 )
 
-const sqlInsertTask = "insert into users (email, passHash, userName, firstName, lastName, photoURL) values (?,?,?,?,?,?)"
+//const sqlInsertTask = "insert into users (userName, passHash, userType, userStatus) values (?,?,?,?)"
+
+const sqlInsertTask = "insert into users (userName, passHash, userType) values (?,?,?)"
+
 const sqlSelectAll = "select * from users"
-const sqlSelectTrie = "select id, userName, firstName, lastName from users"
 const sqlSelectByID = sqlSelectAll + " where id=?"
-const sqlSelectByEmail = sqlSelectAll + " where email=?"
 const sqlSelectByUsername = sqlSelectAll + " where userName=?"
 const sqlUpdate = "update users set firstName=?, lastName=? where id=?"
 const sqlDel = "delete from users where id=?"
@@ -34,7 +35,7 @@ func NewMySQLStore(db *sql.DB) *MySQLStore {
 //Insert inserts the `user` into the store
 func (ms *MySQLStore) Insert(user *User) (*User, error) {
 
-	res, err := ms.db.Exec(sqlInsertTask, user.PassHash, user.UserName)
+	res, err := ms.db.Exec(sqlInsertTask, user.UserName, user.PassHash, user.Type)
 	if err != nil {
 		fmt.Printf("error inserting new row: %v\n", err)
 		return nil, err
@@ -73,21 +74,7 @@ func (ms *MySQLStore) GetByID(id int64) (*User, error) {
 	row := ms.db.QueryRow(sqlSelectByID, id)
 	user := &User{}
 
-	if err := row.Scan(&user.ID, &user.PassHash, &user.UserName); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, ErrUserNotFound
-		}
-		return nil, fmt.Errorf("scanning: %v", err)
-	}
-	return user, nil
-}
-
-//GetByEmail gets the user details with the specified `id`
-func (ms *MySQLStore) GetByEmail(email string) (*User, error) {
-	row := ms.db.QueryRow(sqlSelectByEmail, email)
-	user := &User{}
-
-	if err := row.Scan(&user.ID, &user.PassHash, &user.UserName); err != nil {
+	if err := row.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.IsSuspended); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, ErrUserNotFound
 		}
@@ -101,7 +88,7 @@ func (ms *MySQLStore) GetByUserName(username string) (*User, error) {
 	row := ms.db.QueryRow(sqlSelectByUsername, username)
 	user := &User{}
 
-	if err := row.Scan(&user.ID, &user.PassHash, &user.UserName); err != nil {
+	if err := row.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.IsSuspended); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, ErrUserNotFound
 		}
@@ -122,6 +109,7 @@ func (ms *MySQLStore) Delete(id int64) error {
 //GetAll gets all the users from the db
 func (ms *MySQLStore) GetAll() ([]*User, error) {
 	rows, err := ms.db.Query(sqlSelectAll)
+	columns, _ := rows.Columns()
 
 	users := []*User{}
 
@@ -131,11 +119,17 @@ func (ms *MySQLStore) GetAll() ([]*User, error) {
 
 	for rows.Next() {
 		user := &User{}
-		if err := rows.Scan(&user.ID, &user.PassHash, &user.UserName); err != nil {
+		if err := rows.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.IsSuspended); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, ErrUserNotFound
 			}
-			return nil, fmt.Errorf("scanning: %v", err)
+
+			finalColumns := ""
+			for i := 0; i < len(columns); i++ {
+				finalColumns = finalColumns + columns[i] + " ! "
+			}
+
+			return nil, fmt.Errorf(" "+finalColumns+" scanning: %v", err)
 		}
 
 		users = append(users, user)
@@ -152,7 +146,7 @@ func (ms *MySQLStore) GetUserTypeByUsername(username string) (string, error) {
 	row := ms.db.QueryRow(sqlSelectByUsername, username)
 	user := &User{}
 
-	if err := row.Scan(&user.ID, &user.PassHash, &user.UserName, &user.Type); err != nil {
+	if err := row.Scan(&user.ID, &user.UserName, &user.PassHash, &user.Type, &user.IsSuspended); err != nil {
 		if err == sql.ErrNoRows {
 			return "", ErrUserNotFound
 		}

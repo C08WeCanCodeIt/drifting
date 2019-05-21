@@ -12,9 +12,6 @@ type Store interface {
 	//GetByID returns the User with the given ID
 	GetByID(id int64) (*User, error)
 
-	//GetByEmail returns the User with the given email
-	GetByEmail(email string) (*User, error)
-
 	//GetByUserName returns the User with the given Username
 	GetByUserName(username string) (*User, error)
 

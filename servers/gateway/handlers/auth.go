@@ -81,7 +81,7 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 	sessionState := &SessionState{}
 	_, err := sessions.GetState(r, ctx.Key, ctx.SessionStore, sessionState)
 	if err != nil {
-		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		http.Error(w, "Unauthorized user: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
@@ -99,7 +99,7 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 
 		user, err := ctx.UserStore.GetByID(numID)
 		if err != nil {
-			http.Error(w, "User not found in DB", http.StatusNotFound)
+			http.Error(w, "User not found in DB"+err.Error()+" "+sessionState.User.UserName, http.StatusNotFound)
 			return
 		}
 
@@ -185,26 +185,26 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 	userCred := &users.Credentials{}
 	err := json.NewDecoder(r.Body).Decode(userCred)
 	if err != nil {
-		http.Error(w, "Could not decode user credentials", http.StatusBadRequest)
+		http.Error(w, "Could not decode user credentials: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	user, err := ctx.UserStore.GetByUserName(userCred.UserName)
 	if err != nil {
 		bcrypt.GenerateFromPassword(user.PassHash, 13) // Ensure that process takes time
-		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		http.Error(w, "Unauthorized user: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	err = user.Authenticate(userCred.Password)
 	if err != nil {
-		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		http.Error(w, "Unauthorized user: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	_, err = sessions.BeginSession(ctx.Key, ctx.SessionStore, SessionState{StartTime: time.Now(), User: user}, w)
 	if err != nil {
-		http.Error(w, "Could not begin a new session", http.StatusInternalServerError)
+		http.Error(w, "Could not begin a new session: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -213,7 +213,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 
 	err = json.NewEncoder(w).Encode(user)
 	if err != nil {
-		http.Error(w, "Could not encode user", http.StatusInternalServerError)
+		http.Error(w, "Could not encode user: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -254,7 +254,7 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 	users, err := ctx.UserStore.GetAll()
 
 	if err != nil {
-		http.Error(w, "Couldn't retrieve users", http.StatusInternalServerError)
+		http.Error(w, "Couldn't retrieve users: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -263,7 +263,7 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 
 	err = json.NewEncoder(w).Encode(users)
 	if err != nil {
-		http.Error(w, "Users list could not be encoded", http.StatusInternalServerError)
+		http.Error(w, "Users list could not be encoded: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 

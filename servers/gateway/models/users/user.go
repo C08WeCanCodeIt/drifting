@@ -11,11 +11,11 @@ var bcryptCost = 13
 
 //User represents a user account in the database
 type User struct {
-	ID       int64  `json:"id"`
-	PassHash []byte `json:"-"` //never JSON encoded/decoded
-	UserName string `json:"userName"`
-	Type     string `json:"type"` //never JSON encoded/decoded
-	Status   string `json:"status"`
+	ID          int64  `json:"id"`
+	PassHash    []byte `json:"-"` //never JSON encoded/decoded
+	UserName    string `json:"userName"`
+	Type        string `json:"type"` //never JSON encoded/decoded
+	IsSuspended bool   `json:"isSuspended"`
 }
 
 //Credentials represents user sign-in credentials
@@ -78,9 +78,9 @@ func (nu *NewUser) ToUser() (*User, error) {
 	}
 
 	user := &User{
-		UserName: nu.UserName,
-		Type:     userType + "+" + userStatus,
-		Status:   userStatus,
+		UserName:    nu.UserName,
+		Type:        userType + "+" + userStatus,
+		IsSuspended: false,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil

@@ -1,19 +1,9 @@
-drop table if exists users;
-
-create table users (
+create table if not exists users (
     id int primary key not null auto_increment,
-    userName varchar(32) unique,
+    userName  varchar(254) unique,
     passHash binary(60),
-    userType varchar(32),
+    type varchar(255),
+    status varchar(255)
 );
 
-
-/* create table if not exists message (
-    messageID int primary key not null auto_increment,
-    messageSubject varchar(255),
-    messageBody  varchar(500),
-    foreign key(userName) references user(userName)
-);  */
-
-# NOTE: kept running info MySQL error 1054 when creating a field for userStatus,
-# Was unable to resolve error therefore the status is store in the user type
+insert into users (userName, passHash, type, status) values ("default", "\0", "member", "test");

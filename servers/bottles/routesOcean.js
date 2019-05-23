@@ -21,14 +21,18 @@ router.post("/ocean", (req, res) => {
         res.status(401).send({ error: "No user signed in, cannot create an ocean" });
     }
     let user = JSON.parse(getUser);
-    if (user.Type.indexOf("admin") == -1 && user.Type.indexOf("mod") == -1) {
+    if (!user) {
+        res.status(401).send({ error: "No user signed in, cannot create an ocean" });
+    }
+
+    if (user.type.indexOf("admin") == -1 && user.type.indexOf("mod") == -1) {
         res.status(401).send({ error: "Current user is not an mod or admin, cannot create an ocean" });
     }
 
-    Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
+/*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
         if (ocean) {
-            return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
-        }
+            return res.status(400).send({ error: "Ocean with the name " + ocean.name + " already exists "});
+        } */
 
         Oceans.create({
             name: req.body.name.toLowerCase()
@@ -44,7 +48,7 @@ router.post("/ocean", (req, res) => {
         }).catch(err => {
             res.status(400).send({ error: "couldn't create a ocean: " + err });
         });
-    });
+    //});
 });
 
 

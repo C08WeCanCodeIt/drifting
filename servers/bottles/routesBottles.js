@@ -138,7 +138,7 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 
         // delete the counts for PUBLIC posts
         oldTags = bottle.tags;
-        //if (req.isPublic) {
+        //if (req.body.isPublic) {
         oldTags.forEach(function (t) {
             Tags.findOne({ "name": t }).exec().then(tag => {
                 if (tag) {
@@ -155,7 +155,7 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
         tagsFiltered.forEach(function (t) {
             Tags.findOne({ "name": t }).exec().then(tag => {
                 if (tag) { // tag exists and it's public post
-                    if (req.isPublic) {
+                    if (req.body.isPublic) {
                         tag.count = tag.count + 1;
                         tag.lastUpdated = Date.now()
                         tag.save();
@@ -186,8 +186,9 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
         // updating the tags, body, and update date
         bottle.tags = tagsFiltered;
         bottle.body = req.body.body;
-        bottle.isPublic = req.isPublic;
+        bottle.isPublic = req.body.isPublic;
         bottle.lastUpdated = Date.now();
+
 
         // sending the updated bottle
         bottle.save().then(() => {
@@ -239,7 +240,7 @@ router.patch("/ocean/:name/bottle/:id/private", (req, res) => {
 
         //
         bottle.isPublic = false;
-        bottle.save().then(() => {
+        Bottles.save().then(() => {
             return res.status(201).send("bottle has been made private");
         });
     }).catch(err => {
@@ -254,7 +255,7 @@ router.patch("/ocean/:name/bottle/:id/report", (req, res) => {
     Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
 
         bottle.reportedCount = bottle.reportedCount + 1;
-        bottle.save().then(() => {
+        Bottles.save().then(() => {
             return res.status(201).send("bottle has been sucessfully reported");
         });
     }).catch(err => {

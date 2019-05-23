@@ -11,9 +11,9 @@ const fetch = require("node-fetch");
 
 // create a bottle in the ocean
 router.post("/ocean/:name", (req, res) => {
-    //if (!req.body.body || req.body.body.length === 0) {
-    //    res.status(403).send({ error: "Cannot posts an empty bottle" });
-    //}
+    if (!req.body.body || req.body.body.length === 0) {
+        res.status(403).send({ error: "Cannot posts an empty bottle" });
+    }
 
     //if (!req.body.isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
     //    res.status(403).send({ error: "Public Posts cannot have no tags" });
@@ -88,7 +88,7 @@ router.post("/ocean/:name", (req, res) => {
             creatorID: user.id,
             createdAt: Date.now(),
             isPublic: req.body.isPublic
-            
+
         }).then(bottle => {
             bottle.save().then(() => {
                 res.setHeader("Content-Type", "application/json");
@@ -199,10 +199,23 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 
 });
 
+router.get("/ocean/:name/bottle/:id", (req, res) => {
+
+    Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
+        if (!bottle) {
+            return res.status(404).send({ error: "Bottle with given id was not found" });
+        }
+        return res.status(201).send(bottle);
+    }).catch(err => {
+        return res.status(400).send({ error: "Error getting the bottle with the ID" + req.params.id + ": " + err });
+    });
+});
+
+
 router.patch("/ocean/:name/bottle/:id/private", (req, res) => {
     let getUser = req.get('X-User');
     if (!getUser) {
-        res.status(401).send({ error: "No user signed in, cannot post bottle" });
+        res.status(401).send({ error: "No user signed in, cannot edit bottle" });
     }
     let user = JSON.parse(getUser);
     if (user.type != "admin" && user.type != "mod") {
@@ -250,9 +263,6 @@ router.patch("/ocean/:name/bottle/:id/report", (req, res) => {
 });
 
 
-
-
-
 // deleting a bottle
 router.delete("/ocean/:name/bottle/:id", (req, res) => {
     let getUser = req.get('X-User');
@@ -290,7 +300,6 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
 });
 
 
-
 // get everything made by a specific user
 router.get("/ocean/bottles/me", (req, res) => {
     let getUser = req.get('X-User');
@@ -303,7 +312,7 @@ router.get("/ocean/bottles/me", (req, res) => {
         res.setHeader("Content-Type", "application/json");
         res.status(200).send(bottle);
     }).catch(err => {
-        return res.sendStatus(500).send({ error: "couldn't find bottles made by this user"});
+        return res.sendStatus(500).send({ error: "couldn't find bottles made by this user" });
     });
 });
 

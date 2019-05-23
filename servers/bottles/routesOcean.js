@@ -16,26 +16,35 @@ const fetch = require("node-fetch");
 
 //create an ocean
 router.post("/ocean", (req, res) => {
-    /*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
-            if (ocean) {
-                return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
-            } */
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in, cannot create an ocean" });
+    }
+    let user = JSON.parse(getUser);
+    if (user.Type.indexOf("admin") == -1 && user.Type.indexOf("mod") == -1) {
+        res.status(401).send({ error: "Current user is not an mod or admin, cannot create an ocean" });
+    }
 
-    Oceans.create({
-        name: req.body.name.toLowerCase()
-    }).then(ocean => {
-        //insert rabbitMQ stuff
-        ocean.save().then(() => {
-            res.setHeader("Content-Type", "application/json");
-            res.status(201).send(ocean);
+    Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
+        if (ocean) {
+            return res.status(400).send({ error: "Ocean with the name " + req.body.name.toLowerCase() + " already exists " + ocean.name });
+        }
+
+        Oceans.create({
+            name: req.body.name.toLowerCase()
+        }).then(ocean => {
+            //insert rabbitMQ stuff
+            ocean.save().then(() => {
+                res.setHeader("Content-Type", "application/json");
+                res.status(201).send(ocean);
+            }).catch(err => {
+                console.log(err);
+            });
+
         }).catch(err => {
-            console.log(err);
+            res.status(400).send({ error: "couldn't create a ocean: " + err });
         });
-
-    }).catch(err => {
-        res.status(400).send({ error: "couldn't create a ocean: " + err });
     });
-    /*     }); */
 });
 
 
@@ -133,10 +142,88 @@ router.get("/ocean/:name", (req, res) => {
 });
 
 
+// NOTE: Repeat of previous but with emotion in the query
+// Not enought time to figure out the async stuff to combine
+// get everything inside a specific ocean (FILTER BY MOOD)
+router.get("/ocean/:name/moodFilter/:mood", (req, res) => {
+    let currURL = req.url.trim();
+    Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => {
+
+        //get all the current tags
+        Tags.find({ "ocean": currOcean.name }).sort({ "lastUpdated": -1 }).exec().then(tag => {
+
+            //no query tag or has empty query ie "/ocean/:name?tags="
+            if (currURL.indexOf("?tags=") == -1 || currURL.indexOf("=") == req.url.length - 1) {
+                Bottles.find({ "ocean": currOcean.name, "isPublic": true, "emotion": req.params.mood }).sort({ "createdAt": -1 }).exec().then(bottle => {
+                    let result = {
+                        ocean: currOcean.name,
+                        tags: tag,
+                        bottles: bottle
+                    }
+
+                    res.setHeader("Content-Type", "application/json");
+                    res.status(200).send(result);
+                }).catch(err => {
+                    res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
+                });
+            } else {
+                // gets all the bottles with tags specified
+                // asynch stuff:
+                // gets all the tags to filter by first
+                // filters through the tags
+                convertTagQuery(req.url, function (queryTags) {
+                    Bottles.find({ "ocean": currOcean.name, "isPublic": true, "tags": { $all: queryTags }, "emotion": req.params.mood }).sort({ "createdAt": -1 }).exec().then(filteredBottle => {
+
+                        let result = {
+                            ocean: currOcean.name,
+                            tags: tag,
+                            filteredBy: queryTags,
+                            bottles: filteredBottle
+                        }
+
+                        res.setHeader("Content-Type", "application/json");
+                        res.status(200).send(result);
+
+                    }).catch(err => {
+                        return res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
+                    });
+                })
+
+            }
+        }).catch(err => {
+            res.sendStatus(500).send({ error: "couldn't get bottles from current ocean: " + err });
+        });
+    }).catch(err => {
+        res.sendStatus(404).send({ error: "no ocean was found with the name " + req.params.name + ": " + err });
+    });
+});
+
 
 //gets all the query parameters from the request
 function convertTagQuery(url, callback) {
     let query = url.substring(url.indexOf("?tags=") + "?tags=".length);
+
+
+    // clean up query for searching
+    // if the forum is like #tag, #tag, #tag
+    if (query.indexOf(", #") != -1) {
+        query = query.replace(", #", ",");
+    }
+
+    // if the forum is like #tag #tag #tag
+    if (query.indexOf(" #") != -1) {
+        query = query.replace(" #", ",");
+    }
+
+    // if the forum is like #tag #tag #tag
+    if (query.indexOf("#") != -1) {
+        query = query.replace("#", ",");
+
+        //get rid of trailing commas
+        if (query.indexOf(",") == 0) {
+            query = query.substring(1, len(query))
+        }
+    }
 
     //replace %20 with spaces
     if (query.indexOf("%20") != -1) {
@@ -158,7 +245,7 @@ router.get("/ocean/:name/reported", (req, res) => {
     let currURL = req.url.trim();
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => { //check ocean exists
 
-        Bottles.find({ "ocean": currOcean.name, reportedCount: { $gt: 0} }).sort({ "createdAt": -1 }).exec().then(bottle => {
+        Bottles.find({ "ocean": currOcean.name, reportedCount: { $gt: 0 } }).sort({ "createdAt": -1 }).exec().then(bottle => {
             let result = {
                 ocean: currOcean.name,
                 bottles: bottle
@@ -175,13 +262,6 @@ router.get("/ocean/:name/reported", (req, res) => {
         res.sendStatus(404).send({ error: "no ocean was found with the name " + req.params.name + ": " + err });
     });
 });
-
-
-
-
-
-
-
 
 
 //TODO: Get all the oceans that the current is in

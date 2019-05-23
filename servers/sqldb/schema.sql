@@ -5,5 +5,5 @@ create table if not exists users (
     userName  varchar(254) unique,
     passHash binary(60),
     userType varchar(255),
-    userStatus varchar(255)
+    isSuspended bool
 );

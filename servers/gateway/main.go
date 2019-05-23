@@ -121,6 +121,7 @@ func main() {
 	mux.HandleFunc("/v1/sessions", handlersContext.SessionsHandler)
 	mux.HandleFunc("/v1/sessions/", handlersContext.SpecificSessionHandler)
 	mux.HandleFunc("/v1/allusers", handlersContext.GetAllUsersHandler)
+	mux.HandleFunc("/v1/allusers/", handlersContext.GetAllUsersHandler)
 
 	mux.Handle("/v1/ocean", oceanProxy)
 	mux.Handle("/v1/ocean/", oceanProxy)

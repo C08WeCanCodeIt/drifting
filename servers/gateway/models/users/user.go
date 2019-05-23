@@ -30,13 +30,12 @@ type NewUser struct {
 	Password     string `json:"password"`
 	PasswordConf string `json:"passwordConf"`
 	Type         string `json:"type"`
-	Status       bool   `json:"status"`
 }
 
 //Updates for changing password
 type Updates struct {
 	Type   string `json:"type"`
-	Status bool   `json:"status"`
+	Status string `json:"status"`
 }
 
 //Validate validates the new user and returns an error if
@@ -70,12 +69,10 @@ func (nu *NewUser) ToUser() (*User, error) {
 		userType = strings.ToLower(nu.Type)
 	}
 
-	userStatus := nu.Status
-
 	user := &User{
 		UserName:    nu.UserName,
 		Type:        userType,
-		IsSuspended: userStatus,
+		IsSuspended: false,
 	}
 	user.SetPassword(nu.Password)
 	return user, nil
@@ -112,16 +109,24 @@ func (u *User) ApplyUpdates(updates *Updates) error {
 		return fmt.Errorf("no changes made, since updates are empty")
 	}
 
-	currStatusType := strings.Split(u.Type, "+")
-
 	if len(updates.Type) > 0 {
-		currStatusType[0] = updates.Type
+		u.Type = updates.Type
 	}
 
 	if len(updates.Status) > 0 {
-		currStatusType[1] = updates.Status
+		switch updates.Status {
+		case "warn":
+			if !strings.Contains(u.Type, "!") {
+				u.Type = u.Type + "!"
+			}
+		case "unwarn":
+			u.Type = strings.Replace(u.Type, "!", "", 1)
+		case "ban":
+			u.IsSuspended = true
+		case "unban":
+			u.IsSuspended = false
+		}
 	}
-	u.Type = currStatusType[0] + "+" + currStatusType[1]
 
 	return nil
 }

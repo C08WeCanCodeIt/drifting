@@ -30,8 +30,8 @@ type Store interface {
 	GetAll() ([]*User, error)
 
 	//GetAll users by their type
-	//GetByUsertype(usertype string) ([]*User, error)
+	GetByUserType(usertype string) ([]*User, error)
 
 	//GetAll users by their status
-	//GetByUserstatus(userstatus string) ([]*User, error)
+	GetByUserStatus(userstatus string) ([]*User, error)
 }

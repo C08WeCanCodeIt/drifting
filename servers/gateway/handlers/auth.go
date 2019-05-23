@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"path"
 	"strings"
 	"time"
 
-	"fmt"
 	"github.com/drifting/servers/gateway/models/users"
 	"github.com/drifting/servers/gateway/sessions"
 	"golang.org/x/crypto/bcrypt"
@@ -132,15 +132,10 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 
 	if r.Method == http.MethodGet {
 
-		// make sure non admin/mods cannot see other user's information
-		/*
-			if username != sessionState.User.UserName && sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
-				http.Error(w, "Unauthorized user", http.StatusUnauthorized)
-				return
-			}
-		*/
-
-		if username != sessionState.User.UserName && !strings.Contains(sessionState.UserType, "admin") && !strings.Contains(sessionState.UserType, "mod") {
+		// username not match current username logged in
+		// user is not a mod
+		// user is not a admin
+		if username != sessionState.User.UserName && !strings.Contains(sessionState.User.Type, "admin") && !strings.Contains(sessionState.User.Type, "mod") {
 			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 			return
 		}
@@ -162,18 +157,11 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 
 	} else if r.Method == http.MethodPatch {
 
-		if !strings.Contains(sessionState.UserType, "admin") && !strings.Contains(sessionState.UserType, "mod") {
+		// check if they're a admin or mod
+		if !strings.Contains(sessionState.User.Type, "admin") && !strings.Contains(sessionState.User.Type, "mod") {
 			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 			return
 		}
-
-		// checked is logged in mod or admin
-		/*
-			if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
-				http.Error(w, "Unauthorized user", http.StatusUnauthorized)
-				return
-			}
-		*/
 
 		// get the user information
 		dbUser, err := ctx.UserStore.GetByUserName(username)
@@ -189,23 +177,15 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 			return
 		}
 
-		if len(userUpdate.Status) == 0 {
-			userUpdate.Status = dbUser.IsSuspended
-		}
-
-		if len(userUpdate.Type) == 0 {
-			userUpdate.Type = dbUser.Type
-		}
-
 		err = dbUser.ApplyUpdates(userUpdate)
 		if err != nil {
-			http.Error(w, "Updates could not be applied to the user:"+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "Updates could not be applied to the user: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		updatedUser, err := ctx.UserStore.Update(dbUser.ID, userUpdate)
 		if err != nil {
-			http.Error(w, "Updates could not be applied to the user:"+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "Updates could not be applied to the user: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -244,8 +224,6 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	fmt.Print("Credentials", userCred)
-
 	user, err := ctx.UserStore.GetByUserName(userCred.UserName)
 
 	if err != nil {
@@ -254,7 +232,7 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if strings.Contains(user.Type, "suspended") || user.IsSuspended == true {
+	if user.IsSuspended == true {
 		http.Error(w, "Current user has been suspended from the site. Please contact a moderator or administrator if you think there has been a mistake.", http.StatusUnauthorized)
 		return
 	}
@@ -313,21 +291,39 @@ func (ctx *HandlerContext) GetAllUsersHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	/* 	sessionState := &SessionState{}
-	   	_, err := sessions.GetState(r, ctx.Key, ctx.SessionStore, sessionState)
-	   	if err != nil {
-	   		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
-	   		return
-	   	}
+	sessionState := &SessionState{}
+	_, err := sessions.GetState(r, ctx.Key, ctx.SessionStore, sessionState)
+	if err != nil {
+		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		return
+	}
 
-	   	// checked is logged in mod or admin
-	   	if sessionState.User.Type != "admin" && sessionState.User.Type != "mod" {
-	   		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
-	   		return
-	   	} */
+	// check if they're a admin or mod
+	if !strings.Contains(sessionState.User.Type, "admin") && !strings.Contains(sessionState.User.Type, "mod") {
+		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
+		return
+	}
 
 	//by default: get all the users in the db
+
+	id := path.Base(r.URL.Path)
+	fmt.Print(id)
 	users, err := ctx.UserStore.GetAll()
+
+	switch id {
+	case "warn":
+		users, err = ctx.UserStore.GetByUserStatus("warned")
+	case "ban":
+		users, err = ctx.UserStore.GetByUserStatus("banned")
+	case "valid":
+		users, err = ctx.UserStore.GetByUserStatus("valid")
+	case "admin":
+		users, err = ctx.UserStore.GetByUserType(id)
+	case "mod":
+		users, err = ctx.UserStore.GetByUserType(id)
+	case "member":
+		users, err = ctx.UserStore.GetByUserType(id)
+	}
 
 	if err != nil {
 		http.Error(w, "Couldn't retrieve users: "+err.Error(), http.StatusInternalServerError)

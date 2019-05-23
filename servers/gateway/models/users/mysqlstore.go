@@ -64,6 +64,10 @@ func (ms *MySQLStore) Update(id int64, updates *Updates) (*User, error) {
 	}
 
 	currType := currUser.Type
+	if len(updates.Type) > 0 {
+		currType = updates.Type
+	}
+
 	currStatus := currUser.IsSuspended
 
 	// if status is updated

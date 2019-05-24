@@ -21,9 +21,6 @@ router.post("/ocean", (req, res) => {
         res.status(401).send({ error: "No user signed in, cannot create an ocean" });
     }
     let user = JSON.parse(getUser);
-    if (!user) {
-        res.status(401).send({ error: "No user signed in, cannot create an ocean" });
-    }
 
     if (user.type.indexOf("admin") == -1 && user.type.indexOf("mod") == -1) {
         res.status(401).send({ error: "Current user is not an mod or admin, cannot create an ocean" });
@@ -58,6 +55,17 @@ router.get("/ocean", (req, res) => {
 
 //delete an ocean
 router.delete("/ocean/:name", (req, res) => {
+
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in, cannot delete the ocean" });
+    }
+    let user = JSON.parse(getUser);
+
+    if (user.type.indexOf("admin") == -1 && user.type.indexOf("mod") == -1) {
+        res.status(401).send({ error: "Current user is not an mod or admin, cannot create an ocean" });
+    }
+
     Oceans.findOneAndDelete({ "name": req.params.name, }, (err, response) => {
 
         /* let qPayLoad = {};
@@ -240,16 +248,20 @@ function convertTagQuery(url, callback) {
 
 // get everything inside a specific ocean that has been reported
 router.get("/ocean/:name/reported", (req, res) => {
+    let getUser = req.get('X-User');
+    if (!getUser) {
+        res.status(401).send({ error: "No user signed in" });
+    }
+    let user = JSON.parse(getUser);
+
+    if (user.type.indexOf("admin") == -1 && user.type.indexOf("mod") == -1) {
+        res.status(401).send({ error: "Current user is not an mod or admin" });
+    }
+
     let currURL = req.url.trim();
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => { //check ocean exists
 
         Bottles.find({ "ocean": currOcean.name, reportedCount: { $gt: 0 } }).select(["_id", "ocean", "emotion", "exercise", "body", "tags", "isPublic", "reportedCount", "creatorID", "createdAt", "editedAt"]).sort({ "createdAt": -1 }).exec().then(bottle => {
-
-            /*             currBottles = []
-                        bottle.forEach(function (b) {
-                        }); */
-
-
 
             let result = {
                 ocean: currOcean.name,

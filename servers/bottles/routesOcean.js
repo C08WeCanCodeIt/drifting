@@ -29,26 +29,20 @@ router.post("/ocean", (req, res) => {
         res.status(401).send({ error: "Current user is not an mod or admin, cannot create an ocean" });
     }
 
-/*     Oceans.find({ "name": req.body.name.toLowerCase() }).exec().then(ocean => {
-        if (ocean) {
-            return res.status(400).send({ error: "Ocean with the name " + ocean.name + " already exists "});
-        } */
-
-        Oceans.create({
-            name: req.body.name.toLowerCase()
-        }).then(ocean => {
-            //insert rabbitMQ stuff
-            ocean.save().then(() => {
-                res.setHeader("Content-Type", "application/json");
-                res.status(201).send(ocean);
-            }).catch(err => {
-                console.log(err);
-            });
-
+    Oceans.create({
+        name: req.body.name.toLowerCase()
+    }).then(ocean => {
+        //insert rabbitMQ stuff
+        ocean.save().then(() => {
+            res.setHeader("Content-Type", "application/json");
+            res.status(201).send(ocean);
         }).catch(err => {
-            res.status(400).send({ error: "couldn't create a ocean: " + err });
+            console.log(err);
         });
-    //});
+
+    }).catch(err => {
+        res.status(400).send({ error: "couldn't create a ocean: " + err });
+    });
 });
 
 
@@ -149,7 +143,7 @@ router.get("/ocean/:name", (req, res) => {
 // NOTE: Repeat of previous but with emotion in the query
 // Not enought time to figure out the async stuff to combine
 // get everything inside a specific ocean (FILTER BY MOOD)
-router.get("/ocean/:name/moodFilter/:mood", (req, res) => {
+router.get("/ocean/:name/mood/:mood", (req, res) => {
     let currURL = req.url.trim();
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => {
 
@@ -249,7 +243,14 @@ router.get("/ocean/:name/reported", (req, res) => {
     let currURL = req.url.trim();
     Oceans.findOne({ "name": req.params.name }).exec().then(currOcean => { //check ocean exists
 
-        Bottles.find({ "ocean": currOcean.name, reportedCount: { $gt: 0 } }).sort({ "createdAt": -1 }).exec().then(bottle => {
+        Bottles.find({ "ocean": currOcean.name, reportedCount: { $gt: 0 } }).select(["_id", "ocean", "emotion", "exercise", "body", "tags", "isPublic", "reportedCount", "creatorID", "createdAt", "editedAt"]).sort({ "createdAt": -1 }).exec().then(bottle => {
+
+            /*             currBottles = []
+                        bottle.forEach(function (b) {
+                        }); */
+
+
+
             let result = {
                 ocean: currOcean.name,
                 bottles: bottle

@@ -15,10 +15,6 @@ router.post("/ocean/:name", (req, res) => {
         res.status(403).send({ error: "Cannot posts an empty bottle" });
     }
 
-    //if (!req.body.isPublic && (!req.body.tags || !req.body.tags.length === 0)) {
-    //    res.status(403).send({ error: "Public Posts cannot have no tags" });
-    //}
-
     let getUser = req.get('X-User');
     if (!getUser) {
         res.status(401).send({ error: "No user signed in, cannot post bottle" });
@@ -87,7 +83,8 @@ router.post("/ocean/:name", (req, res) => {
             tags: tagsFiltered,
             creatorID: user.id,
             createdAt: Date.now(),
-            isPublic: req.body.isPublic
+            isPublic: req.body.isPublic,
+            reportedCount: 0
 
         }).then(bottle => {
             bottle.save().then(() => {
@@ -240,7 +237,7 @@ router.patch("/ocean/:name/bottle/:id/private", (req, res) => {
 
         //
         bottle.isPublic = false;
-        Bottles.save().then(() => {
+        bottle.save().then(() => {
             return res.status(201).send("bottle has been made private");
         });
     }).catch(err => {
@@ -255,11 +252,11 @@ router.patch("/ocean/:name/bottle/:id/report", (req, res) => {
     Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
 
         bottle.reportedCount = bottle.reportedCount + 1;
-        Bottles.save().then(() => {
+        bottle.save().then(() => {
             return res.status(201).send("bottle has been sucessfully reported");
         });
     }).catch(err => {
-        return res.status(400).send({ error: "Error reporting the bottle" });
+        return res.status(400).send({ error: "Error reporting the bottle: " + err });
     });
 });
 

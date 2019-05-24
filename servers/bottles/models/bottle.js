@@ -13,8 +13,7 @@ const BottleSchema = new Schema({
     },
     reportedCount: {
         type: Number,
-        default: 0,
-        select: false
+        default: 0
     },
     creatorID: {
         type: Number,

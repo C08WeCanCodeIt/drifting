@@ -17,6 +17,7 @@ const fetch = require("node-fetch");
 //create an ocean
 router.post("/ocean", (req, res) => {
     let getUser = req.get('X-User');
+
     if (!getUser) {
         res.status(401).send({ error: "No user signed in, cannot create an ocean" });
     }
@@ -29,7 +30,10 @@ router.post("/ocean", (req, res) => {
     Oceans.create({
         name: req.body.name.toLowerCase()
     }).then(ocean => {
-        //insert rabbitMQ stuff
+       
+
+
+
         ocean.save().then(() => {
             res.setHeader("Content-Type", "application/json");
             res.status(201).send(ocean);
@@ -68,14 +72,6 @@ router.delete("/ocean/:name", (req, res) => {
 
     Oceans.findOneAndDelete({ "name": req.params.name, }, (err, response) => {
 
-        /* let qPayLoad = {};
-        qPayLoad.type = 'course-delete';
-        qPayLoad.channel = response;
-        ch.sendToQueue(
-            "rabbitmq",
-            new Buffer.from(JSON.stringify(qPayLoad)),
-            { persistent: true }
-        ); */
         Bottles.deleteMany({ "ocean": req.params.name }, (err, res) => {
         }).catch(err => {
             res.status(400).send({ error: "Unable to delete the bottles in ocean" + req.params.name + ": " + err });

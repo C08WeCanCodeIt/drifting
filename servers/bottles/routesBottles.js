@@ -20,8 +20,7 @@ router.post("/ocean/:name", (req, res) => {
         res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
     let user = JSON.parse(getUser);
-
-    //let ch = req.app.get('ch');
+    let ch = req.app.get('ch');
 
 
 
@@ -88,6 +87,17 @@ router.post("/ocean/:name", (req, res) => {
 
         }).then(bottle => {
             bottle.save().then(() => {
+
+                let qPayLoad = {};
+                qPayLoad.type = 'bottle-new';
+                qPayLoad.message = bottle;
+
+                ch.sendToQueue(
+                    "rabbitmq",
+                    new Buffer.from(JSON.stringify(qPayLoad)),
+                    { persistent: true }
+                );
+
                 res.setHeader("Content-Type", "application/json");
                 res.status(200).send(bottle);
             });
@@ -108,6 +118,7 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
         res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
     let user = JSON.parse(getUser);
+    let ch = req.app.get('ch');
 
 
     if ((!req.body.body || req.body.length == 0) && (!req.body.tags || req.body.tags.length == 0)) {
@@ -189,6 +200,16 @@ router.patch("/ocean/:name/bottle/:id", (req, res) => {
 
         // sending the updated bottle
         bottle.save().then(() => {
+            let qPayLoad = {};
+            qPayLoad.type = 'bottle-update';
+            qPayLoad.course = bottle;
+
+            ch.sendToQueue(
+                "rabbitmq",
+                new Buffer.from(JSON.stringify(qPayLoad)),
+                { persistent: true }
+            );
+
             return res.status(201).send(bottle);
         });
     }).catch(err => {
@@ -268,6 +289,7 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
         res.status(401).send({ error: "No user signed in, cannot post bottle" });
     }
     let user = JSON.parse(getUser);
+    let ch = req.app.get('ch');
 
     // finds the bottle and deletes it
     Bottles.findOneAndDelete({ "ocean": req.params.name, "_id": req.params.id, "creatorID": user.id }, (err, response) => {
@@ -291,6 +313,16 @@ router.delete("/ocean/:name/bottle/:id", (req, res) => {
                 });
             }
         }
+
+        let qPayLoad = {};
+        qPayLoad.type = 'bottle-delete';
+        qPayLoad.channel = response;
+        ch.sendToQueue(
+            "rabbitmq",
+            new Buffer.from(JSON.stringify(qPayLoad)),
+            { persistent: true }
+        );
+
         return res.status(200).send({ message: "Bottle with ID " + req.params.id + " was sucessfully deleted " });
     }).catch(err => {
         return res.status(400).send({ error: "Error deleting bottle with ID " + req.params.id + ": " + err });

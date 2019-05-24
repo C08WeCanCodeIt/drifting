@@ -201,7 +201,7 @@ router.get("/ocean/:name/bottle/:id", (req, res) => {
 
     Bottles.findOne({ "ocean": req.params.name, "_id": req.params.id }).then(bottle => {
         if (!bottle) {
-            return res.status(404).send({ error: "Bottle with given id was not found" });
+            return res.status(404).send({ error: "Bottle with given id was not found or you are not the creator of this bottle" });
         }
         return res.status(201).send(bottle);
     }).catch(err => {

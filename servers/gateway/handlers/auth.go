@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
@@ -123,11 +124,11 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 	//TODO: me path: gets personal stuff
 	//TODO: Get rid of ability to see other users
 	id := path.Base(r.URL.Path)
-	var username string
+	var userID int64
 	if id == "me" {
-		username = sessionState.User.UserName
+		userID = sessionState.User.ID
 	} else {
-		username = id
+		userID, _ = strconv.ParseInt(id, 10, 64)
 	}
 
 	if r.Method == http.MethodGet {
@@ -135,12 +136,12 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 		// username not match current username logged in
 		// user is not a mod
 		// user is not a admin
-		if username != sessionState.User.UserName && !strings.Contains(sessionState.User.Type, "admin") && !strings.Contains(sessionState.User.Type, "mod") {
+		if userID != sessionState.User.ID && !strings.Contains(sessionState.User.Type, "admin") && !strings.Contains(sessionState.User.Type, "mod") {
 			http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 			return
 		}
 
-		user, err := ctx.UserStore.GetByUserName(username)
+		user, err := ctx.UserStore.GetByID(userID)
 		if err != nil {
 			http.Error(w, "User not found: "+err.Error(), http.StatusNotFound)
 			return
@@ -164,7 +165,7 @@ func (ctx *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Re
 		}
 
 		// get the user information
-		dbUser, err := ctx.UserStore.GetByUserName(username)
+		dbUser, err := ctx.UserStore.GetByID(userID)
 		if err != nil {
 			http.Error(w, "User not found in DB", http.StatusNotFound)
 			return
@@ -227,7 +228,8 @@ func (ctx *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Reques
 	user, err := ctx.UserStore.GetByUserName(userCred.UserName)
 
 	if err != nil {
-		bcrypt.GenerateFromPassword(user.PassHash, 13) // Ensure that process takes time
+		bcrypt.GenerateFromPassword([]byte(userCred.Password), 13) // Ensure that process takes time
+
 		http.Error(w, "Unauthorized user", http.StatusUnauthorized)
 		return
 	}

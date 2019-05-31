@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-/*import { Link } from "react-router-dom";*/
+import { Link } from "react-router-dom";
 
 export default class Support extends Component {
     componentDidMount() {
@@ -20,7 +20,7 @@ export default class Support extends Component {
                     <div className="links-nav">
                         <div className="sublink">Encouragement<br/>Bottles Only</div>
                         <div className="sublink">Reflection<br/>Bottles Only</div>
-                        <div className="sublink">All Bottles</div>
+                        <div className="sublink"><Link to="/forum">All Bottles</Link></div>
                     </div>
 
                 </div>

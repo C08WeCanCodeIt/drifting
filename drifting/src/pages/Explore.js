@@ -13,15 +13,18 @@ export default class Support extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
-                    <p>You’re about to go exploring different bottles<br/>
-                    Some of these bottles can contain serious topics<br />
-                    Would you like to look at</p>
+                    <p>You’re about to go exploring others' bottles<br />
+                        Some of these bottles can contain serious topics<br />
+                        {/* Would you like to look at */}</p>
                     <br />
-                    <div className="links-nav">
-                        <div className="sublink">Encouragement<br/>Bottles Only</div>
+
+                    <Link to="/forum">Continue</Link>
+
+                    {/*<div className="links-nav">
+                        /*                        <div className="sublink">Encouragement<br/>Bottles Only</div>
                         <div className="sublink">Reflection<br/>Bottles Only</div>
-                        <div className="sublink"><Link to="/forum">All Bottles</Link></div>
-                    </div>
+                        <div className="sublink"><Link to="/forum">Continue</Link></div>
+                    </div>*/}
 
                 </div>
 

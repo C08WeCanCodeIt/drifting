@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/drifting/drifting/build/static/css/main.f289913c.chunk.css",
-    "main.js": "/drifting/drifting/build/static/js/main.2b5e3085.chunk.js",
-    "main.js.map": "/drifting/drifting/build/static/js/main.2b5e3085.chunk.js.map",
+    "main.css": "/drifting/drifting/build/static/css/main.315bb2d4.chunk.css",
+    "main.js": "/drifting/drifting/build/static/js/main.6c3127f7.chunk.js",
+    "main.js.map": "/drifting/drifting/build/static/js/main.6c3127f7.chunk.js.map",
     "runtime~main.js": "/drifting/drifting/build/static/js/runtime~main.3f2069a9.js",
     "runtime~main.js.map": "/drifting/drifting/build/static/js/runtime~main.3f2069a9.js.map",
     "static/css/2.22a7d4ef.chunk.css": "/drifting/drifting/build/static/css/2.22a7d4ef.chunk.css",
-    "static/js/2.aadcf451.chunk.js": "/drifting/drifting/build/static/js/2.aadcf451.chunk.js",
-    "static/js/2.aadcf451.chunk.js.map": "/drifting/drifting/build/static/js/2.aadcf451.chunk.js.map",
+    "static/js/2.2c82d965.chunk.js": "/drifting/drifting/build/static/js/2.2c82d965.chunk.js",
+    "static/js/2.2c82d965.chunk.js.map": "/drifting/drifting/build/static/js/2.2c82d965.chunk.js.map",
     "index.html": "/drifting/drifting/build/index.html",
-    "precache-manifest.22781957dc785ce64aaef6175725ecb5.js": "/drifting/drifting/build/precache-manifest.22781957dc785ce64aaef6175725ecb5.js",
+    "precache-manifest.1a7292dcb966de77f3e0ab929e58b20c.js": "/drifting/drifting/build/precache-manifest.1a7292dcb966de77f3e0ab929e58b20c.js",
     "service-worker.js": "/drifting/drifting/build/service-worker.js",
     "static/css/2.22a7d4ef.chunk.css.map": "/drifting/drifting/build/static/css/2.22a7d4ef.chunk.css.map",
-    "static/css/main.f289913c.chunk.css.map": "/drifting/drifting/build/static/css/main.f289913c.chunk.css.map"
+    "static/css/main.315bb2d4.chunk.css.map": "/drifting/drifting/build/static/css/main.315bb2d4.chunk.css.map"
   }
 }

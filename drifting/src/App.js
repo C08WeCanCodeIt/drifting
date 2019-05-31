@@ -30,7 +30,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Router basename={process.env.PUBLIC_URL}>
+        {/* <Router basename={process.env.PUBLIC_URL}> */}
+        <Router>
           {/* <NavBar /> */}
           <div id="nav-links">
             <Link to="/">Home</Link> | <Link to="/excercise">Exercises</Link> | <Link to="/explore">Explore</Link> | About | Resources | Terms and Conditions

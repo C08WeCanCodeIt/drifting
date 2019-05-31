@@ -66,7 +66,6 @@ export default class Encouragement extends Component {
     handleChange(event) {
         let field = event.target.name;
         let value = event.target.value;
-        console.log(field, value);
         let change = {};
         change[field] = value;
         this.setState(change);
@@ -75,11 +74,10 @@ export default class Encouragement extends Component {
     handleQuestion(event) {
         let index = event.target.name;
         let value = event.target.value;
-        console.log(index, value);
         let change = this.state.body;
         change[index] = value;
         this.setState({ body: change }, () => {
-            console.log("body", this.state.body);
+            //console.log("body", this.state.body);
         });
     }
 
@@ -139,7 +137,7 @@ export default class Encouragement extends Component {
         this.setState(
             { isPublic: true },
             () => {
-                console.log("post", this.state);
+                //console.log("post", this.state);
                 this.addBottle();
             }
         );
@@ -230,7 +228,7 @@ export default class Encouragement extends Component {
                             <button id="left-button" className="btn btn-primary mr-2" onClick={(e) => this.scrollLeft(e)}>
                                 ←
                             </button>
-                            <button className="btn btn-primary mr-2" title="Post your bottle publically" onClick={(e) => this.addBottle()}>
+                            <button className="btn btn-primary mr-2" title="Post your bottle publically" onClick={(e) => this.addBottle(e)}>
                                 Share
                          </button>
                             <button className="btn btn-primary mr-2" title="Set your bottle free" onClick={() => this.disposeBottle()}>

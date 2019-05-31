@@ -98,6 +98,9 @@ export default class Encouragement extends Component {
         if (!this.state.body || this.state.body[0].length === 0) {
             alert("Cannot post an empty encouragement");
         } else {
+
+            
+
             fetch("https://api.kychiu.me/v1/ocean/ocean", {
                 method: "POST",
                 headers: {

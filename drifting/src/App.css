@@ -61,13 +61,15 @@
 
 body {
  /* background-image: linear-gradient(rgba(189, 221, 255, 0.62),  #e2bbff); */
- background-image: linear-gradient(white, rgba(189, 221, 255, 0.62));
- background-repeat: no-repeat;
- background-attachment: fixed;
  justify-content: center;
  /* font-size: calc(10px + 2vmin); */
  font-size: 12pt;
  color: black;
+ background-image: url("drft-bg-01.png");
+ height: 100%;
+ width: 100%;
+ background-repeat: no-repeat;
+ background-attachment: fixed;
 }
 
 .forumSubmission {
@@ -97,7 +99,12 @@ body {
 
 html, body {
    scroll-behavior: smooth;
+   /* background-image: linear-gradient(white, rgba(189, 221, 255, 0.62)); */
+   background-image: url("drft-bg-01.png");
+   background-repeat: no-repeat;
+   background-attachment: fixed;
 }
+
 
 /* Exercises to scroll left-right */
 #exercise {

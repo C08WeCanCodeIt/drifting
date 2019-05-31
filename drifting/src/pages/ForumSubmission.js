@@ -77,11 +77,11 @@ export default class ForumSubmission extends Component {
     handleQuestion(event) {
         let index = event.target.name;
         let value = event.target.value;
-        console.log(index, value);
+        //console.log(index, value);
         let change = this.state.body;
         change[index] = value;
         this.setState({ body: change }, () => {
-            console.log("body", this.state.body);
+            //console.log("body", this.state.body);
         });
     }
 
@@ -104,15 +104,37 @@ export default class ForumSubmission extends Component {
 
     }
 
-    cleanTags(str) {
-        
+    cleanTags(query) {
+        // clean up query for searching
+        // if the form is like #tag, #tag, #tag
+        if (query.indexOf(", #") != -1) {
+            query = query.replace(", #", ",");
+        }
+
+        // if the form is like #tag #tag #tag
+        if (query.indexOf(" #") != -1) {
+            query = query.replace(" #", ",");
+        }
+
+        // if the forum is like #tag #tag #tag
+        if (query.indexOf("#") != -1) {
+            query = query.replace("#", ",");
+
+            //get rid of trailing commas
+            /*             
+            if (query.indexOf(",") == 0) {
+                            query = query.substring(1, len(query));
+                        } */
+        }
+        return query;
     }
 
 
     addBottle = (e) => {
         e.preventDefault();
 
-        
+        let cleanTags = cleanTags(this.state.tags);
+        console.log(cleanTags);
 
         fetch("https://api.kychiu.me/v1/ocean/ocean", {
             method: "POST",
@@ -124,13 +146,13 @@ export default class ForumSubmission extends Component {
                     emotion: "-1",
                     exercise: 1,
                     body: this.state.body,
-                    tags: this.state.tags,
+                    tags: cleanTags,
                     isPublic: true //this.state.isPublic
                 })
         }).then(res => {
             return res.json();
         }).then((data) => {
-            console.log("bottle", data);
+            //console.log("bottle", data);
             this.clearState();
             this.routeChange("post");
         }).catch((err, data) => {
@@ -226,7 +248,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1">2/6 - How can the situation be worse?</label>
-                                <div className="q-desc hidden-t">While what you’re going through is already tough,<br/>Imagining the worst case scenario can help put things into perspective</div>
+                                <div className="q-desc hidden-t">While what you’re going through is already tough,<br />Imagining the worst case scenario can help put things into perspective</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="1"
@@ -304,7 +326,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1"> 4/6 - What factors in the situation are in your control?</label>
-                                <div className="q-desc hidden-t">While there may be many factors involved, not all of the factors have direct relationship to you<br/>Take some time to remember what factors you’re able to control</div>
+                                <div className="q-desc hidden-t">While there may be many factors involved, not all of the factors have direct relationship to you<br />Take some time to remember what factors you’re able to control</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="3"
@@ -357,7 +379,7 @@ export default class ForumSubmission extends Component {
                     <section className="child hidden" id="s6">
                         <p> Take some time to complete this mindfulness exercise</p>
 
-                        <h1>Work in progress...</h1>    
+                        <h1>Work in progress...</h1>
                         {/*<Mindfulness />*/}
 
 

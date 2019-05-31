@@ -35,7 +35,8 @@ export class Gallery extends Component {
             this.setState({
                 //allBottles: data.bottles,
                 bottles: data.bottles
-            })
+            });
+            console.log(data);
         }).catch((err, data) => {
             console.log(err);
         });

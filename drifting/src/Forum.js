@@ -25,7 +25,7 @@ export default class Forum extends Component {
         }).then((data) => {
             this.setState({
                 message: data
-            })
+            });
         }).catch((err, data) => {
             console.log(err);
             console.log("message", data);

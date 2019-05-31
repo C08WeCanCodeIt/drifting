@@ -201,7 +201,7 @@ html, body {
   position: fixed;
   margin: auto;
   width: 80%;
-  z-index: 10000;
+  z-index: 800;
 }
 
 .sublink {

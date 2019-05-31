@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 //import firebase from 'firebase';
 import { Collapse, Button, ButtonToolbar, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 

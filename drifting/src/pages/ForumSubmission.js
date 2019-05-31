@@ -104,9 +104,16 @@ export default class ForumSubmission extends Component {
 
     }
 
+    cleanTags(str) {
+        
+    }
+
 
     addBottle = (e) => {
         e.preventDefault();
+
+        
+
         fetch("https://api.kychiu.me/v1/ocean/ocean", {
             method: "POST",
             headers: {

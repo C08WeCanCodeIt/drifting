@@ -233,7 +233,7 @@ function convertTagQuery(url, callback) {
 
         //get rid of trailing commas
         if (query.indexOf(",") == 0) {
-            query = query.substring(1, len(query))
+            query = query.substring(1, query.length)
         }
     }
 

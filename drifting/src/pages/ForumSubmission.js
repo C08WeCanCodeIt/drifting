@@ -108,41 +108,29 @@ export default class ForumSubmission extends Component {
 
     }
 
-
-
     cleanTags(query) {
-        // clean up query for searching
-        // if the form is like #tag, #tag, #tag
-        console.log(query, query.indexOf(", #") !== -1);
-        if (query.indexOf(", #") !== -1) {
-            query = query.replace(", #", ",");
-        }
+        query = query.replace(/, #/g, ", ");
+        query = query.replace(/ #/g, ", ");
+        query = query.replace(/#/g, ", ");
 
-        // if the form is like #tag #tag #tag
-        console.log(query, "hash space", query.indexOf(" #") !== -1);
-        if (query.indexOf(" #") !== -1) {
-            query = query.replace(" #", ",");
-        }
-
-        // if the forum is like #tag #tag #tag
-        console.log("still have #", query.indexOf("#") !== -1);
-        if (query.indexOf("#") !== -1) {
-            query = query.replace("#", ",");
-        }
-        //get rid of trailing commas
         if (query.indexOf(",") === 0) {
             query = query.substring(1, query.length);
         }
 
+        if (query.indexOf(", ") === 0) {
+            query = query.substring(2, query.length);
+        }
+        query = query.replace(/,,/g, ",");
+        query = query.replace(/  /g, " "); //double spaces
+        query = query.trim();
+
         return query;
     }
+
     addBottle = (e) => {
         e.preventDefault();
-
         let cleanedTags = this.cleanTags(this.state.tags);
-        console.log(cleanedTags);
-
-        /*fetch("https://api.kychiu.me/v1/ocean/ocean", {
+        fetch("https://api.kychiu.me/v1/ocean/ocean", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -152,7 +140,7 @@ export default class ForumSubmission extends Component {
                     emotion: "-1",
                     exercise: 1,
                     body: this.state.body,
-                    tags: cleanTags,
+                    tags: cleanedTags,
                     isPublic: true //this.state.isPublic
                 })
         }).then(res => {
@@ -163,7 +151,7 @@ export default class ForumSubmission extends Component {
             this.routeChange("post");
         }).catch((err, data) => {
             console.log(err);
-        });*/
+        });
     }
 
     clearState() {

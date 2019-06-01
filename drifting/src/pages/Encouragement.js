@@ -3,11 +3,11 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const prompts = [
-    "<b>Share some advice</b><br/>Think about a tough time you went through. What advice would’ve you want to give yourself?",
-    "<b>Reflect on a personal experience</b><br/>What’s an experience that you felt that was very impactful, and what did you learn from it?",
-    "<b>Offer some comforting words</b><br/>What’s a saying or quote that makes you feel relieved?",
-    "<b>Suggest some resources</b><br/>What are some resources or activities that you find helpful when dealing with a tough situation?",
-    "<b>Share a cheer!</b><br/>Write a saying that helps you stay motivated when things get tough!"
+    "<b>Idea: Share some advice</b><br/>Think about a tough time you went through. What advice would’ve you want to give yourself?",
+    "<b>Idea: Reflect on a personal experience</b><br/>What’s an experience that you felt that was very impactful, and what did you learn from it?",
+    "<b>Idea: Offer some comforting words</b><br/>What’s a saying or quote that makes you feel relieved?",
+    "<b>Idea: Suggest some resources</b><br/>What are some resources or activities that you find helpful when dealing with a tough situation?",
+    "<b>Idea: Share a cheer!</b><br/>Write a saying that helps you stay motivated when things get tough!"
 ];
 
 export default class Encouragement extends Component {
@@ -93,13 +93,33 @@ export default class Encouragement extends Component {
         currEl.className = "child visible";
     }
 
+
+    cleanTags(query) {
+        query = query.replace(/, #/g, ", ");
+        query = query.replace(/ #/g, ", ");
+        query = query.replace(/#/g, ", ");
+
+        if (query.indexOf(",") === 0) {
+            query = query.substring(1, query.length);
+        }
+
+        if (query.indexOf(", ") === 0) {
+            query = query.substring(2, query.length);
+        }
+        query = query.replace(/,,/g, ",");
+        query = query.replace(/  /g, " "); //double spaces
+        query = query.trim();
+
+        return query;
+    }
+
     addBottle = (e) => {
         e.preventDefault();
         if (!this.state.body || this.state.body[0].length === 0) {
             alert("Cannot post an empty encouragement");
         } else {
 
-            
+            let cleanedTags = this.cleanTags(this.state.tags);
 
             fetch("https://api.kychiu.me/v1/ocean/ocean", {
                 method: "POST",
@@ -111,7 +131,7 @@ export default class Encouragement extends Component {
                         emotion: "+1",
                         exercise: 2,
                         body: this.state.body,
-                        tags: this.state.tags,
+                        tags: cleanedTags,
                         isPublic: this.state.isPublic
                     })
             }).then(res => {
@@ -134,18 +154,6 @@ export default class Encouragement extends Component {
             isPublic: ""
         });
     }
-
-    postBottle() {
-        //this.setState({type: "public"});
-        this.setState(
-            { isPublic: true },
-            () => {
-                //console.log("post", this.state);
-                this.addBottle();
-            }
-        );
-    }
-
 
     disposeBottle() {
         this.clearState();
@@ -171,8 +179,8 @@ export default class Encouragement extends Component {
                                     <h5>Helpful Reminders</h5>
                                     <ul>
                                         <li>Be empathetic</li>
-                                        <li>Acknowledge, but not minimize, other's emotions</li>
-                                        <li>Don’t feel pressured to overshare</li>
+                                        <li>Acknowledge, but do not minimize, other's emotions</li>
+                                        <li>Don’t feel pressured to share every detail</li>
                                     </ul>
                                 </div>
                                 <br />

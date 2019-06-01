@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import '../App.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
-const prompts = [
-    "<b>Idea: Share some advice</b><br/>Think about a tough time you went through. What advice would’ve you want to give yourself?",
-    "<b>Idea: Reflect on a personal experience</b><br/>What’s an experience that you felt that was very impactful, and what did you learn from it?",
-    "<b>Idea: Offer some comforting words</b><br/>What’s a saying or quote that makes you feel relieved?",
-    "<b>Idea: Suggest some resources</b><br/>What are some resources or activities that you find helpful when dealing with a tough situation?",
-    "<b>Idea: Share a cheer!</b><br/>Write a saying that helps you stay motivated when things get tough!"
-];
+//import Image from 'react-bootstrap/Image';
+//import BackgroundImage from './heart-rose-flower.png';
+import Bootstrap from "react-bootstrap";
+import './Gratitude.css';
+//import image from "./heart-rose-flower.png";
 
-export default class Encouragement extends Component {
-    // Set up a blank title and description input field
+
+class Gratitude extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -41,8 +39,6 @@ export default class Encouragement extends Component {
 
         document.getElementById("exercise").addEventListener('scroll', this.handleScroll);
 
-        let currPrompt = Math.floor((Math.random() * prompts.length));
-        document.getElementById("prompt-box").innerHTML = prompts[currPrompt];
     }
 
     handleScroll() {
@@ -52,14 +48,6 @@ export default class Encouragement extends Component {
         document.getElementById("myBar").style.width = scrolled + "%";
     }
 
-    getPrompt(event) {
-        event.preventDefault();
-        let currPrompt = Math.floor((Math.random() * prompts.length));
-        let promptBox = document.getElementById("prompt-box");
-
-
-        promptBox.innerHTML = prompts[currPrompt];
-    }
 
 
     // Add a method to handle changes to any input element
@@ -170,84 +158,72 @@ export default class Encouragement extends Component {
                         <div className="intro">
 
 
-                            <h1>Encouraging Bottle</h1>
-                            <div id="description">
-                                <p><i>Share an encouraging message and brighten someone’s day!</i></p>
-                                <br />
-
-                                <div id="guide">
-                                    <h5>Helpful Reminders</h5>
-                                    <ul>
-                                        <li>Be empathetic</li>
-                                        <li>Acknowledge, but do not minimize, other's emotions</li>
-                                        <li>Don’t feel pressured to share every detail</li>
-                                    </ul>
+                            <h1>Gratitude Bottle</h1>
+                            <p><i>“Let us rise up and be thankful, for if we didn’t learn a lot today,<br />
+                                at least we learned a little, and if we didn’t learn a little,<br />
+                                at least we didn’t get sick, and if we got sick, at least we didn’t die<br />
+                                so, let us all be thankful.” – Buddha<br /></i></p>
+                            <div className="prompt">
+                                <div className="description">
+                                    <br />
+                                    <br />
+                                    A small thank you or a gesture of gratitude can make a difference<br />
+                                    <br />
                                 </div>
-                                <br />
                             </div>
 
                             <div id="buttons">
                                 <button id="right-button" className="btn btn-primary mr-2" onClick={(e) => this.scrollRight(e, "s1")}>
                                     Continue →
-                                 </button>
+                             </button>
                             </div>
                         </div>
                     </section>
 
-
                     <section className="child hidden" id="s1">
-                        <form>
-                            <div id="section">
-                                <div className="suggestions">
-                                    <div id="prompt-box" className="visible"></div>
-                                    <div id="prompt-btn-holder">
-                                        <button className="btn btn-outline-primary btn-sm" id="prompt-button" aria-pressed="false" onClick={(event) => this.getPrompt(event)}>
-                                            Get Prompt
-                                        </button>
-                                    </div>
-
-                                </div>
-                                <div className="form-group">
-                                    <textarea className="form-control box-input"
-                                        name="0"
-                                        value={this.state.body[0]}
-                                        onChange={(event) => { this.handleQuestion(event) }}
-                                        rows="3"
-                                        placeholder="Write something here..."
-                                        aria-label="some description texts">
-                                    </textarea>
-                                </div>
+                        <div className="form-group">
+                            <div className="prompt">
+                                <label htmlFor="exampleFormControlTextarea1"> What's something you're grateful for?</label>
+                                <div className="q-desc visible">We go through a lot each day, and it can be easy to get bogged down by worries, regrets, or guilt<br/>
+                                    Take some time to remind yourself of something you're grateful for<br /></div>
                             </div>
+                            <textarea className="form-control box-input"
+                                name="5"
+                                value={this.state.body[5]}
+                                onChange={(event) => { this.handleQuestion(event) }}
 
-                            <div id="section">
-                                <div className="form-group">
-                                <div className="prompt"><label htmlFor="formGroupExampleInput">Tags</label></div>
-                                    <input type="text" className="form-control box-input"
-                                        name="tags"
-                                        value={this.state.tags}
-                                        onChange={(event) => { this.handleChange(event) }}
-                                        placeholder="Tag your bottle (Seperate each tag by a comma)"
-                                        aria-label="Tag your bottle"
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </form>
+                                rows="3"
+                                aria-label="some description texts">
+                            </textarea>
+                        </div>
 
+                        <div className="form-group">
+                        <div className="prompt"><label htmlFor="formGroupExampleInput">Tags</label></div>
+                            <input type="text" className="form-control box-input"
+                                name="tags"
+                                value={this.state.tags}
+                                onChange={(event) => { this.handleChange(event) }}
+
+                                placeholder="Tag your bottle (Seperate each tag by a comma)"
+                                aria-label="Tags for your bottle"
+                            />
+                        </div>
 
                         <div id="buttons">
-                            <button id="left-button" className="btn btn-primary mr-2" onClick={(e) => this.scrollLeft(e)}>
+                            <button id="left-button" className="btn btn-primary mr-2" onClick={(e) => this.scrollLeft(e, "s0")}>
                                 ←
                             </button>
-                            <button className="btn btn-primary mr-2" title="Post your bottle publically" onClick={(e) => this.addBottle(e)}>
+                            <button className="btn btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Post your bottle publically" onClick={(e) => { this.addBottle(e) }}>
                                 Share
                          </button>
-                            <button className="btn btn-primary mr-2" title="Set your bottle free" onClick={() => this.disposeBottle()}>
+                            <button className="btn btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Set your bottle free" onClick={() => this.disposeBottle()}>
                                 Release
                         </button>
                         </div>
                     </section>
                 </div>
+
+
 
                 <div className="progress-container">
                     <div className="progress-bar" id="myBar"></div>
@@ -255,4 +231,44 @@ export default class Encouragement extends Component {
             </div>
         );
     }
+
+    /*   render() {
+        return (
+          <div className="background">
+    
+    
+            <div className="a-letter-of-appreciation">
+              A letter of appreciation
+              </div >
+    
+            <div className="bg-img">
+            
+              <form className="container">
+                <p className="description-1">
+                “Let us rise up and be thankful, for if we didn’t learn a lot today, 
+                <br />
+                at least we learned a little, and if we didn’t learn a little, 
+                <br />
+                at least we didn’t get sick, and if we got sick, at least we didn’t die; 
+                <br />
+                so, let us all be thankful.” – Buddha
+                <br />
+                </p>
+                <p className="description-2">
+                Saying thank you and showing your gratitude with a handwritten message can make all the difference in your relationships.
+                </p>
+                <input type="text" placeholder="Tell us sth happy.." required>
+                </input>
+                <button className="btn" type="submit" >
+                  Share your happiness
+              </button>
+              </form>
+              </div>
+          </div>
+    
+    
+        )
+      } */
 }
+
+export default Gratitude;

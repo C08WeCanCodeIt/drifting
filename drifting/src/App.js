@@ -21,6 +21,7 @@ import Home from "./pages/Home";
 import Exercise from "./pages/Exercise";
 import Support from "./pages/Support";
 import Crisis from "./pages/Crisis";
+import Gratitude from "./pages/Gratitude";
 
 
 
@@ -49,6 +50,7 @@ class App extends Component {
             <Route path="/ex_dispose" component={ExDispose} />
             <Route path="/explore" component={Explore} />
             <Route path="/forum" component={Forum} />
+            <Route path="/gratitude" component={Gratitude} />
           </Switch>
         </Router>
         <footer className="disclaimer">* Drifting was created for educational purposes, our team are not certified mental health professsionals<br/>Terms and Conditions</footer>

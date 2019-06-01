@@ -13,11 +13,12 @@ export default class Crisis extends Component {
             <div className="container">
                 <div id="main" className="hidden">
                     <div className="text-long">
-                    Out of concern for your wellbeing,<br/>if you are facing an emergency<br />Please call 9-1-1 or go to the nearest emergency room<br />What you're experiencing right now must be a lot,<br />but there are people who can help you
-                    <br />
-                    <br />
-                    <br />
-                    Remember,
+                    Out of concern for your wellbeing, if you're feeling suicidal or want to self harm<br/>
+                    Please contact [...]<br />
+                    
+                    <br />If you are facing an emergency<br />Please call 9-1-1 or go to the nearest emergency room<br />
+                    
+                    What you're experiencing right now must be a lot,<br />but there are people who can help you
                     <p>Don't be afraid to reach out to people you know<br /><br />You are not alone</p>
                     <br />
                     <br />

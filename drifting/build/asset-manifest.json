@@ -1,17 +1,19 @@
 {
   "files": {
-    "main.css": "/drifting/drifting/build/static/css/main.315bb2d4.chunk.css",
-    "main.js": "/drifting/drifting/build/static/js/main.a205420d.chunk.js",
-    "main.js.map": "/drifting/drifting/build/static/js/main.a205420d.chunk.js.map",
+    "main.css": "/drifting/drifting/build/static/css/main.08d50746.chunk.css",
+    "main.js": "/drifting/drifting/build/static/js/main.c857e535.chunk.js",
+    "main.js.map": "/drifting/drifting/build/static/js/main.c857e535.chunk.js.map",
     "runtime~main.js": "/drifting/drifting/build/static/js/runtime~main.3f2069a9.js",
     "runtime~main.js.map": "/drifting/drifting/build/static/js/runtime~main.3f2069a9.js.map",
     "static/css/2.22a7d4ef.chunk.css": "/drifting/drifting/build/static/css/2.22a7d4ef.chunk.css",
-    "static/js/2.ea745e91.chunk.js": "/drifting/drifting/build/static/js/2.ea745e91.chunk.js",
-    "static/js/2.ea745e91.chunk.js.map": "/drifting/drifting/build/static/js/2.ea745e91.chunk.js.map",
+    "static/js/2.97df75bd.chunk.js": "/drifting/drifting/build/static/js/2.97df75bd.chunk.js",
+    "static/js/2.97df75bd.chunk.js.map": "/drifting/drifting/build/static/js/2.97df75bd.chunk.js.map",
     "index.html": "/drifting/drifting/build/index.html",
-    "precache-manifest.24d6d0d56486d66d30a6b796074aac05.js": "/drifting/drifting/build/precache-manifest.24d6d0d56486d66d30a6b796074aac05.js",
+    "precache-manifest.1ba82913cab76fa58a7d60b1bef4901d.js": "/drifting/drifting/build/precache-manifest.1ba82913cab76fa58a7d60b1bef4901d.js",
     "service-worker.js": "/drifting/drifting/build/service-worker.js",
     "static/css/2.22a7d4ef.chunk.css.map": "/drifting/drifting/build/static/css/2.22a7d4ef.chunk.css.map",
-    "static/css/main.315bb2d4.chunk.css.map": "/drifting/drifting/build/static/css/main.315bb2d4.chunk.css.map"
+    "static/css/main.08d50746.chunk.css.map": "/drifting/drifting/build/static/css/main.08d50746.chunk.css.map",
+    "static/media/App.css": "/drifting/drifting/build/static/media/drft-bg-01.efa2929a.jpg",
+    "static/media/Forum.css": "/drifting/drifting/build/static/media/drft-fbg-02.e56785a1.jpg"
   }
 }

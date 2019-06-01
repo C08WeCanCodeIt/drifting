@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-
 //import Image from 'react-bootstrap/Image';
 //import BackgroundImage from './heart-rose-flower.png';
 import Bootstrap from "react-bootstrap";
@@ -167,7 +165,8 @@ class Gratitude extends Component {
                                 <div className="description">
                                     <br />
                                     <br />
-                                    A small thank you or a gesture of gratitude can make a difference<br />
+                                    Take some time to write down what you're grateful for<br/>
+                                    A small expression of gratitude can make a big difference<br />
                                     <br />
                                 </div>
                             </div>
@@ -185,7 +184,7 @@ class Gratitude extends Component {
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1"> What's something you're grateful for?</label>
                                 <div className="q-desc visible">We go through a lot each day, and it can be easy to get bogged down by worries, regrets, or guilt<br/>
-                                    Take some time to remind yourself of something you're grateful for<br /></div>
+                                Take some time to remind yourself of something you're grateful for, or what guides you forward in life<br /></div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="5"
@@ -231,44 +230,6 @@ class Gratitude extends Component {
             </div>
         );
     }
-
-    /*   render() {
-        return (
-          <div className="background">
-    
-    
-            <div className="a-letter-of-appreciation">
-              A letter of appreciation
-              </div >
-    
-            <div className="bg-img">
-            
-              <form className="container">
-                <p className="description-1">
-                “Let us rise up and be thankful, for if we didn’t learn a lot today, 
-                <br />
-                at least we learned a little, and if we didn’t learn a little, 
-                <br />
-                at least we didn’t get sick, and if we got sick, at least we didn’t die; 
-                <br />
-                so, let us all be thankful.” – Buddha
-                <br />
-                </p>
-                <p className="description-2">
-                Saying thank you and showing your gratitude with a handwritten message can make all the difference in your relationships.
-                </p>
-                <input type="text" placeholder="Tell us sth happy.." required>
-                </input>
-                <button className="btn" type="submit" >
-                  Share your happiness
-              </button>
-              </form>
-              </div>
-          </div>
-    
-    
-        )
-      } */
 }
 
 export default Gratitude;

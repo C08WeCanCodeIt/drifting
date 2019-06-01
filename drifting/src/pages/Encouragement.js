@@ -179,7 +179,7 @@ export default class Encouragement extends Component {
                                     <h5>Helpful Reminders</h5>
                                     <ul>
                                         <li>Be empathetic</li>
-                                        <li>Acknowledge, but do not minimize, other's emotions</li>
+                                        <li>Acknowledge, please but don't minimize the emotions of others</li>
                                         <li>Don’t feel pressured to share every detail</li>
                                     </ul>
                                 </div>

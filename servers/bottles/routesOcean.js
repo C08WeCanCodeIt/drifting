@@ -215,30 +215,23 @@ module.exports = router;
 function convertTagQuery(url, callback) {
     let query = url.substring(url.indexOf("?tags=") + "?tags=".length);
 
+    query = query.replace(/, #/g, ", ");
+    query = query.replace(/ #/g, ", ");
+    query = query.replace(/#/g, ", ");
 
-    // clean up query for searching
-    // if the forum is like #tag, #tag, #tag
-    if (query.indexOf(", #") != -1) {
-        query = query.replace(", #", ",");
+    if (query.indexOf(",") === 0) {
+        query = query.substring(1, query.length);
     }
 
-    // if the forum is like #tag #tag #tag
-    if (query.indexOf(" #") != -1) {
-        query = query.replace(" #", ",");
+    if (query.indexOf(", ") === 0) {
+        query = query.substring(2, query.length);
     }
-
-    // if the forum is like #tag #tag #tag
-    if (query.indexOf("#") != -1) {
-        query = query.replace("#", ",");
-
-        //get rid of trailing commas
-        if (query.indexOf(",") == 0) {
-            query = query.substring(1, query.length)
-        }
-    }
+    query = query.replace(/,,/g, ",");
+    query = query.replace(/  /g, " "); //double spaces
+    query = query.trim();
 
     //replace %20 with spaces
-    if (query.indexOf("%20") != -1) {
+    if (query.indexOf("%20") !== -1) {
         query = query.replace("%20", " ");
     }
 

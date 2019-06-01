@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import './App.css';
 /* import { Navbar, Nav, NavItem, MenuItem, NavDropdown, Button, Form, FormControl, Container, Image } from 'react-bootstrap'; */
 //import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import { HashRouter as Router, Route, Switch, Link } from "react-router-dom";
-//import NavBar from "./components/NavBar";
+import { HashRouter as Router, Route, Switch} from "react-router-dom";
+import NavBar from "./components/NavBar";
 
 
 import ForumSubmission from "./pages/ForumSubmission";
@@ -32,10 +32,10 @@ class App extends Component {
       <div className="App">
         {/* <Router basename={process.env.PUBLIC_URL}> */}
         <Router>
-          {/* <NavBar /> */}
-          <div id="nav-links">
+          <NavBar />
+{/*           <div id="nav-links">
             <Link to="/">Home</Link> | <Link to="/excercise">Exercises</Link> | <Link to="/explore">Explore</Link> | About | Resources | Terms and Conditions
-          </div>
+          </div> */}
 
           <Switch>
             <Route exact path="/" component={Home} />
@@ -51,7 +51,7 @@ class App extends Component {
             <Route path="/forum" component={Forum} />
           </Switch>
         </Router>
-        <footer className="disclaimer">* Drifting was created for educational purposes, our team are not certified mental health professsionals</footer>
+        <footer className="disclaimer">* Drifting was created for educational purposes, our team are not certified mental health professsionals<br/>Terms and Conditions</footer>
       </div >
 
     );

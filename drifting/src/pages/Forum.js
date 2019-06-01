@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {Gallery} from "./../components/Gallery";
-
+import './Forum.css';
 
 export default class Great extends Component {
     componentDidMount() {
         setTimeout(function() { //Start the timer
-            document.getElementById("main").className = "visible-t";
+            document.getElementById("forum-holder").className = "visible-t";
         }, 10)
     }
 
@@ -13,7 +13,7 @@ export default class Great extends Component {
     render() {
         return (
             <div className="container">
-                <div id="main" className="hidden">
+                <div id="forum-holder" className="hidden">
                     <Gallery />
                 </div>
 

@@ -1,0 +1,28 @@
+body {
+    scroll-behavior: smooth;
+    background-image: url("drft-fbg-02.jpg"); 
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position-y: bottom; 
+}
+
+
+.forum {
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 60%;
+    margin-top: 6%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #forum-holder {
+    padding-top: 75px;
+   }
+  
+   .card {
+     background-color: rgba(255,255,255, 0.6) !important;
+   }

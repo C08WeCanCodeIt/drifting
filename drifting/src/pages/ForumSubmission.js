@@ -37,22 +37,26 @@ export default class ForumSubmission extends Component {
 
 
         document.getElementById("exercise").addEventListener('scroll', this.handleScroll);
+    }
 
+    handleChecked() {
         let checkbox = document.getElementById("dsc-check");
         checkbox.addEventListener('change', function () {
-            if (this.checked) {
+            if (checkbox.checked) {
+                checkbox.checked = false;
+                let desc = document.getElementsByClassName("q-desc visible");
+                Array.from(desc).forEach(function (d) {
+                    d.style.display = "none";
+                    d.className = "q-desc hidden-t";
+                });
+            } else {
+                checkbox.checked = true;
                 let desc = document.getElementsByClassName("q-desc hidden-t");
                 Array.from(desc).forEach(function (d) {
                     d.style.display = "block";
                     d.className = "q-desc visible";
                 });
 
-            } else {
-                let desc = document.getElementsByClassName("q-desc visible");
-                Array.from(desc).forEach(function (d) {
-                    d.style.display = "none";
-                    d.className = "q-desc hidden-t";
-                });
             }
         });
     }
@@ -68,7 +72,7 @@ export default class ForumSubmission extends Component {
     handleChange(event) {
         let field = event.target.name;
         let value = event.target.value;
-        console.log(field, value);
+        //console.log(field, value);
         let change = {};
         change[field] = value;
         this.setState(change);
@@ -104,39 +108,41 @@ export default class ForumSubmission extends Component {
 
     }
 
+
+
     cleanTags(query) {
         // clean up query for searching
         // if the form is like #tag, #tag, #tag
-        if (query.indexOf(", #") != -1) {
+        console.log(query, query.indexOf(", #") !== -1);
+        if (query.indexOf(", #") !== -1) {
             query = query.replace(", #", ",");
         }
 
         // if the form is like #tag #tag #tag
-        if (query.indexOf(" #") != -1) {
+        console.log(query, "hash space", query.indexOf(" #") !== -1);
+        if (query.indexOf(" #") !== -1) {
             query = query.replace(" #", ",");
         }
 
         // if the forum is like #tag #tag #tag
-        if (query.indexOf("#") != -1) {
+        console.log("still have #", query.indexOf("#") !== -1);
+        if (query.indexOf("#") !== -1) {
             query = query.replace("#", ",");
-
-            //get rid of trailing commas
-            /*             
-            if (query.indexOf(",") == 0) {
-                            query = query.substring(1, len(query));
-                        } */
         }
+        //get rid of trailing commas
+        if (query.indexOf(",") === 0) {
+            query = query.substring(1, query.length);
+        }
+
         return query;
     }
-
-
     addBottle = (e) => {
         e.preventDefault();
 
-        let cleanTags = cleanTags(this.state.tags);
-        console.log(cleanTags);
+        let cleanedTags = this.cleanTags(this.state.tags);
+        console.log(cleanedTags);
 
-        fetch("https://api.kychiu.me/v1/ocean/ocean", {
+        /*fetch("https://api.kychiu.me/v1/ocean/ocean", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -157,7 +163,7 @@ export default class ForumSubmission extends Component {
             this.routeChange("post");
         }).catch((err, data) => {
             console.log(err);
-        });
+        });*/
     }
 
     clearState() {
@@ -184,7 +190,7 @@ export default class ForumSubmission extends Component {
             <div id="main-ex" className="container hidden">
 
                 <div className="description-checkbox">
-                    <label><input type="checkbox" id="dsc-check" /> Show Guides</label>
+                    <label><input type="checkbox" id="dsc-check" value="show" checked onChange={() => this.handleChecked()} />Show Guides</label>
                 </div>
 
                 <form id="exercise" className="container">
@@ -221,7 +227,7 @@ export default class ForumSubmission extends Component {
 
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1">1/6 - What's on your mind?</label>
-                                <div className="q-desc hidden-t">Write a bit about the current situation that got you feeling down<br />While it can be difficult to share, getting it off your chest can help</div>
+                                <div className="q-desc visible">Write a bit about the current situation that got you feeling down<br />While it can be difficult to share, getting it off your chest can help</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="0"
@@ -248,7 +254,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1">2/6 - How can the situation be worse?</label>
-                                <div className="q-desc hidden-t">While what you’re going through is already tough,<br />Imagining the worst case scenario can help put things into perspective</div>
+                                <div className="q-desc visible">While what you’re going through is already tough,<br />Imagining the worst case scenario can help put things into perspective</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="1"
@@ -298,7 +304,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1"> 3/6 - What contributed to your situation? Please list a few factors:</label>
-                                <div className="q-desc hidden-t">When things get stormy, it’s can be hard to see the big picture<br />Take some time to think about what else was involved</div>
+                                <div className="q-desc visible">When things get stormy, it’s can be hard to see the big picture<br />Take some time to think about what else was involved</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="2"
@@ -326,7 +332,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1"> 4/6 - What factors in the situation are in your control?</label>
-                                <div className="q-desc hidden-t">While there may be many factors involved, not all of the factors have direct relationship to you<br />Take some time to remember what factors you’re able to control</div>
+                                <div className="q-desc visible">While there may be many factors involved, not all of the factors have direct relationship to you<br />Take some time to remember what factors you’re able to control</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="3"
@@ -353,7 +359,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1"> 5/6 - Let’s brainstorm some solutions!</label>
-                                <div className="q-desc hidden-t">Now that we narrowed down to what factors are in your control, let’s think of some ways to help address your situation</div>
+                                <div className="q-desc visible">Now that we narrowed down to what factors are in your control, let’s think of some ways to help address your situation</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="4"
@@ -397,7 +403,7 @@ export default class ForumSubmission extends Component {
                         <div className="form-group">
                             <div className="prompt">
                                 <label htmlFor="exampleFormControlTextarea1"> 6/6 - How do you feel about your situation now?</label>
-                                <div className="q-desc hidden-t">By completing this exercise, we hope that you’re able to think about your situation through a different perspective <br />Feel free to jot down some reminders to yourself about how you want to address you situation from now on</div>
+                                <div className="q-desc visible">By completing this exercise, we hope that you’re able to think about your situation through a different perspective <br />Feel free to jot down some reminders to yourself about how you want to address you situation from now on</div>
                             </div>
                             <textarea className="form-control box-input"
                                 name="5"
@@ -438,7 +444,7 @@ export default class ForumSubmission extends Component {
                 <div className="progress-container">
                     <div className="progress-bar" id="myBar"></div>
                 </div>
-            </div >
+            </div>
 
 
 

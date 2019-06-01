@@ -115,7 +115,9 @@ export default class Encouragement extends Component {
 
     addBottle = (e) => {
         e.preventDefault();
-        if (!this.state.body || this.state.body[0].length === 0) {
+        console.log(this.state.body[0].length);
+
+        if (this.state.body[0].length === 0) {
             alert("Cannot post an empty encouragement");
         } else {
 

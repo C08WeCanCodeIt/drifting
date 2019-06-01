@@ -101,7 +101,7 @@ class Gratitude extends Component {
 
     addBottle = (e) => {
         e.preventDefault();
-        if (!this.state.body || this.state.body[0].length === 0) {
+        if (this.state.body[0].length === 0) {
             alert("Cannot post an empty encouragement");
         } else {
 

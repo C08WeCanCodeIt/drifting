@@ -85,6 +85,10 @@ class Gratitude extends Component {
         if (query.indexOf(", ") === 0) {
             query = query.substring(2, query.length);
         }
+        if (query.substring(query.length - 1, query.length) === ",") {
+            query = query.substring(0, query.length - 1);
+        }
+
         query = query.replace(/,,/g, ",");
         query = query.replace(/  /g, " "); //double spaces
         query = query.trim();

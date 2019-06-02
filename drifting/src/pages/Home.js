@@ -23,7 +23,7 @@ export default class Home extends Component {
                             and free your mind to float<br />
                             <div className="home-desc-sub">
                                 <br />
-                                <p><i>A platform for individual and peer support in non-emergencies</i></p>
+                                <p><i>A platform for helping yourself while helping others</i></p>
                                 <br />
                             </div>
                             <div>

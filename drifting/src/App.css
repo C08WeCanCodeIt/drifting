@@ -328,12 +328,7 @@ html, body {
   margin: auto;
 }
 
-<<<<<<< HEAD
-
-#guide ul {
-=======
-ul, ol {
->>>>>>> 501e2deaa3c146a97473296c51b54adc5fab6ec8
+#guide ul, ol {
   text-align: left;
   margin: auto;
   display: table;

@@ -21,12 +21,7 @@ export default class ForumSubmission extends Component {
 
 
     routeChange(type) {
-        let path = ""
-        if (type === "dispose") {
-            path = "/ex_dispose";
-        } else {
-            path = "/ep_result";
-        }
+        let path = "/processing-result"
         this.props.history.push(path);
     }
 

@@ -45,7 +45,7 @@ export class Gallery extends Component {
         });
 
         //document.getElementById("searchBar").addEventListener('submit', function (event) {
-            if (this.state.url != api) {
+            if (this.state.url !== api) {
                 document.getElementById("filtered").style.opacity = 1;
                 document.getElementById("clearFilterTags").style.opacity = 1;
             } else {

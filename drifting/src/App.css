@@ -7,7 +7,13 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 5%;
-  width: 45%;
+  width: 65%;
+}
+
+.resources-list {
+  margin-bottom: 3%;
+  margin-top: 3%;
+  margin-left: 20%;
 }
 
 .drifting-logo {
@@ -30,7 +36,7 @@
 		transform: translatey(0px);
 	}
 	50% {
-		transform: translatey(-5px);
+		transform: translatey(-6px);
 	}
 	100% {
 		transform: translatey(0px);

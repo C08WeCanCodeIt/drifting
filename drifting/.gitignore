@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+/servers/node_modules
 
 # misc
 .DS_Store

@@ -12,17 +12,34 @@ body {
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 60%;
-    margin-top: 6%;
+    height: 58%;
+    margin-top: 12%;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
   }
   
-  #forum-holder {
-    padding-top: 75px;
-   }
+#forum-holder {
+    margin-top: 4%;
+    margin-left: 3%;
+    margin-right: 2%;
+}
   
-   .card {
-     background-color: rgba(255,255,255, 0.6) !important;
-   }
+.card {
+  background-color: rgba(255,255,255, 0.6)!important;
+}
+
+#tag-holder {
+  margin-top: 1%;
+  text-align: left;
+}
+
+#clear-button {
+  margin-top: 1%;
+}
+
+#allTags button{
+  margin-right: 10px;
+  margin-bottom: 2px;
+}
+

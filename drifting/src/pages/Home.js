@@ -26,11 +26,11 @@ export default class Home extends Component {
                             </p>
                             <div className="home-desc-sub">
                                 <br />
-                                <p className="hp1">A platform for helping yourself while helping others</p>
+                                <p className="hp2">A platform for helping yourself while helping others</p>
                                 <br />
                             </div>
                             <div>
-                                <p>What do would you like to do?</p>
+                                <p className="hp3">What do would you like to do?</p>
                                 <div className="links-nav">
                                     <div><Link className="navLink" to="/support">Get Support</Link></div>
                                     <div><Link className="navLink" to="/explore">Explore</Link></div>

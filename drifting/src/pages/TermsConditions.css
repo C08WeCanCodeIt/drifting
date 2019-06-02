@@ -1,0 +1,50 @@
+div {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.container {
+    padding-top: 80px;
+}
+
+.header {
+    padding: 20px 0;
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    color: #fff;
+    text-align: center;
+
+}
+
+.header-text {
+    margin: 0 auto;
+    max-width: 100%;
+    font-size: 35px;
+
+}
+
+.body {
+    padding-top: 60px;
+}
+
+
+
+
+
+#terms {
+    
+    background: rgba(255, 255, 255, 0.7);
+    text-align: left;
+
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 60%;
+    width: 77%;
+    word-wrap: break-word;
+
+    margin-bottom: 5%;
+    padding: 20px;
+    
+
+}
+

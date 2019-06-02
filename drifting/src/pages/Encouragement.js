@@ -83,12 +83,12 @@ export default class Encouragement extends Component {
 
     scrollLeft = (e, clsName) => {
         e.preventDefault();
-        document.getElementById("exercise").scrollLeft -= 600;
+        document.getElementById("exercise").scrollLeft -= (window.innerWidth / 2);
     }
 
     scrollRight = (e, id) => {
         e.preventDefault();
-        document.getElementById("exercise").scrollLeft += 600;
+        document.getElementById("exercise").scrollLeft += (window.innerWidth / 2);
         let currEl = document.getElementById(id);
         currEl.className = "child visible";
     }

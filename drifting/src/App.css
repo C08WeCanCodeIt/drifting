@@ -218,7 +218,7 @@ html, body {
 
 /* The progress container (grey background) */
 .progress-container {
-   width: 87vw;
+   width: 100%;
    height: 8px;
    background: #FFFFFF;
    margin: auto;

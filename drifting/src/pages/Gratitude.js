@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-//import Image from 'react-bootstrap/Image';
-//import BackgroundImage from './heart-rose-flower.png';
-import Bootstrap from "react-bootstrap";
 import './Gratitude.css';
-//import image from "./heart-rose-flower.png";
-
 
 class Gratitude extends Component {
 
@@ -33,10 +28,8 @@ class Gratitude extends Component {
     componentDidMount() {
         setTimeout(function () { //Start the timer
             document.getElementById("exercise").className = "container visible-t";
-        }, 10)
-
+        }, 10);
         document.getElementById("exercise").addEventListener('scroll', this.handleScroll);
-
     }
 
     handleScroll() {
@@ -69,12 +62,12 @@ class Gratitude extends Component {
 
     scrollLeft = (e, clsName) => {
         e.preventDefault();
-        document.getElementById("exercise").scrollLeft -= 600;
+        document.getElementById("exercise").scrollLeft -= (window.innerWidth / 2);
     }
 
     scrollRight = (e, id) => {
         e.preventDefault();
-        document.getElementById("exercise").scrollLeft += 600;
+        document.getElementById("exercise").scrollLeft += (window.innerWidth / 2);
         let currEl = document.getElementById(id);
         currEl.className = "child visible";
     }
@@ -101,6 +94,7 @@ class Gratitude extends Component {
 
     addBottle = (e) => {
         e.preventDefault();
+        console.log(this.state.body, this.state.body[0]);
         if (this.state.body[0].length === 0) {
             alert("Cannot post an empty encouragement");
         } else {
@@ -188,7 +182,7 @@ class Gratitude extends Component {
                             </div>
                             <textarea className="form-control box-input"
                                 name="5"
-                                value={this.state.body[5]}
+                                value={this.state.body[0]}
                                 onChange={(event) => { this.handleQuestion(event) }}
 
                                 rows="3"

@@ -92,7 +92,7 @@ export default class ForumSubmission extends Component {
     /*I have no idea why .scrollRight += 300 doesn't work*/
     scrollLeft = (e, clsName) => {
         e.preventDefault();
-        document.getElementById("exercise").scrollLeft -= 600;
+        document.getElementById("exercise").scrollLeft -= (window.innerWidth / 2);
     }
 
     scrollRight = (e, id) => {
@@ -100,7 +100,7 @@ export default class ForumSubmission extends Component {
         if (id === "s3") {
             document.getElementById("s2.5").style.display = "none";
         } else {
-            document.getElementById("exercise").scrollLeft += 600;
+            document.getElementById("exercise").scrollLeft += (window.innerWidth / 2);
         }
 
         let currEl = document.getElementById(id);
@@ -129,29 +129,34 @@ export default class ForumSubmission extends Component {
 
     addBottle = (e) => {
         e.preventDefault();
-        let cleanedTags = this.cleanTags(this.state.tags);
-        fetch("https://api.kychiu.me/v1/ocean/ocean", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(
-                {
-                    emotion: "-1",
-                    exercise: 1,
-                    body: this.state.body,
-                    tags: cleanedTags,
-                    isPublic: true //this.state.isPublic
-                })
-        }).then(res => {
-            return res.json();
-        }).then((data) => {
-            //console.log("bottle", data);
-            this.clearState();
-            this.routeChange("post");
-        }).catch((err, data) => {
-            console.log(err);
-        });
+        if (this.state.body.toString() === ",,,,,") {
+            alert("Sorry, we saw that you're bottle was completely empty\nPlease fill out some questions or release the bottle if you want");
+        } else {
+
+            let cleanedTags = this.cleanTags(this.state.tags);
+            fetch("https://api.kychiu.me/v1/ocean/ocean", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(
+                    {
+                        emotion: "-1",
+                        exercise: 1,
+                        body: this.state.body,
+                        tags: cleanedTags,
+                        isPublic: true //this.state.isPublic
+                    })
+            }).then(res => {
+                return res.json();
+            }).then((data) => {
+                //console.log("bottle", data);
+                this.clearState();
+                this.routeChange("post");
+            }).catch((err, data) => {
+                console.log(err);
+            });
+        }
     }
 
     clearState() {

@@ -72,7 +72,7 @@ class App extends Component {
                                     <Link className="navLink" to="/explore">Explore</Link>
                                 </NavItem>
                                 <NavItem>
-                                    <Link className="navLink" to="/gallery">Resourse</Link>
+                                    <Link className="navLink" to="/gallery">Resource</Link>
                                 </NavItem>
                                 <NavItem>
                                     <Link className="navLink" to="/gallery">About</Link>

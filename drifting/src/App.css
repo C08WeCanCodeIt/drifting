@@ -57,10 +57,6 @@ body {
 
 }
 
-.homepage {
-  margin-top: 15vh;
-}
-
 .App-header {
   display: flex;
   flex-direction: column;
@@ -78,19 +74,19 @@ body {
 .hp1 {
   font-family: 'Handlee', cursive;
   color: #6271DD;
-  font-size: 1vw;
+  font-size: 2vh;
 }
 
 .hp2 {
   font-family: 'Muli', sans-serif;
   color: #58B8E3;
-  font-size: 0.8vw;
+  font-size: 1.5vh;
 }
 
 .hp3 {
   font-family: 'Handlee', cursive;
   color: #798489;
-  font-size: 1vw;
+  font-size: 2.2vh;
 }
 
 
@@ -393,20 +389,19 @@ html, body {
 
 .disclaimer {
   background-color: #9DD3ED;
-  font-size: 10pt;
+  font-size: 0.7vh;
   position: fixed;
   bottom: 0;
   width: 100%;
-  margin-left: auto;
+  margin: auto;
   padding-top: auto;
   padding-bottom: auto;
   z-index: 0;
-  text-align: left;
+  text-align: center;
 }
 
 .distext {
   padding-top: 5px;
-  margin-left: 5%;
   font-family: 'Muli', sans-serif;
   font-weight: 700;
   color: #6271DD;

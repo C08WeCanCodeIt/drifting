@@ -320,7 +320,7 @@ html, body {
 }
 
 .gallery-header {
-  position: fixed;
+  /*position: fixed;*/
   margin: auto;
   width: 80%;
   z-index: 800;

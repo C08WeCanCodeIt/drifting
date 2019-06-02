@@ -7,7 +7,7 @@
   
   /* Stop */
   .stop-box {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #d2edf6;
   }
   
   /*.stop-box:hover {
@@ -16,13 +16,13 @@
   
   .stop-text {
     padding: 15px;
-    color: white;
+    color: lightslategray;
     text-align: center;
   }
   
   /* Breathe */
   .breathe-box {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: #d2edf6;
   }
   
   /*.breathe-box:hover {
@@ -31,22 +31,22 @@
   
   .breathe-text {
     padding: 15px;
-    color: white;
+    color: lightslategray;
     text-align: center;
   }
   
   /* Think */
-  .think-box {
-    background-color: rgba(0, 0, 0, 0.3);
+  .imagine-box {
+    background-color:#d2edf6;
   }
   
   /*.think-box:hover {
     background: linear-gradient(to bottom, white, rgba(76, 178, 127, 0.82));
   }*/
   
-  .think-text {
+  .imagine-text {
     padding: 15px;
-    color: white;
+    color: lightslategray;
     text-align: center;
   }
   

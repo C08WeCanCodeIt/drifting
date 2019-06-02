@@ -54,23 +54,23 @@ export class MoodCard extends Component {
 
                 <div>
                     <h4 className="card-title">{this.state.questions[0]}</h4>
-                    <p className="card-text">{this.props.bottle.body[0]}</p>
+                    <p className="card-answer">{this.props.bottle.body[0]}</p>
                     <br />
 
                     <h4 className="card-title">{this.state.questions[1]}</h4>
-                    <p className="card-text">{this.props.bottle.body[1]}</p>
+                    <p className="card-answer">{this.props.bottle.body[1]}</p>
                     <br />
                     <h4 className="card-title">{this.state.questions[2]}</h4>
-                    <p className="card-text">{this.props.bottle.body[2]}</p>
+                    <p className="card-answer">{this.props.bottle.body[2]}</p>
                     <br />
                     <h4 className="card-title">{this.state.questions[3]}</h4>
-                    <p className="card-text">{this.props.bottle.body[3]}</p>
+                    <p className="card-answer">{this.props.bottle.body[3]}</p>
                     <br />
                     <h4 className="card-title">{this.state.questions[4]}</h4>
-                    <p className="card-text">{this.props.bottle.body[4]}</p>
+                    <p className="card-answer">{this.props.bottle.body[4]}</p>
                     <br />
                     <h4 className="card-title">{this.state.questions[5]}</h4>
-                    <p className="card-text">{this.props.bottle.body[5]}</p>
+                    <p className="card-answer">{this.props.bottle.body[5]}</p>
                     <br />
                 </div>
         } else {
@@ -90,31 +90,29 @@ export class MoodCard extends Component {
                         <TagList tags={this.props.bottle.tags} />
                         <h4 className="card-mood">{mood}</h4>
                         <p className="card-text">{exercise}</p>
-                        <div className="row align-items-center">
+
+
+
+                    </div>
+                    
+                    <div className="card-footer text-muted">
+                    <div className="row align-items-center">
                             <div className="col">
-                                <Button color="danger" onClick={this.toggle}>Open Bottle</Button>
+                                <Button className="openb align-self-end" color="danger" onClick={this.toggle}><p>Open Bottle</p></Button>
                             </div>
                             <div>
                                 <Modal centered={true} size={"lg"} isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                                    <ModalHeader toggle={this.toggle}>{mood + " / " + exercise}</ModalHeader>
+                                    <ModalHeader toggle={this.toggle}><TagList tags={this.props.bottle.tags} /></ModalHeader>
                                     <ModalBody>
                                         {body}
                                     </ModalBody>
                                     <ModalFooter>
-                                        <h4 className="card-title">{this.props.bottle.tags}</h4>
+                                        <h4 className="card-info">{mood + " / " + exercise}</h4>
                                     </ModalFooter>
                                 </Modal>
                             </div>
                         </div>
-
-
                     </div>
-                    <div className="card-footer text-muted">
-                        {this.props.bottle.createdAt}
-                    </div>
-                    <Collapse isOpen={this.state.collapse}>
-                        <Comments card={key} user={this.props.user} />
-                    </Collapse>
                 </div>
             </div>
         )

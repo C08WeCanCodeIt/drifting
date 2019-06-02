@@ -97,7 +97,6 @@ export class Gallery extends Component {
 
 
     getTags(tags, id) {
-        console.log(tags);
         let currTags = "";
         let tagslength = tags.length;
         if (tagslength > 10) {

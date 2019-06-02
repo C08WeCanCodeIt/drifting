@@ -154,7 +154,7 @@ export class Gallery extends Component {
             <div>
                 <div className="gallery-header">
                     <div className="intro">
-                        <h4>Explore Others' Bottles</h4>
+                        <h4>Explore Other's Bottles</h4>
                     </div>
                     <InputGroup>
                         <Input type="text" className="form-control"

@@ -38,8 +38,19 @@ body {
   margin-top: 1%;
 }
 
-#allTags button{
-  margin-right: 10px;
-  margin-bottom: 2px;
+#tags, #filtered, #filteredTags, #allTags {
+  display: flex;
 }
 
+.tag-item {
+  margin-left: 10px;
+  margin-bottom: 4px;
+  width: 100px;
+  border-style: solid;
+  border-width: 1px;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 5px;
+  border-color: #17a2b8;
+  color: #17a2b8;
+}

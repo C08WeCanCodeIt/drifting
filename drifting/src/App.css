@@ -6,6 +6,10 @@
 
 }
 
+body {
+  font-family: 'Muli', sans-serif;
+}
+
 .text-long {
   text-align: left;
   margin-left: auto;
@@ -68,32 +72,32 @@
 }
 
 .home-desc {
-  margin-top: 50px;
+  margin-top: 3vh;
 }
 
 .hp1 {
   font-family: 'Handlee', cursive;
   color: #6271DD;
-  font-size: 36px;
+  font-size: 1vw;
 }
 
 .hp2 {
   font-family: 'Muli', sans-serif;
   color: #58B8E3;
-  font-size: 16px;
+  font-size: 0.8vw;
 }
 
 .hp3 {
   font-family: 'Handlee', cursive;
   color: #798489;
-  font-size: 36px;
+  font-size: 1vw;
 }
 
 
 /*from here*/
 
 #navbarhome {
-  padding: 30px 5% 0 5%;
+  padding: 3% 5% 0 5%;
 }
 
 .nalinks {
@@ -111,7 +115,7 @@
   padding-left: 10px;
   font-family: 'Muli', sans-serif;
   font-weight: 900;
-  font-size: 18px;
+  font-size: 1vw;
   color: #FC7373;
   text-decoration: none;
   text-align: right;
@@ -150,6 +154,7 @@
   margin-top: 15%;
   margin-left: auto;
   margin-right: auto;
+  font-family: 'Muli', sans-serif;
 }
 
 
@@ -220,6 +225,24 @@ html, body {
    scroll-snap-type: mandatory;
    scroll-snap-points-x: repeat(300px);
    scroll-snap-type: x mandatory;
+}
+
+.list {
+    display: block;
+    padding-top: 8px;
+    padding-left: 10px;
+    font-family: 'Muli', sans-serif;
+    font-weight: 900;
+  
+    color: #FC7373;
+    text-decoration: none;
+  }
+  
+.list:hover {
+    color: #9DD3ED;
+    text-decoration: none;
+    font-style: italic;
+    
 }
 
 #exercise label {

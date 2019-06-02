@@ -1,6 +1,5 @@
 div {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
 }
 
 .container {
@@ -26,25 +25,17 @@ div {
     padding-top: 60px;
 }
 
-
-
-
-
-#terms {
-    
+#terms {  
     background: rgba(255, 255, 255, 0.7);
     text-align: left;
-
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 60%;
     width: 77%;
     word-wrap: break-word;
-
     margin-bottom: 5%;
     padding: 20px;
-    
 
 }
 

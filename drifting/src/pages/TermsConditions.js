@@ -19,23 +19,24 @@ class TermsConditions extends Component {
 
           <div id="terms">
             <p id="purpose-summary">
+
               <b>
                 Purpose Summary
               </b>
+              </p>
               <br />
               We’ve taken our terms and summarised them into a format that is easy to understand. This summary isn’t a legally binding document, but it gives you a quick view of the things you agree to when using the Drifting website.
               <br />
               Our general purpose of having Terms & Conditions and Privacy Policy is to
-            <h3>
-
-              </h3>
 
 
-            </p>
+
+            
             <br />
             <p id="terms-conditions">
 
               <b>Full Terms and Conditions</b>
+              </p>
               <br />
               Before using this website you must agree to the following:
             <ul>
@@ -128,11 +129,12 @@ class TermsConditions extends Component {
 
 
 
-            </p>
+            
 
             <br />
             <p id="privacy-policy">
               <b>Privacy Policy</b>
+              </p>
               <br />
               We respect your privacy and we are committed to protecting your personal data. This privacy notice will inform you as to how we look after your personal data when you visit our website (regardless of where you visit it from) and tell you about your privacy rights and how the law protects you.
               <br />
@@ -184,7 +186,7 @@ class TermsConditions extends Component {
                 </ul>
               </p>
 
-            </p>
+            
 
           </div>
 

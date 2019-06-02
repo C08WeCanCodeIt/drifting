@@ -275,7 +275,7 @@ html, body {
   margin: auto;
 }
 
-ul {
+ul, ol {
   text-align: left;
   margin: auto;
   display: table;

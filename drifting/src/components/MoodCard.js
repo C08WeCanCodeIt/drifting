@@ -236,7 +236,7 @@ export class TagList extends Component {
         return (
             <ButtonToolbar>
                 {tags.map((d, i) => {
-                    if (d.length != 0) {
+                    if (d.length !== 0) {
                         return <Tag key={"tag-" + i} tag={d} />
                     }
                 })}

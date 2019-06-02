@@ -25,8 +25,8 @@ export class Gallery extends Component {
         }
     }
 
-    componentDidMount() {
-        fetch(this.state.url, {
+    defaultFetch() {
+        fetch(api, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -36,35 +36,68 @@ export class Gallery extends Component {
         }).then((data) => {
             this.setState({
                 //allBottles: data.bottles,
+                url: api,
+                filter: "",
                 bottles: data.bottles
             });
             this.getTags(data.tags, "allTags");
-            console.log(data.tags);
+
+
+            document.getElementById("filtered").style.opacity = 0;
+            document.getElementById("clearFilterTags").style.opacity = 0;
         }).catch((err, data) => {
             console.log(err);
         });
-
-        //document.getElementById("searchBar").addEventListener('submit', function (event) {
-            if (this.state.url != api) {
-                document.getElementById("filtered").style.opacity = 1;
-                document.getElementById("clearFilterTags").style.opacity = 1;
-            } else {
-                document.getElementById("filtered").style.opacity = 0;
-                document.getElementById("clearFilterTags").style.opacity = 0;
-            }
-        //});
-
-        document.getElementById("clearFilterTags").addEventListener("submit", function(event) {
-            event.preventDefault();
-            document.getElementById("filteredTags").innerHTML="";
-            document.getElementById("filted").style.opacity = 0;
-
-        })
     }
 
+    filterBottles(event) {
+        event.preventDefault();
+
+        let query = document.getElementById("searchBar");
+        if (query) {
+            let tags = this.cleanTags(query.value);
+
+            this.setState({ filter: tags, url: api + tags });
+
+            fetch(api + tags, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res => {
+                return res.json();
+            }).then((data) => {
+                this.setState({
+                    //allBottles: data.bottles,
+                    bottles: data.bottles
+                });
+                if (this.state.filter.length > 0) {
+                    document.getElementById("filtered").style.opacity = 1;
+                    document.getElementById("clearFilterTags").style.opacity = 1;
+                }
+                this.getTags(tags.split(","), "filteredTags");
+            }).catch((err, data) => {
+                console.log(err);
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.defaultFetch();
+
+        //document.getElementById("searchBar").addEventListener('submit', function (event) {
+        if (this.state.url !== api) {
+            document.getElementById("filtered").style.opacity = 1;
+            document.getElementById("clearFilterTags").style.opacity = 1;
+        } else {
+            document.getElementById("filtered").style.opacity = 0;
+            document.getElementById("clearFilterTags").style.opacity = 0;
+        }
+    }
+
+
     getTags(tags, id) {
-        console.log(tags);
-        let currTags="";
+        let currTags = "";
         let tagslength = tags.length;
         if (tagslength > 10) {
             tagslength = 10;
@@ -76,7 +109,7 @@ export class Gallery extends Component {
             } else {
                 currTags += "<div class=\"tag-item\">" + tags[i] + "</div>"
             }
-            
+
         }
 
         document.getElementById(id).innerHTML = currTags;
@@ -114,37 +147,7 @@ export class Gallery extends Component {
         return query;
     }
 
-    filterBottles(event) {
-        event.preventDefault();
 
-        let query = document.getElementById("searchBar");
-        if (query) {
-            let tags = this.cleanTags(query.value);
-
-            this.setState({ filter: tags, url: api + tags });
-
-            fetch(this.state.url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(res => {
-                return res.json();
-            }).then((data) => {
-                this.setState({
-                    //allBottles: data.bottles,
-                    bottles: data.bottles
-                });
-                if (this.state.filter.length > 0) {
-                    document.getElementById("filtered").style.opacity = 1;
-                    document.getElementById("clearFilterTags").style.opacity = 1;
-                }
-                this.getTags(tags.split(","), "filteredTags");
-            }).catch((err, data) => {
-                console.log(err);
-            });
-        }
-    }
 
     render() {
         return (
@@ -164,7 +167,7 @@ export class Gallery extends Component {
                         <InputGroupAddon addonType="append"><Button onClick={(e) => this.filterBottles(e)}>Filter</Button></InputGroupAddon>
                     </InputGroup>
                     <div id="clear-button">
-                        <button type="submit" id="clearFilterTags" className="btn btn-outline-info btn-sm float-right">Clear Filters</button>
+                        <button onClick={(e) => this.defaultFetch()} id="clearFilterTags" className="btn btn-outline-info btn-sm float-right">Clear Filters</button>
                     </div>
 
                     <div id="tag-holder">

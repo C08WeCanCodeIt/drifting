@@ -16,7 +16,9 @@ export default class Home extends Component {
                 <div className="homepage">
                     <div id="front" className="hidden">
                         <a href="./">
-                            <img src="drifting_logo.png" className="drifting-logo" alt="Drifting" /></a><br />
+                            <img src="drifting_logo.png" className="drifting-logo" alt="Drifting" />
+                        </a>
+                        <br />
 
                         <div className="home-desc">
                             Set your thoughts adrift in a bottle,<br />

@@ -27,9 +27,9 @@ export default class Encouragement extends Component {
     routeChange(type) {
         let path = ""
         if (type === "dispose") {
-            path = "/ex_dispose";
+            path = "/encourage-release";
         } else {
-            path = "/en_result";
+            path = "/encourage-share";
         }
         this.props.history.push(path);
     }

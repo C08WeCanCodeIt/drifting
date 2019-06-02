@@ -6,7 +6,7 @@ class Gratitude extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            emotion: "+1",
+            emotion: "0",
             exercise: "",
             body: [""],
             tags: "",
@@ -16,12 +16,7 @@ class Gratitude extends Component {
     }
 
     routeChange(type) {
-        let path = ""
-        if (type === "dispose") {
-            path = "/ex_dispose";
-        } else {
-            path = "/en_result";
-        }
+        let path = "/gratitude-result"
         this.props.history.push(path);
     }
 
@@ -112,8 +107,8 @@ class Gratitude extends Component {
                 },
                 body: JSON.stringify(
                     {
-                        emotion: "+1",
-                        exercise: 2,
+                        emotion: "0",
+                        exercise: 3,
                         body: this.state.body,
                         tags: cleanedTags,
                         isPublic: this.state.isPublic
@@ -185,7 +180,7 @@ class Gratitude extends Component {
                                 Take some time to remind yourself of something you're grateful for, or what guides you forward in life<br /></div>
                             </div>
                             <textarea className="form-control box-input"
-                                name="5"
+                                name="0"
                                 value={this.state.body[0]}
                                 onChange={(event) => { this.handleQuestion(event) }}
 

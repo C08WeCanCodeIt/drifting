@@ -1,5 +1,7 @@
-node_modules
 .idea
 .vscode
 .sass-cache
+node_modules
 npm-debug.log
+drifting/node_modules
+servers/bottles/node_modules

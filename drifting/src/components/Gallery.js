@@ -38,7 +38,7 @@ export class Gallery extends Component {
                 //allBottles: data.bottles,
                 bottles: data.bottles
             });
-            this.getTags(data.tags);
+            this.getTags(data.tags, "allTags");
             console.log(data.tags);
         }).catch((err, data) => {
             console.log(err);
@@ -47,19 +47,39 @@ export class Gallery extends Component {
         //document.getElementById("searchBar").addEventListener('submit', function (event) {
             if (this.state.url != api) {
                 document.getElementById("filtered").style.opacity = 1;
+                document.getElementById("clearFilterTags").style.opacity = 1;
             } else {
                 document.getElementById("filtered").style.opacity = 0;
+                document.getElementById("clearFilterTags").style.opacity = 0;
             }
         //});
+
+        document.getElementById("clearFilterTags").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("filteredTags").innerHTML="";
+            document.getElementById("filted").style.opacity = 0;
+
+        })
     }
 
-    getTags(tags) {
+    getTags(tags, id) {
+        console.log(tags);
         let currTags="";
-        for (let i = 0; i < tags.length; i++) {
-            currTags += "<button class=\"btn btn-outline-info btn-sm\">" + tags[i].name + "</button>"
+        let tagslength = tags.length;
+        if (tagslength > 10) {
+            tagslength = 10;
+        }
+        for (let i = 0; i < tagslength; i++) {
+            //currTags += "<button class=\"btn btn-outline-info btn-sm\">" + tags[i].name + "</button>"
+            if (tags[i].name) {
+                currTags += "<div class=\"tag-item\">" + tags[i].name + "</div>"
+            } else {
+                currTags += "<div class=\"tag-item\">" + tags[i] + "</div>"
+            }
+            
         }
 
-        document.getElementById("allTags").innerHTML = currTags;
+        document.getElementById(id).innerHTML = currTags;
 
     }
 
@@ -96,7 +116,6 @@ export class Gallery extends Component {
 
     filterBottles(event) {
         event.preventDefault();
-        console.log("here I am");
 
         let query = document.getElementById("searchBar");
         if (query) {
@@ -118,7 +137,9 @@ export class Gallery extends Component {
                 });
                 if (this.state.filter.length > 0) {
                     document.getElementById("filtered").style.opacity = 1;
+                    document.getElementById("clearFilterTags").style.opacity = 1;
                 }
+                this.getTags(tags.split(","), "filteredTags");
             }).catch((err, data) => {
                 console.log(err);
             });
@@ -147,8 +168,8 @@ export class Gallery extends Component {
                     </div>
 
                     <div id="tag-holder">
-                        <div id="tags"><span><b>All Tags: </b>  </span><span id="allTags"></span></div>
-                        <div id="filtered"><span><b>Filtered By:</b> </span><span id="filteredTags"></span></div>
+                        <div id="tags"><span><b>Recent Tags  </b>  </span><span id="allTags"></span></div>
+                        <div id="filtered"><span><b>Filtered By</b> </span><span id="filteredTags"></span></div>
                     </div>
                 </div>
 

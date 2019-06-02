@@ -311,3 +311,7 @@ ul {
   z-index: 0;
 }
 
+#emergency {
+  background: rgba(255, 255, 255, 0.7);
+}
+

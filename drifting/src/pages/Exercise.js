@@ -14,7 +14,7 @@ export default class Exercise extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
-                    What would you like to do?
+                    <p className="hp3">What would you like to do? </p>
                     <br />
                     <br />
                     <div id="nav-link">

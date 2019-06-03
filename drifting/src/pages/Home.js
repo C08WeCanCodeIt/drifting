@@ -22,10 +22,9 @@ export default class Home extends Component {
 
                         <div className="home-desc">
                             <p className="hp1">Set your thoughts adrift in a bottle,<br />
-                            and free your mind to float<br />
+                            and free your mind to float
                             </p>
                             <div className="home-desc-sub">
-                                <br />
                                 <p className="hp2">A platform for helping yourself while helping others</p>
                                 <br />
                             </div>

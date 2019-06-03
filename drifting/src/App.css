@@ -86,7 +86,7 @@ body {
 .hp3 {
   font-family: 'Handlee', cursive;
   color: #798489;
-  font-size: 2.2vh;
+  font-size: 3vh;
 }
 
 
@@ -122,11 +122,26 @@ body {
   margin-left: 50px;
 }
 
+
+
 .navLink:hover {
   color: #9DD3ED;
   text-decoration: none;
   font-style: italic;
-  
+}
+
+a {
+  font-family: 'Muli', sans-serif;
+  font-weight: 900;
+  font-size: 1vw;
+  color: #FC7373 !important; 
+  text-decoration: none; 
+}
+
+a:hover {
+  color: #9DD3ED !important;
+  text-decoration: none !important;
+  font-style: italic;
 }
 
 .navbar-collapse {
@@ -147,7 +162,7 @@ body {
 }
 
 #main {
-  margin-top: 15%;
+  margin-top: 5vh;
   margin-left: auto;
   margin-right: auto;
   font-family: 'Muli', sans-serif;
@@ -209,7 +224,7 @@ html, body {
    width: 100vw;
    /* color: #7A6085; */
    overflow-y: hidden;
-   height: 80vh;
+   height: 60vh;
 
    display: flex;
    flex-wrap: nowrap;
@@ -349,8 +364,9 @@ html, body {
 .description-checkbox {
   position: fixed;
   right: 0;
+  top: 0;
   padding-right: 10%;
-  padding-top: 5%;
+  padding-top: 8%;
 }
 
 

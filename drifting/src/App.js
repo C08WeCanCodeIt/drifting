@@ -59,8 +59,10 @@ class App extends Component {
         {/* <Router basename={process.env.PUBLIC_URL}> */}
         <Router>
         <Navbar className="nav" id="navbarhome" light expand="md">
-          <NavbarBrand className="navBrand" href="/">
+          <NavbarBrand className="navBrand">
+          <Link to="/">
             <img src="drifting_logo.png" width="200px" className="brand-logo" alt="Drifting" />
+            </Link>
           </NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>

@@ -12,8 +12,8 @@ body {
 }
 
 .forum {
-    /*position: fixed;*/
-    overflow-y: scroll;
+    position: relative;
+    overflow-y: scroll !important;
     overflow-x: hidden;
     height: 58%;
     /*margin-top: 12%;*/
@@ -57,3 +57,4 @@ body {
   border-color: #17a2b8;
   color: #17a2b8;*/
 }
+

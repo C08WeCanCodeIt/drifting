@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-/*import Mindfulness from "./../components/Mindfulness";*/
+import Mindfulness from "./../components/Mindfulness";
 
 
 export default class ForumSubmission extends Component {
@@ -377,8 +377,8 @@ export default class ForumSubmission extends Component {
                         <section className="child hidden" id="s6">
                             <p> Take some time to complete this mindfulness exercise</p>
 
-                            <h1>Work in progress...</h1>
-                            {/*<Mindfulness />*/}
+                            {/*<h1>Work in progress...</h1>*/}
+                            <Mindfulness />
 
 
                             <div id="buttons">

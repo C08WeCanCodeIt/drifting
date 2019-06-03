@@ -20,7 +20,7 @@ export default class Support extends Component {
                         {/* Would you like to look at */}</p>
                     <br />
 
-                    <Link to="/forum">Continue</Link>
+                    <Link className="list" to="/forum">Continue</Link>
 
                     {/*<div className="links-nav">
                         /*                        <div className="sublink">Encouragement<br/>Bottles Only</div>

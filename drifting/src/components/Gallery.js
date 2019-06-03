@@ -151,7 +151,7 @@ export class Gallery extends Component {
 
     render() {
         return (
-            <div>
+            <div className="gallery">
                 <div className="gallery-header">
                     <div className="intro">
                         <h4>Explore Other's Bottles</h4>

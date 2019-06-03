@@ -72,7 +72,7 @@ class App extends Component {
                                     <Link className="navLink" to="/explore">Explore</Link>
                                 </NavItem>
                                 <NavItem>
-                                    <Link className="navLink" to="/gallery">Resourse</Link>
+                                    <Link className="navLink" to="/gallery">Resource</Link>
                                 </NavItem>
                                 <NavItem>
                                     <Link className="navLink" to="/gallery">About</Link>
@@ -101,7 +101,12 @@ class App extends Component {
             <Route path="/TermsConditions" component={TermsConditions} />
 
           </Switch>
-          <footer className="disclaimer">* Drifting was created for educational purposes, our team are not certified mental health professsionals<br/><Link to="/TermsConditions">Terms and Conditions</Link>
+          <footer className="disclaimer">
+          <p className="distext">* Drifting was created for educational purposes, our team are not certified mental health professsionals
+          <br />
+          <Link className="tac" to="/TermsConditions">Terms and Conditions</Link>
+          </p>
+          
           </footer>
       
         </Router>

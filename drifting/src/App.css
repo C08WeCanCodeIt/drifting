@@ -2,7 +2,12 @@
 
 .App {
   text-align: center; 
+  font-family: 'Muli', sans-serif;
 
+}
+
+body {
+  font-family: 'Muli', sans-serif;
 }
 
 .text-long {
@@ -20,7 +25,7 @@
 }
 
 .drifting-logo {
-  height: 150px;
+  width: 40vw;
 }
 
 /* https://codepen.io/MarioDesigns/pen/woJgeo */
@@ -52,10 +57,6 @@
 
 }
 
-.homepage {
-  margin-top: 15vh;
-}
-
 .App-header {
   display: flex;
   flex-direction: column;
@@ -67,23 +68,32 @@
 }
 
 .home-desc {
-  margin-top: 50px;
+  margin-top: 3vh;
 }
+
 .hp1 {
   font-family: 'Handlee', cursive;
   color: #6271DD;
-  font-size: 36px;
+  font-size: 2vh;
 }
 
-.home-desc-sub {
-  font-size: 10pt;
-
+.hp2 {
+  font-family: 'Muli', sans-serif;
+  color: #58B8E3;
+  font-size: 1.5vh;
 }
+
+.hp3 {
+  font-family: 'Handlee', cursive;
+  color: #798489;
+  font-size: 2.2vh;
+}
+
 
 /*from here*/
 
 #navbarhome {
-  padding: 30px 5% 0 5%;
+  padding: 3% 5% 0 5%;
 }
 
 .nalinks {
@@ -101,11 +111,15 @@
   padding-left: 10px;
   font-family: 'Muli', sans-serif;
   font-weight: 900;
-  font-size: 18px;
+  font-size: 1vw;
   color: #FC7373;
   text-decoration: none;
   text-align: right;
   float: right;
+}
+
+.nav-item {
+  margin-left: 50px;
 }
 
 .navLink:hover {
@@ -128,7 +142,7 @@
 .links-nav {
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  width: 70%;
   margin: auto;
 }
 
@@ -136,6 +150,7 @@
   margin-top: 15%;
   margin-left: auto;
   margin-right: auto;
+  font-family: 'Muli', sans-serif;
 }
 
 
@@ -206,6 +221,24 @@ html, body {
    scroll-snap-type: mandatory;
    scroll-snap-points-x: repeat(300px);
    scroll-snap-type: x mandatory;
+}
+
+.list {
+    display: block;
+    padding-top: 8px;
+    padding-left: 10px;
+    font-family: 'Muli', sans-serif;
+    font-weight: 900;
+  
+    color: #FC7373;
+    text-decoration: none;
+  }
+  
+.list:hover {
+    color: #9DD3ED;
+    text-decoration: none;
+    font-style: italic;
+    
 }
 
 #exercise label {
@@ -287,7 +320,7 @@ html, body {
 }
 
 .gallery-header {
-  position: fixed;
+  /*position: fixed;*/
   margin: auto;
   width: 80%;
   z-index: 800;
@@ -355,16 +388,83 @@ html, body {
 }
 
 .disclaimer {
-  font-size: 8pt;
+  background-color: #9DD3ED;
+  font-size: 0.7vh;
   position: fixed;
   bottom: 0;
   width: 100%;
   margin: auto;
-  margin-bottom: 10px;
+  padding-top: auto;
+  padding-bottom: auto;
   z-index: 0;
+  text-align: center;
+}
+
+.distext {
+  padding-top: 5px;
+  font-family: 'Muli', sans-serif;
+  font-weight: 700;
+  color: #6271DD;
+  
+}
+.tac {
+  font-family: 'Muli', sans-serif;
+  font-weight: 700;
+  color: #6271DD;
+  
+}
+.tac:hover {
+  font-family: 'Muli', sans-serif;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+
+  
+}
+
+/*Mood Card*/
+.card {
+  align-content: center;
+  justify-content: center;
+}
+.card-mood {
+  padding-top: 8px;
+  font-family: 'Muli', sans-serif;
+  font-weight: 900;
+  color: #9dd3ed;
+}
+
+.card-text {
+  font-family: 'Handlee', cursive;
+  color: #6271DD;
 }
 
 #emergency {
   background: rgba(255, 255, 255, 0.7);
 }
 
+.openb p {
+  font-family: 'Muli', sans-serif;
+  font-weight: 900;
+  margin: auto;
+}
+
+.card-title {
+  font-family: 'Muli', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #58B8E3;
+}
+.card-answer {
+  font-family: 'Handlee', cursive;
+  font-size: 24px;
+  color: #6271DD;
+}
+
+.card-info {
+  font-family: 'Muli', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: right;
+  color: #FC7373;
+}

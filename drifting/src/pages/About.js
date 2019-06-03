@@ -11,7 +11,13 @@ export default class About extends Component {
     render() {
         return (
             <div className="container">
+                <div className="header">
+                    <p className="header-text">
+                        About
+                    </p>
+                </div>
                 <div id="resources" className="hidden">
+
                     <div className="text-long">
 
                         <p>College students face a wide range of stressful situations that can be difficult to navigate alone. Our web app, Drifting, provides guided exercises— for processing difficult emotions or providing encouragement— and a forum to see other’s thoughts for similar situations.</p>
@@ -26,7 +32,7 @@ export default class About extends Component {
                                     <tr>
                                         <td>Kathy Chiu (Developer)</td>
                                         <td>Natsnet Demoz (Developer)</td>
-                                        <td>Thea Tai(Developer)</td>
+                                        <td>Thea Tai (Developer)</td>
                                         <td>Sylvia Wu (Designer/Developer)</td>
                                     </tr>
                                     <tr>
@@ -59,8 +65,9 @@ export default class About extends Component {
                             </table>
                             <br />
                             <p>And our friends, family, and the those from the iSchool</p>
+                            <img className="ischool-logo" src="https://s3.amazonaws.com/ByC_logo_prod/unit-29166.png"></img>
 
-                        </div>>
+                        </div>
                     </div>
                 </div>
             </div>

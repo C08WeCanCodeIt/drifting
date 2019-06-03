@@ -12,12 +12,18 @@ export default class Crisis extends Component {
     render() {
         return (
             <div className="container">
+                <div className="header">
+                    <p className="header-text">
+                        Emergency Resources
+                    </p>
+                </div>
                 <div id="emergency" className="hidden">
+
                     <div className="text-long">
                         Out of concern for your wellbeing, if you're feeling suicidal or want to self harm, here are some resources that we urge you to reach out to one of the following resources<br />
 
                         <div className="resources-list">
-                        <br /><label>If you are experiencing an emergency<br />Please call 911 or go to the nearest emergency room</label><br /><br />
+                            <br /><label>If you are experiencing an emergency<br />Please call 911 or go to the nearest emergency room</label><br /><br />
                         </div>
 
                         What you're experiencing right now must be a lot, but there are people who can help you. Don't be afraid to reach out to people you know.<br /><br />
@@ -42,12 +48,12 @@ export default class Crisis extends Component {
                                     </tr>
                                 </tbody>
                             </table>
-                            <br/>
+                            <br />
                             <p>If you're not experiencing an emergency, please go to the <Link to="/resources" >Resources </Link> page for more information</p>
-                            
+
                         </div>
 
-                        
+
 
 
 

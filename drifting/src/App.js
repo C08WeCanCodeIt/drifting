@@ -121,11 +121,11 @@ class App extends Component {
           <footer className="disclaimer">
             <p className="distext">* Drifting was created for educational purposes, our team are not certified mental health professsionals
           <br />
-              <Link className="tac" to="/TermsConditions">Terms and Conditions</Link>
+              <Link className="tac" to="/TermsConditions">
+                <h6>Terms and Conditions</h6>
+              </Link>
             </p>
-
           </footer>
-
         </Router>
       </div >
 

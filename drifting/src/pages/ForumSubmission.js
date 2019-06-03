@@ -272,8 +272,8 @@ export default class ForumSubmission extends Component {
                         <section className="child hidden" id="s2.5">
                             <div className="form-group">
                                 <div className="prompt">
-                                    <div className="description">
-                                        <label>Although you’re trekking through rough waters,<br />Storms don’t last forever</label>
+                                    <div className="card-message">
+                                        <p>Although you’re trekking through rough waters,<br />Storms don’t last forever</p>
                                         <br />
                                         <br />
                                     </div>
@@ -408,13 +408,13 @@ export default class ForumSubmission extends Component {
                             </div>
 
                             <div className="form-group">
-                                <div className="prompt"><label htmlFor="formGroupExampleInput">Tags</label></div>
+                                <div className="prompt"><label htmlFor="formGroupExampleInput">Tag your bottle</label></div>
                                 <input type="text" className="form-control box-input"
                                     name="tags"
                                     value={this.state.tags}
                                     onChange={(event) => { this.handleChange(event) }}
 
-                                    placeholder="Tag your bottle (Seperate each tag by a comma)"
+                                    placeholder="Example: stress, exams, anxiety"
                                     aria-label="Tags for your bottle"
                                 />
                             </div>

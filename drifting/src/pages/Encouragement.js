@@ -3,11 +3,11 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const prompts = [
-    "<b>Idea: Share some advice</b><br/>Think about a tough time you went through. What advice would’ve you want to give yourself?",
-    "<b>Idea: Reflect on a personal experience</b><br/>What’s an experience that you felt that was very impactful, and what did you learn from it?",
-    "<b>Idea: Offer some comforting words</b><br/>What’s a saying or quote that makes you feel relieved?",
-    "<b>Idea: Suggest some resources</b><br/>What are some resources or activities that you find helpful when dealing with a tough situation?",
-    "<b>Idea: Share a cheer!</b><br/>Write a saying that helps you stay motivated when things get tough!"
+    "<b>Idea: Share some advice</b><br/><div class=\"prompt-text\">Think about a tough time you went through. What advice would’ve you want to give yourself?</div>",
+    "<b>Idea: Reflect on a personal experience</b><br/><div class=\"prompt-text\">What’s an experience that you felt that was very impactful, and what did you learn from it?</div>",
+    "<b>Idea: Offer some comforting words</b><br/><div class=\"prompt-text\">What’s a saying or quote that makes you feel relieved?</div>",
+    "<b>Idea: Suggest some resources</b><br/><div class=\"prompt-text\">What are some resources or activities that you find helpful when dealing with a tough situation?</div>",
+    "<b>Idea: Share a cheer!</b><br/><div class=\"prompt-text\">Write a saying that helps you stay motivated when things get tough!</div>"
 ];
 
 export default class Encouragement extends Component {
@@ -227,12 +227,12 @@ export default class Encouragement extends Component {
 
                             <div id="section">
                                 <div className="form-group">
-                                <div className="prompt"><label htmlFor="formGroupExampleInput">Tags</label></div>
+                                <div className="prompt"><label htmlFor="formGroupExampleInput">Tag your bottle</label></div>
                                     <input type="text" className="form-control box-input"
                                         name="tags"
                                         value={this.state.tags}
                                         onChange={(event) => { this.handleChange(event) }}
-                                        placeholder="Tag your bottle (Seperate each tag by a comma)"
+                                        placeholder="Example: school, life, friends"
                                         aria-label="Tag your bottle"
                                         required
                                     />

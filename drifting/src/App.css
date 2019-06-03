@@ -380,10 +380,10 @@ html, body {
 
 .description-checkbox {
   position: fixed;
-  right: 0;
-  top: 0;
-  padding-right: 10%;
-  padding-top: 8%;
+  left: 0;
+  bottom: 0;
+  padding-left: 10%;
+  padding-bottom: 8%;
 }
 
 

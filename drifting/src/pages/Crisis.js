@@ -18,8 +18,9 @@ export default class Crisis extends Component {
                         <br />
                         <div className="resources-list">
                             <table>
+                            <tbody>
                                 <tr>
-                                    <td><a href="National Suicide Prevention Lifeline">National Suicide Prevention Lifeline</a></td>
+                                    <td><a href="http://suicidepreventionlifeline.org/">National Suicide Prevention Lifeline</a></td>
                                     <td>Call 800-273-TALK (8255)</td>
                                 </tr>
                                 <tr>
@@ -30,6 +31,7 @@ export default class Crisis extends Component {
                                     <td><a href="http://www.crisistextline.org/">Crisis Text Line</a></td>
                                     <td>Text NAMI to 741-741</td>
                                 </tr>
+                                </tbody>
                             </table>
                             <br /><b>If you are experiencing an emergency<br />Please call 9-1-1 or go to the nearest emergency room</b><br />
                         </div>

@@ -93,6 +93,7 @@ body {
 
 #navbarhome {
   padding: 3% 5% 0 5%;
+  z-index: 30000;
 }
 
 .nalinks {
@@ -255,7 +256,7 @@ html, body {
     
 }
 
-#exercise label {
+#exercise label, #emergency label, #resources label {
   font-size: 20px;
   font-weight: bold;
 }
@@ -468,8 +469,9 @@ html, body {
   color: #6271DD;
 }
 
-#emergency {
+#emergency, #resources {
   background: rgba(255, 255, 255, 0.7);
+  font-size: 2vh;
 }
 
 .openb p {
@@ -509,8 +511,4 @@ html, body {
 table {
   width: 80%;
   margin: auto;
-}
-
-table a{
-  font-size: 15px !important;
 }

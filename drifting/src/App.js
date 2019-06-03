@@ -27,9 +27,10 @@ import Home from "./pages/Home";
 import Exercise from "./pages/Exercise";
 import Support from "./pages/Support";
 import Crisis from "./pages/Crisis";
+import Resource from "./pages/Resource";
 import Gratitude from "./pages/Gratitude";
 import TermsConditions from "./pages/TermsConditions";
-
+import About from "./pages/About";
 
 import {EncShare, EncDispose, EPShare, GradShare} from "./pages/Results";
 
@@ -91,6 +92,7 @@ class App extends Component {
             
             <Route path="/support" component={Support} />
             <Route path="/emergency" component={Crisis} />
+            <Route path="/resources" component={Resource} />
             <Route path="/excercise" component={Exercise} />
             <Route path="/explore" component={Explore} />
             <Route path="/forum" component={Forum} />
@@ -100,6 +102,7 @@ class App extends Component {
             <Route path="/processing-result" component={EPShare} />
             <Route path="/gratitude-result" component={GradShare} />
             <Route path="/TermsConditions" component={TermsConditions} />
+            <Route path="/About" component={About} />
 
           </Switch>
           <footer className="disclaimer">

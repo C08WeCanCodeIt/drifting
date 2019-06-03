@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, FormLabel, Container, Row, Col } from "react-bootstrap";
-import Bootstrap from "react-bootstrap";
 import './TermsConditions.css';
 
 

@@ -1,0 +1,42 @@
+
+
+
+.header {
+    padding: 20px 0;
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    color: #fff;
+    text-align: center;
+
+}
+
+.header-text {
+    margin: 0 auto;
+    max-width: 100%;
+    font-size: 3vh;
+
+}
+
+.body {
+    padding-top: 2vh;
+}
+
+#terms {  
+    background: rgba(255, 255, 255, 0.7);
+    text-align: left;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 60%;
+    width: 77%;
+    word-wrap: break-word;
+    margin-bottom: 5%;
+    padding: 20px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#purpose-summary, #terms-conditions, #privacy-policy {
+    text-align: center;
+}
+

@@ -21,19 +21,19 @@ export default class Home extends Component {
                         <br />
 
                         <div className="home-desc">
-                            Set your thoughts adrift in a bottle,<br />
-                            and free your mind to float<br />
+                            <p className="hp1">Set your thoughts adrift in a bottle,<br />
+                            and free your mind to float
+                            </p>
                             <div className="home-desc-sub">
-                                <br />
-                                <p><i>A platform for helping yourself while helping others</i></p>
+                                <p className="hp2">A platform for helping yourself while helping others</p>
                                 <br />
                             </div>
                             <div>
-                                <p>What do would you like to do?</p>
+                                <p className="hp3">What do would you like to do?</p>
                                 <div className="links-nav">
-                                    <div><Link to="/support">Get Support</Link></div>
-                                    <div><Link to="/explore">Explore</Link></div>
-                                    <div><Link to="/encourage">Offer Support</Link></div>
+                                    <div><Link className="navLink" to="/support">Get Support</Link></div>
+                                    <div><Link className="navLink" to="/explore">Explore</Link></div>
+                                    <div><Link className="navLink" to="/encourage">Offer Support</Link></div>
                                 </div>
                             </div>
                         </div>

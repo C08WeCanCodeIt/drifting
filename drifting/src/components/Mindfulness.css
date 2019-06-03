@@ -1,52 +1,30 @@
 .mindfulness {
     text-align: center;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 12pt;
     margin-bottom: 15px;
+    display: flex;
+    color: lightslategray;
   }
   
   /* Stop */
   .stop-box {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #d2edf6;
   }
-  
-  /*.stop-box:hover {
-    background: linear-gradient(to bottom, white, #CD5C5C);
-  }*/
-  
-  .stop-text {
-    padding: 15px;
-    color: white;
+
+  .stop-text, .breathe-text, .imagine-text {
+    padding: 3vh;
     text-align: center;
+    word-wrap: break-word;
   }
   
   /* Breathe */
   .breathe-box {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: #E9FAFF;
   }
   
-  /*.breathe-box:hover {
-    background: linear-gradient(to bottom, white, rgba(63, 127, 191, 0.6));
-  }*/
-  
-  .breathe-text {
-    padding: 15px;
-    color: white;
-    text-align: center;
-  }
-  
+
   /* Think */
-  .think-box {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-  
-  /*.think-box:hover {
-    background: linear-gradient(to bottom, white, rgba(76, 178, 127, 0.82));
-  }*/
-  
-  .think-text {
-    padding: 15px;
-    color: white;
-    text-align: center;
+  .imagine-box {
+    background-color:#d2edf6;
   }
   

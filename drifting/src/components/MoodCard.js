@@ -47,37 +47,85 @@ export class MoodCard extends Component {
         let body;
 
         /*         console.log("emotion", this.props.bottle.emotion, this.props.bottle.emotion = "0") */
+        /* reference: https://www.robinwieruch.de/conditional-rendering-react/ */
         if (this.props.bottle.exercise === "1") {
             mood = "Worse than Usual"
             exercise = "Emotional Processing"
             body =
 
                 <div>
-                    <h4 className="card-title">{this.state.questions[0]}</h4>
-                    <p className="card-text">{this.props.bottle.body[0]}</p>
-                    <br />
+                    {
+                        this.props.bottle.body[0] && this.props.bottle.body[0].length > 0
+                            ? <div>
+                                <h4 className="card-title">{this.state.questions[0]}</h4>
+                                <p className="card-answer">{this.props.bottle.body[0]}</p>
+                                <br />
+                            </div>
+                            : null
+                    }
 
-                    <h4 className="card-title">{this.state.questions[1]}</h4>
-                    <p className="card-text">{this.props.bottle.body[1]}</p>
-                    <br />
-                    <h4 className="card-title">{this.state.questions[2]}</h4>
-                    <p className="card-text">{this.props.bottle.body[2]}</p>
-                    <br />
-                    <h4 className="card-title">{this.state.questions[3]}</h4>
-                    <p className="card-text">{this.props.bottle.body[3]}</p>
-                    <br />
-                    <h4 className="card-title">{this.state.questions[4]}</h4>
-                    <p className="card-text">{this.props.bottle.body[4]}</p>
-                    <br />
-                    <h4 className="card-title">{this.state.questions[5]}</h4>
-                    <p className="card-text">{this.props.bottle.body[5]}</p>
-                    <br />
-                </div>
-        } else {
+                    {
+                        this.props.bottle.body[1] && this.props.bottle.body[1].length > 0
+                            ? <div>
+                                <h4 className="card-title">{this.state.questions[1]}</h4>
+                                <p className="card-answer">{this.props.bottle.body[1]}</p>
+                                <br />
+                            </div>
+                            : null
+                    }
+
+                    {
+                        this.props.bottle.body[2] && this.props.bottle.body[2].length > 0
+                            ? <div>
+                                <h4 className="card-title">{this.state.questions[2]}</h4>
+                                <p className="card-answer">{this.props.bottle.body[2]}</p>
+                                <br />
+                            </div>
+                            : null
+                    }
+
+
+                    {
+                        this.props.bottle.body[3] && this.props.bottle.body[3].length > 0
+                            ? <div>
+                                <h4 className="card-title">{this.state.questions[3]}</h4>
+                                <p className="card-answer">{this.props.bottle.body[3]}</p>
+                                <br />
+                            </div>
+                            : null
+                    }
+
+                    {
+                        this.props.bottle.body[4] && this.props.bottle.body[4].length > 0
+                            ? <div>
+                                <h4 className="card-title">{this.state.questions[4]}</h4>
+                                <p className="card-answer">{this.props.bottle.body[4]}</p>
+                                <br />
+                            </div>
+                            : null
+                    }
+
+                    {
+                        this.props.bottle.body[5] && this.props.bottle.body[5].length > 0
+                            ? <div>
+                                <h4 className="card-title">{this.state.questions[5]}</h4>
+                                <p className="card-answer">{this.props.bottle.body[5]}</p>
+                                <br />
+                            </div>
+                            : null
+                    }
+                </div >
+        } else if (this.props.bottle.exercise === "2") {
             mood = "Great";
             exercise = "Encouragement"
             body = <div>
-                <h4 className="card-title">{this.props.bottle.body[0]}</h4>
+                <h4 className="card-message">{this.props.bottle.body[0]}</h4>
+            </div>
+        } else if (this.props.bottle.exercise === "3") {
+            mood = "Worse Than Usual";
+            exercise = "Gratitude"
+            body = <div>
+                <h4 className="card-message">{this.props.bottle.body[0]}</h4>
             </div>
         }
 
@@ -90,31 +138,29 @@ export class MoodCard extends Component {
                         <TagList tags={this.props.bottle.tags} />
                         <h4 className="card-mood">{mood}</h4>
                         <p className="card-text">{exercise}</p>
+
+
+
+                    </div>
+
+                    <div className="card-footer text-muted">
                         <div className="row align-items-center">
                             <div className="col">
-                                <Button color="danger" onClick={this.toggle}>Open Bottle</Button>
+                                <Button className="openb align-self-end" color="danger" onClick={this.toggle}><p>Open Bottle</p></Button>
                             </div>
                             <div>
                                 <Modal centered={true} size={"lg"} isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                                    <ModalHeader toggle={this.toggle}>{mood + " / " + exercise}</ModalHeader>
+                                    <ModalHeader toggle={this.toggle}><TagList tags={this.props.bottle.tags} /></ModalHeader>
                                     <ModalBody>
                                         {body}
                                     </ModalBody>
                                     <ModalFooter>
-                                        <h4 className="card-title">{this.props.bottle.tags}</h4>
+                                        <h4 className="card-info">{mood + " / " + exercise}</h4>
                                     </ModalFooter>
                                 </Modal>
                             </div>
                         </div>
-
-
                     </div>
-                    <div className="card-footer text-muted">
-                        {this.props.bottle.createdAt}
-                    </div>
-                    <Collapse isOpen={this.state.collapse}>
-                        <Comments card={key} user={this.props.user} />
-                    </Collapse>
                 </div>
             </div>
         )
@@ -254,7 +300,8 @@ export class Tag extends Component {
 
     render() {
         return (
-            <Button size="sm" color="outline-info">{this.props.tag}</Button>
+            /*<Button size="sm" color="outline-info">{this.props.tag}</Button>*/
+            <div class="tag-item">{this.props.tag}</div>
         )
     }
 }

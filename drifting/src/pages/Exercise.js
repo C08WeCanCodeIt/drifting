@@ -14,14 +14,13 @@ export default class Exercise extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
-                    What would you like to do?
-                    <br />
-                    <br />
+                    <p className="hp3">What would you like to do? </p>
                     <div id="nav-link">
-                        <Link to="/processing">Reflect On Your Emotions</Link><br />
-                        <Link to="/encourage">Offer Encouragement</Link><br />
-                        <Link to="/gratitude">Express Gratitude</Link><br />
-                        Look at Resources<br />
+                        <Link className="list" to="/processing">Reflect On Your Emotions</Link>
+                        <Link className="list" to="/encourage">Offer Encouragement</Link>
+                        <Link className="list" to="/gratitude">Express Gratitude</Link>
+                        <Link className="list" to="/resources">Look at Resources</Link>
+                        
                     </div>
 
                 </div>

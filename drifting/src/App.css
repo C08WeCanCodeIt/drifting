@@ -405,7 +405,7 @@ html, body {
 
 .disclaimer {
   background-color: #9DD3ED;
-  font-size: 0.7vh;
+  font-size: 1vh;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -414,7 +414,21 @@ html, body {
   padding-bottom: auto;
   z-index: 0;
   text-align: center;
+  margin-bottom: 0px;
+  
 }
+
+.disclaimer a {
+  color: white !important;
+  font-size: 1vh;
+}
+
+.disclaimer a:hover {
+  color: #6271DD !important;
+  font-size: 1vh;
+}
+
+
 
 .distext {
   padding-top: 5px;
@@ -471,6 +485,14 @@ html, body {
   font-size: 18px;
   color: #58B8E3;
 }
+
+.card-message {
+  font-family: 'Handlee', cursive;
+  font-size: 30px;
+  color: #6271DD;
+  text-align: center;
+}
+
 .card-answer {
   font-family: 'Handlee', cursive;
   font-size: 24px;

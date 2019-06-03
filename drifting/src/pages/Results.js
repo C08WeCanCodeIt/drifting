@@ -13,9 +13,11 @@ export class EncShare extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
+                    <div className="hp3">
                     <p>Thank you for taking your time to write an encouragement</p>
                     <p>Your encouragement will make difference to someone</p>
                     <br />
+                    </div>
                     <div className="bottleholder">
                         <img src="floating bottle.png" className="floating-bottle" alt="floating bottle" />
                     </div>
@@ -40,9 +42,11 @@ export class EncDispose extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
-                    <p>Thank you for taking your time to write an encouragement</p>
-                    <p>We hope that writing the encouragement was an pleasent experience for you</p>
-                    <br />
+                    <div className="hp3">
+                        <p>Thank you for taking your time to write an encouragement</p>
+                        <p>We hope that writing the encouragement was an pleasent experience for you</p>
+                        <br />
+                    </div>
                     <div className="bottleholder">
                         <img src="floating bottle.png" className="floating-bottle" alt="floating bottle" />
                     </div>
@@ -69,10 +73,11 @@ export class EPShare extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
+                    <div className="hp3">
                     <p>Thank you for taking your time to reflect on your emotions</p>
                     <p>Expressing your thoughts is a big step for taking care of yourself</p>
                     <p>Remember, it'll be alright</p>
-
+                    </div>
                     <div className="bottleholder">
                         <img src="floating bottle.png" className="floating-bottle" alt="floating bottle" />
                     </div>
@@ -96,9 +101,11 @@ export class GradShare extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
+                    <div className="hp3">
                     <p>Thank you for taking your time to express what you're grateful for</p>
                     <p>We hope that it was a pleasent exprience for you</p>
                     <p>Remember, it'll be alright</p>
+                    </div>
                     <div className="bottleholder">
                         <img src="floating bottle.png" className="floating-bottle" alt="floating bottle" />
                     </div>

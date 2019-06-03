@@ -50,7 +50,7 @@ export class EncDispose extends Component {
                 <div id="main" className="hidden">
                     <div className="hp3">
                         <p>Thank you for taking your time to write an encouragement</p>
-                        <p>We hope that writing the encouragement was an pleasent experience for you</p>
+                        <p>We hope that writing the encouragement was a pleasent experience for you</p>
                         <br />
                     </div>
                     <div className="bottleholder">

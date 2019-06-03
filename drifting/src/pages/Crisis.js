@@ -20,7 +20,7 @@ export default class Crisis extends Component {
                 <div id="emergency" className="hidden">
 
                     <div className="text-long">
-                        Out of concern for your wellbeing, if you're feeling suicidal or want to self harm, here are some resources that we urge you to reach out to one of the following resources<br />
+                        Out of concern for your wellbeing, if you're feeling suicidal or want to self-harm, here are some resources that we urge you to reach out to one of the following resources<br />
 
                         <div className="resources-list">
                             <br /><label>If you are experiencing an emergency<br />Please call 911 or go to the nearest emergency room</label><br /><br />

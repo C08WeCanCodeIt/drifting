@@ -30,7 +30,7 @@ export default class Home extends Component {
                             </div>
                             <div className="home-buttons">
                                 
-                                <p className="hp3">What do would you like to do?</p>
+                                <p className="hp3">What would you like to do?</p>
 
                                 <div className="links-nav">
                                     <div><Link className="navLink" to="/support">Get Support</Link></div>

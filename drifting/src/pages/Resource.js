@@ -21,7 +21,7 @@ export default class Resource extends Component {
 
                     <div className="text-long">
 
-                        Finding mental health resources can be overwhelming at first, so we listed some help resources that would be a good start
+                        Finding mental health resources can be overwhelming at first, so we listed some helpful resources that would be a good start
                         <br />
                         <br />
 

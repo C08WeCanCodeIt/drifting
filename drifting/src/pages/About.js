@@ -48,7 +48,7 @@ export default class About extends Component {
                         </div>
 
                         <div className="resources-list">
-                            <b>Acknowledgements</b>
+                            <b>Acknowledgments</b>
                             <p>We would like to thank the following for supporting us while developing Drifting</p><br />
                             <table>
                                 <tbody>
@@ -64,7 +64,7 @@ export default class About extends Component {
                                 </tbody>
                             </table>
                             <br />
-                            <p>And our friends, family, and the those from the iSchool</p>
+                            <p>And our friends, family, and those from the iSchool</p>
                             <img className="ischool-logo" src="https://s3.amazonaws.com/ByC_logo_prod/unit-29166.png"></img>
 
                         </div>

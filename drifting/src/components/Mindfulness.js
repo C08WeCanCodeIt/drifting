@@ -13,8 +13,10 @@ export default class Mindfulness extends Component {
           <div className="stop-text">
             <h2>Stop</h2>
 
-            Stop what you are doing and take a moment to obeserve your body's reaction and check in with what you are thinking and how you are feeling. 
-            This mindfulness activty should help you to understand you body more at this moment.
+            Stop what you are doing and take a moment to listen to your body's reactions
+            <br/>
+            <br/>
+            Check in with what you are thinking and how your body is feeling at this moment
             </div>
         </div>
 
@@ -22,7 +24,9 @@ export default class Mindfulness extends Component {
           <div className="breathe-text">
             <h2>Breathe</h2>
 
-            Breath in and breath out with a focus mind, without Judging your thoughts. You should do this for about 30-45 seconds. 
+            Clear your thoughts and slowly breath in and breath out for about 30-45 seconds
+            <br/> 
+            <br />
             Practicing mindful breathing will help you to create space between your thoughts, emotions and reactions.
             </div>
         </div>
@@ -31,8 +35,9 @@ export default class Mindfulness extends Component {
           <div className="imagine-text">
             <h2>Imagine</h2>
 
-            Imagine a moment of happiness that makes you feel gratful, proud or just happy. 
-            This can be anythings that makes you happy it can be from your past or from you future.
+            Imagine a moment of happiness that makes you feel grateful, proud or just happy
+            <br/><br/>
+            This can be anything that makes you happy, whether it;s from your past or from your future
             </div>
         </div>
 

@@ -14,7 +14,7 @@ export default class Support extends Component {
             <div className="container">
                 <div id="main" className="hidden">
                     <br />
-                    <p>You’re about to go exploring other's bottles<br />
+                    <p className="hp3">You’re about to go exploring other's bottles<br />
                         Some of these bottles can contain sensitive topics<br /><br/>
                         Please remember to be kind and respectful, as this is a safe space<br />
                         {/* Would you like to look at */}</p>

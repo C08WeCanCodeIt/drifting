@@ -14,14 +14,13 @@ body {
   text-align: left;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 5%;
+  margin-top: 1%;
+  padding-bottom: 1%;
   width: 65%;
 }
 
 .resources-list {
-  margin-bottom: 3%;
-  margin-top: 3%;
-  margin-left: 20%;
+  text-align: center;
 }
 
 .drifting-logo {
@@ -86,7 +85,7 @@ body {
 .hp3 {
   font-family: 'Handlee', cursive;
   color: #798489;
-  font-size: 2.2vh;
+  font-size: 3vh;
 }
 
 
@@ -94,6 +93,7 @@ body {
 
 #navbarhome {
   padding: 3% 5% 0 5%;
+  z-index: 30000;
 }
 
 .nalinks {
@@ -103,6 +103,23 @@ body {
 }
 .navBrand {
   padding-top: 15px;
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  margin-top: 4vh;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 .navLink {
@@ -122,11 +139,26 @@ body {
   margin-left: 50px;
 }
 
+
+
 .navLink:hover {
   color: #9DD3ED;
   text-decoration: none;
   font-style: italic;
-  
+}
+
+a {
+  font-family: 'Muli', sans-serif;
+  font-weight: 900;
+  font-size: 1vw;
+  color: #FC7373 !important; 
+  text-decoration: none; 
+}
+
+a:hover {
+  color: #9DD3ED !important;
+  text-decoration: none !important;
+  font-style: italic;
 }
 
 .navbar-collapse {
@@ -147,7 +179,7 @@ body {
 }
 
 #main {
-  margin-top: 15%;
+  margin-top: 5vh;
   margin-left: auto;
   margin-right: auto;
   font-family: 'Muli', sans-serif;
@@ -209,7 +241,7 @@ html, body {
    width: 100vw;
    /* color: #7A6085; */
    overflow-y: hidden;
-   height: 80vh;
+   height: 60vh;
 
    display: flex;
    flex-wrap: nowrap;
@@ -241,7 +273,7 @@ html, body {
     
 }
 
-#exercise label {
+#exercise label, #emergency label, #resources label {
   font-size: 20px;
   font-weight: bold;
 }
@@ -348,9 +380,10 @@ html, body {
 
 .description-checkbox {
   position: fixed;
-  right: 0;
-  padding-right: 10%;
-  padding-top: 5%;
+  left: 0;
+  bottom: 0;
+  padding-left: 10%;
+  padding-bottom: 8%;
 }
 
 
@@ -389,7 +422,7 @@ html, body {
 
 .disclaimer {
   background-color: #9DD3ED;
-  font-size: 0.7vh;
+  font-size: 1vh;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -398,7 +431,21 @@ html, body {
   padding-bottom: auto;
   z-index: 0;
   text-align: center;
+  margin-bottom: 0px;
+  
 }
+
+.disclaimer a {
+  color: white !important;
+  font-size: 1vh;
+}
+
+.disclaimer a:hover {
+  color: #6271DD !important;
+  font-size: 1vh;
+}
+
+
 
 .distext {
   padding-top: 5px;
@@ -439,6 +486,11 @@ html, body {
   color: #6271DD;
 }
 
+#emergency, #resources {
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 2vh;
+}
+
 .openb p {
   font-family: 'Muli', sans-serif;
   font-weight: 900;
@@ -451,6 +503,14 @@ html, body {
   font-size: 18px;
   color: #58B8E3;
 }
+
+.card-message {
+  font-family: 'Handlee', cursive;
+  font-size: 30px;
+  color: #6271DD;
+  text-align: center;
+}
+
 .card-answer {
   font-family: 'Handlee', cursive;
   font-size: 24px;
@@ -463,4 +523,9 @@ html, body {
   font-size: 16px;
   text-align: right;
   color: #FC7373;
+}
+
+table {
+  width: 80%;
+  margin: auto;
 }

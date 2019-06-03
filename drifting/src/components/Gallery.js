@@ -164,7 +164,7 @@ export class Gallery extends Component {
                             id="searchBar"
                             placeholder="What are you looking for?"
                             aria-label="tags for filter" />
-                        <InputGroupAddon addonType="append"><Button onClick={(e) => this.filterBottles(e)}>Filter</Button></InputGroupAddon>
+                        <InputGroupAddon addonType="append"><Button color="primary" onClick={(e) => this.filterBottles(e)}>Filter</Button></InputGroupAddon>
                     </InputGroup>
                     <div id="clear-button">
                         <button onClick={(e) => this.defaultFetch()} id="clearFilterTags" className="btn btn-outline-info btn-sm float-right">Clear Filters</button>
@@ -175,8 +175,6 @@ export class Gallery extends Component {
                         <div id="filtered"><span><b>Filtered By</b> </span><span id="filteredTags"></span></div>
                     </div>
                 </div>
-
-                <br />
                 <div className="forum">
                     <div className="cardList">
                         <CardList bottles={this.state.bottles} />

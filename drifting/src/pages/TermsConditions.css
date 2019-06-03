@@ -12,12 +12,12 @@
 .header-text {
     margin: 0 auto;
     max-width: 100%;
-    font-size: 35px;
+    font-size: 3vh;
 
 }
 
 .body {
-    padding-top: 60px;
+    padding-top: 2vh;
 }
 
 #terms {  
@@ -31,7 +31,9 @@
     word-wrap: break-word;
     margin-bottom: 5%;
     padding: 20px;
-
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 #purpose-summary, #terms-conditions, #privacy-policy {

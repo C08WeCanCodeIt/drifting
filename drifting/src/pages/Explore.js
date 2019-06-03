@@ -13,21 +13,22 @@ export default class Support extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
-                    <br />
-                    <p className="hp3">You’re about to go exploring other's bottles<br />
-                        Some of these bottles can contain sensitive topics<br /><br/>
-                        Please remember to be kind and respectful, as this is a safe space<br />
-                        {/* Would you like to look at */}</p>
-                    <br />
+                    <div id="resources" className="center">
+                        <br />
+                        <p className="hp3">You’re about to go exploring other's bottles<br />
+                            Some of these bottles can contain sensitive topics<br /><br />
+                            Please remember to be kind and respectful, as this is a safe space<br />
+                            {/* Would you like to look at */}</p>
+                        <br />
 
-                    <Link className="list" to="/forum">Continue</Link>
+                        <Link className="list" to="/forum">Continue</Link>
 
-                    {/*<div className="links-nav">
+                        {/*<div className="links-nav">
                         /*                        <div className="sublink">Encouragement<br/>Bottles Only</div>
                         <div className="sublink">Reflection<br/>Bottles Only</div>
                         <div className="sublink"><Link to="/forum">Continue</Link></div>
                     </div>*/}
-
+                    </div>
                 </div>
 
             </div>

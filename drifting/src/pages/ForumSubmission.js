@@ -272,8 +272,8 @@ export default class ForumSubmission extends Component {
                         <section className="child hidden" id="s2.5">
                             <div className="form-group">
                                 <div className="prompt">
-                                    <div className="description">
-                                        <label>Although you’re trekking through rough waters,<br />Storms don’t last forever</label>
+                                    <div className="card-message">
+                                        <p>Although you’re trekking through rough waters,<br />Storms don’t last forever</p>
                                         <br />
                                         <br />
                                     </div>

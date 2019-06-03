@@ -175,8 +175,6 @@ export class Gallery extends Component {
                         <div id="filtered"><span><b>Filtered By</b> </span><span id="filteredTags"></span></div>
                     </div>
                 </div>
-
-                <br />
                 <div className="forum">
                     <div className="cardList">
                         <CardList bottles={this.state.bottles} />

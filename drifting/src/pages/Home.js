@@ -28,8 +28,10 @@ export default class Home extends Component {
                                 <p className="hp2">A platform for helping yourself while helping others</p>
                                 <br />
                             </div>
-                            <div>
+                            <div className="home-buttons">
+                                
                                 <p className="hp3">What do would you like to do?</p>
+
                                 <div className="links-nav">
                                     <div><Link className="navLink" to="/support">Get Support</Link></div>
                                     <div><Link className="navLink" to="/explore">Explore</Link></div>

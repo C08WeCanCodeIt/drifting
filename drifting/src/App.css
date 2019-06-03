@@ -115,7 +115,7 @@ body {
   display: none;
   position: absolute;
   z-index: 1;
-  margin-top: 4vh;
+  margin-top: 3vh;
 }
 
 .dropdown:hover .dropdown-content {
@@ -197,6 +197,10 @@ body {
  color: black;
 }
 
+.center {
+  text-align: center !important;
+}
+
 .forumSubmission {
    background: rgba(red, green, blue, 0);
 }
@@ -234,6 +238,12 @@ html, body {
   overflow-y: hidden;
 }
 
+.home-buttons {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  width: 70%;
+  margin: auto;
+}
 
 /* Exercises to scroll left-right */
 #exercise {
@@ -257,8 +267,7 @@ html, body {
 
 .list {
     display: block;
-    padding-top: 8px;
-    padding-left: 10px;
+    padding-top: 25px;
     font-family: 'Muli', sans-serif;
     font-weight: 900;
   

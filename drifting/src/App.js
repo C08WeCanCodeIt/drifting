@@ -74,10 +74,10 @@ class App extends Component {
                                     <Link className="navLink" to="/explore">Explore</Link>
                                 </NavItem>
                                 <NavItem>
-                                    <Link className="navLink" to="/gallery">Resource</Link>
+                                    <Link className="navLink" to="/resources">Resources</Link>
                                 </NavItem>
                                 <NavItem>
-                                    <Link className="navLink" to="/gallery">About</Link>
+                                    <Link className="navLink" to="/about">About</Link>
                                 </NavItem>
                             </Nav>
                         </Collapse>
@@ -94,7 +94,6 @@ class App extends Component {
             <Route path="/excercise" component={Exercise} />
             <Route path="/explore" component={Explore} />
             <Route path="/forum" component={Forum} />
-
            
             <Route path="/encourage-release" component={EncDispose} />
             <Route path="/encourage-share" component={EncShare} />

@@ -23,6 +23,12 @@ export class EncShare extends Component {
                     </div>
                     <br />
                     <div><Link to="/explore">Take some time and explore other's bottles</Link></div>
+                    <div className="hp3">
+                        <br />
+                        If you need additional resources, please go to
+                        <br />
+                        <Link to="/resources">Resources</Link>
+                    </div>
                 </div>
 
             </div>
@@ -52,8 +58,14 @@ export class EncDispose extends Component {
                     </div>
                     <br />
                     <div><Link to="/explore">Take some time and explore other's bottles</Link></div>
+                    <div className="hp3">
+                        <br />
+                        If you need additional resources, please go to
+                        <br />
+                        <Link to="/resources">Resources</Link>
+                    </div>
                 </div>
-
+                    
             </div>
 
         );
@@ -83,6 +95,12 @@ export class EPShare extends Component {
                     </div>
                     <br />
                     <div><Link to="/explore">Take some time and explore other's bottles</Link></div>
+                    <div className="hp3">
+                        <br />
+                        If you need additional resources, please go to
+                        <br />
+                        <Link to="/resources">Resources</Link>
+                    </div>
                 </div>
             </div>
         );
@@ -111,6 +129,12 @@ export class GradShare extends Component {
                     </div>
                     <br />
                     <div><Link to="/explore">Take some time and explore other's bottles</Link></div>
+                    <div className="hp3">
+                        <br />
+                        If you need additional resources, please go to
+                        <br />
+                        <Link to="/resources">Resources</Link>
+                    </div>
                 </div>
             </div>
         );

@@ -162,7 +162,7 @@ export class Gallery extends Component {
                             value={this.state.filter}
                             onChange={(event) => { this.handleChange(event) }}
                             id="searchBar"
-                            placeholder="What are you looking for?"
+                            placeholder="Filter by tags (Example: school, stress, friends)"
                             aria-label="tags for filter" />
                         <InputGroupAddon addonType="append"><Button color="primary" onClick={(e) => this.filterBottles(e)}>Filter</Button></InputGroupAddon>
                     </InputGroup>

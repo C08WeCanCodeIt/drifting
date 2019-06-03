@@ -27,7 +27,8 @@ export default class Mindfulness extends Component {
             Clear your thoughts and slowly breath in and breath out for about 30-45 seconds
             <br/> 
             <br />
-            Practicing mindful breathing will help you to create space between your thoughts, emotions and reactions.
+            Please pay attention to the present moment and stay focus to the end of this activity.
+            
             </div>
         </div>
 
@@ -37,7 +38,7 @@ export default class Mindfulness extends Component {
 
             Imagine a moment of happiness that makes you feel grateful, proud or just happy
             <br/><br/>
-            This can be anything that makes you happy, whether it;s from your past or from your future
+            This can be anything that makes you happy, whether it's from your past or from your future
             </div>
         </div>
 

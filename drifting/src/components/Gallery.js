@@ -105,9 +105,9 @@ export class Gallery extends Component {
         for (let i = 0; i < tagslength; i++) {
             //currTags += "<button class=\"btn btn-outline-info btn-sm\">" + tags[i].name + "</button>"
             if (tags[i].name) {
-                currTags += "<div class=\"tag-item\">" + tags[i].name + "</div>"
+                currTags += "<div class=\"tag-item t \">" + "#" + tags[i].name + "</div>"
             } else {
-                currTags += "<div class=\"tag-item\">" + tags[i] + "</div>"
+                currTags += "<div class=\"tag-item t\">" + "#" + tags[i] + "</div>"
             }
 
         }
@@ -154,9 +154,9 @@ export class Gallery extends Component {
             <div className="gallery">
                 <div className="gallery-header">
                     <div className="intro">
-                        <h4>Explore Other's Bottles</h4>
+                        <h4 className="forumTitle">Explore Other's Bottles</h4>
                     </div>
-                    <InputGroup>
+                    <InputGroup className="forumFilter">
                         <Input type="text" className="form-control"
                             name="filter"
                             value={this.state.filter}
@@ -171,7 +171,7 @@ export class Gallery extends Component {
                     </div>
 
                     <div id="tag-holder">
-                        <div id="tags"><span><b>Recent Tags  </b>  </span><span id="allTags"></span></div>
+                        <div id="tags"><span><b>Recent Tags:  </b>  </span><span id="allTags"></span></div>
                         <div id="filtered"><span><b>Filtered By</b> </span><span id="filteredTags"></span></div>
                     </div>
                 </div>

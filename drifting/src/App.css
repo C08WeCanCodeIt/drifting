@@ -105,6 +105,23 @@ body {
   padding-top: 15px;
 }
 
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  margin-top: 4vh;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 .navLink {
   display: block;
   padding-top: 8px;

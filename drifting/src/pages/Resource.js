@@ -24,52 +24,19 @@ export default class Resource extends Component {
                         <br />
                         <div className="resources-list">
 
-                            <b>Resources Provided By The University of Washington</b><br/><br/>
-                            <table>
-                            <tbody>
-                                <tr>
-                                    <td>UW Counseling Center</td>
-                                    <td><a href="http://www.washington.edu/counseling/">Counseling Center's Website</a></td>
-                                </tr>
-                                <tr>
-                                    <td>UW Hall Health</td>
-                                    <td><a href="http://depts.washington.edu/hhpccweb/project/mental-health-clinic/">Hall Health's Website</a></td>
-                                </tr>
-                                <tr>
-                                    <td>UW LiveWell</td>
-                                    <td><a href="https://depts.washington.edu/livewell/ ">LiveWell's Website</a></td>
-                                </tr>
+                            <b>Resources Provided By The University of Washington</b><br /><br />
+                            <a href="http://www.washington.edu/counseling/">UW Counseling Center</a><br/>
+                            <a href="http://depts.washington.edu/hhpccweb/project/mental-health-clinic/">UW Hall Health</a><br/>
+                            <a href="https://depts.washington.edu/livewell/ ">UW LiveWell</a><br/>
+                            <a href="http://healthlibrary.uwmedicine.org/Wellness/MentalHealth/  ">UW Medicine</a><br/>
 
-                                <tr>
-                                    <td>UW Medicine</td>
-                                    <td><a href="http://healthlibrary.uwmedicine.org/Wellness/MentalHealth/  ">UW Medicine's Mental Health Website</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <br /><br />
+                            <b>Other Resources</b><br /><br />
 
-                            <br /><br/>
-                            <b>Other Resources</b><br/><br/>
-                            <table>
-                            <tbody>
-                                <tr>
-                                    <td>UW Social Work Resources</td>
-                                    <td><a href="https://socialwork.uw.edu/counseling-resources-students">Resource Page Link</a></td>
-                                </tr>
-                                <tr>
-                                    <td>King County Resources </td>
-                                    <td><a href="https://www.kingcounty.gov/depts/community-human-services/mental-health-substance-abuse/services/mental-health.aspx">King County's Resource Site</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Crisis Connections</td>
-                                    <td><a href="https://www.crisisconnections.org/">Crisis Connections' Website</a></td>
-                                </tr>
-                                <tr>
-                                    <td>NAMI</td>
-                                    <td><a href="https://www.nami.org/  ">NAMI's Website</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-
+                            <a href="https://socialwork.uw.edu/counseling-resources-students">UW Social Work Resource Page</a><br/>
+                            <a href="https://www.kingcounty.gov/depts/community-human-services/mental-health-substance-abuse/services/mental-health.aspx">King County Mental Health Resources</a><br/>
+                            <a href="https://www.crisisconnections.org/">Crisis Connections</a><br/>
+                            <a href="https://www.nami.org/  ">NAMI (National Alliance On Mental Health)</a><br/>
                         </div>
                     </div>
                 </div>

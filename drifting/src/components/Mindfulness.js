@@ -27,7 +27,7 @@ export default class Mindfulness extends Component {
             Clear your thoughts and slowly breath in and breath out for about 30-45 seconds
             <br/> 
             <br />
-            Please pay attention to the present moment and stay focus to the end of this activity.
+            Please pay attention to the present moment and stay focused to the end of this activity
             
             </div>
         </div>

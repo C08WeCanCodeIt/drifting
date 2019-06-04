@@ -26,7 +26,7 @@ export class EncShare extends Component {
                         <div className="hp3">
                             <br />
                             <br />
-                            If you need additional resources, please go to<br />
+                            If you need additional support, please go to<br />
                             <Link to="/resources">Resources</Link>
                         </div>
                     </div>
@@ -48,15 +48,10 @@ export class EncDispose extends Component {
         return (
             <div className="container">
                 <div id="main" className="hidden">
-<<<<<<< HEAD
-                    <div className="hp3">
-                        <p>Thank you for taking your time to write an encouragement</p>
-                        <p>We hope that writing the encouragement was a pleasent experience for you</p>
-=======
                     <div id="resources" className="center">
                         <div className="hp3">
                             <p>Thank you for taking your time to write an encouragement<br />
-                            We hope that writing the encouragement was an pleasent experience for you</p>
+                            We hope that writing the encouragement was a pleasent experience for you</p>
                             <br />
                         </div>
                         <div className="bottleholder">
@@ -66,8 +61,7 @@ export class EncDispose extends Component {
                         <div className="hp3">
                             <br />
                             <br />
-                            If you need additional resources, please go to
->>>>>>> 4742bf77a07fde1fbcdeacc814e3e0c94fb86a13
+                            If you need additional support, please go to
                         <br />
                         
                             <Link to="/resources">Resources</Link>
@@ -106,7 +100,7 @@ export class EPShare extends Component {
                         <div className="hp3">
                             <br />
                             <br />
-                            If you need additional resources, please go to
+                            If you need additional support, please go to
                         <br />
                             <Link to="/resources">Resources</Link>
                         </div>
@@ -142,7 +136,7 @@ export class GradShare extends Component {
                         <div className="hp3">
                             <br />
                             <br />
-                            If you need additional resources, please go to
+                            If you need additional support, please go to
                         <br />
                             <Link to="/resources">Resources</Link>
                         </div>

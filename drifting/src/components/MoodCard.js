@@ -11,11 +11,11 @@ export class MoodCard extends Component {
             modal: false,
             questions: [
                 "What's on your mind?",
-                "Could the situation be worse than it is? And how so?",
-                "What are some factors that contributed to the situation?",
+                "What do you fear could be worst outcome from your situation?",
+                "What contributed to your situation? Please list a few factors:",
                 "What factors in the situation are in your control?",
-                "Can you brainstorm solutions you can do to address your situation?",
-                "How do you feel now?"
+                "Let’s brainstorm some solutions!",
+                "How do you feel about your situation now?"
             ]
         };
         this.toggle = this.toggle.bind(this);
@@ -52,7 +52,7 @@ export class MoodCard extends Component {
         if (this.props.bottle.exercise === "1") {
             mood = "Worse than Usual";
             exercise = "Emotional Processing";
-            preview = this.props.bottle.body[0].substring(0, 30);
+            preview = this.props.bottle.body[0].substring(0, 30) + "...";
             body =
 
                 <div>
@@ -120,14 +120,14 @@ export class MoodCard extends Component {
         } else if (this.props.bottle.exercise === "2") {
             mood = "Great";
             exercise = "Encouragement"
-            preview = this.props.bottle.body[0].substring(0, 30);
+            preview = this.props.bottle.body[0].substring(0, 30) + "...";
             body = <div>
                 <h4 className="card-message">{this.props.bottle.body[0]}</h4>
             </div>
         } else if (this.props.bottle.exercise === "3") {
             mood = "Worse Than Usual";
             exercise = "Gratitude";
-            preview = this.props.bottle.body[0].substring(0, 30);
+            preview = this.props.bottle.body[0].substring(0, 30) + "...";
             body = <div>
                 <h4 className="card-message">{this.props.bottle.body[0]}</h4>
             </div>

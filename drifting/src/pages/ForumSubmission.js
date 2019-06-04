@@ -395,7 +395,7 @@ export default class ForumSubmission extends Component {
                             <div className="form-group">
                                 <div className="prompt">
                                     <label htmlFor="exampleFormControlTextarea1"> 6/6 - How do you feel about your situation now?</label>
-                                    <div className="q-desc visible">By completing this exercise, we hope that you’re able to think about your situation through a different perspective <br />Feel free to jot down some reminders to yourself about how you want to address you situation from now on</div>
+                                    <div className="q-desc visible">By completing this exercise, we hope that you’re able to think about your situation through a different perspective <br />Feel free to jot down some reminders to yourself about how you want to address your situation from now on</div>
                                 </div>
                                 <textarea className="form-control box-input"
                                     name="5"

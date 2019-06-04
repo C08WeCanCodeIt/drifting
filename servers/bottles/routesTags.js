@@ -97,6 +97,19 @@ router.delete("/ocean/:name/tags/:tagName", (req, res) => {
             res.status(200).send(ocean.tags);
         }); */
     Tags.findOneAndDelete({"ocean": req.params.name, "name": req.params.tagName}, (err, response) => {
-        res.status(200).send({ message: "tag " + req.params.nameName + " was sucessfully deleted" });
+        res.status(200).send({ message: "tag " + req.params.tagName + " was sucessfully deleted" });
+    });
+});
+
+router.delete("/ocean/:name/tagsID/:tagID", (req, res) => {
+    /*     Oceans.findOne({ "name": req.params.name }).exec().then(ocean => {
+            if (!ocean) {
+                return res.status(404).send({ error: "Ocean named " + req.params.name + " was not found" });
+            }
+            res.setHeader("Content-Type", "application/json");
+            res.status(200).send(ocean.tags);
+        }); */
+    Tags.findOneAndDelete({"ocean": req.params.name, "_id": req.params.tagID}, (err, response) => {
+        res.status(200).send({ message: "tag " + req.params.tagID + " was sucessfully deleted" });
     });
 });

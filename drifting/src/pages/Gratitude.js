@@ -205,9 +205,9 @@ class Gratitude extends Component {
                             <button id="left-button" className="btn btn-primary mr-2" onClick={(e) => this.scrollLeft(e, "s0")}>
                                 ←
                             </button>
-                            <button className="btn btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Post your bottle publically" onClick={(e) => { this.addBottle(e) }}>
+{/*                             <button className="btn btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Post your bottle publically" onClick={(e) => { this.addBottle(e) }}>
                                 Share
-                         </button>
+                         </button> */}
                             <button className="btn btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Set your bottle free" onClick={() => this.disposeBottle()}>
                                 Release
                         </button>

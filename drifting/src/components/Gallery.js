@@ -26,7 +26,7 @@ export class Gallery extends Component {
     }
 
     defaultFetch() {
-        fetch(api, {
+        /*fetch(api, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -47,13 +47,13 @@ export class Gallery extends Component {
             document.getElementById("clearFilterTags").style.opacity = 0;
         }).catch((err, data) => {
             console.log(err);
-        });
+        });*/
     }
 
     filterBottles(event) {
         event.preventDefault();
 
-        let query = document.getElementById("searchBar");
+        /*let query = document.getElementById("searchBar");
         if (query) {
             let tags = this.cleanTags(query.value);
 
@@ -79,11 +79,11 @@ export class Gallery extends Component {
             }).catch((err, data) => {
                 console.log(err);
             });
-        }
+        }*/
     }
 
     componentDidMount() {
-        this.defaultFetch();
+        //this.defaultFetch();
 
         //document.getElementById("searchBar").addEventListener('submit', function (event) {
         if (this.state.url !== api) {

@@ -245,9 +245,9 @@ export default class Encouragement extends Component {
                             <button id="left-button" className="btn btn-primary mr-2" onClick={(e) => this.scrollLeft(e)}>
                                 ←
                             </button>
-                            <button className="btn btn-primary mr-2" title="Post your bottle publically" onClick={(e) => this.addBottle(e)}>
+                            {/* <button className="btn btn-primary mr-2" title="Post your bottle publically" onClick={(e) => this.addBottle(e)}>
                                 Share
-                         </button>
+                         </button> */}
                             <button className="btn btn-primary mr-2" title="Set your bottle free" onClick={() => this.disposeBottle()}>
                                 Release
                         </button>
